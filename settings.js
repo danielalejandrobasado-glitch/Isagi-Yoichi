@@ -42,7 +42,7 @@ global.yukiJadibts = true
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
-global.packname = '🎤✨ ��𝐭𝐬�𝐮��-���𝐮-𝐁𝐨𝐭 ✨🎤'
+global.packname = '🎤✨ 𝙃𝘼𝙏𝙎𝙐𝙉𝙀 𝙈𝙄𝙆𝙐 𝘽𝙊𝙏 ✨🎤'
 global.botname = 'ĦᗩŦᔕᑌᑎᗴ ᗰIKᑌ'
 global.wm = '🎵◟Hαƚsυɳҽ Mιƙυ◞🎵'
 global.author = '© (ㅎㅊDEPOOLㅊㅎ)'
