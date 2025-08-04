@@ -46,7 +46,7 @@ global.packname = '🎤✨ 𝙃𝘼𝙏𝙎𝙐𝙉𝙀 𝙈𝙄𝙆𝙐 𝘽�
 global.botname = 'ĦᗩŦᔕᑌᑎᗴ ᗰIKᑌ'
 global.wm = '🎵◟Hαƚsυɳҽ Mιƙυ◞🎵'
 global.author = '© (ㅎㅊDEPOOLㅊㅎ)'
-global.dev = '© ℙ𝕠𝔀𝔢𝕣𝔢𝔡 (ㅎㅊDEPOOLㅊㅎ)'
+global.dev = '© 🄿🄾🅆🄴🅁🄴🄳 (ㅎㅊDEPOOLㅊㅎ)'
 global.textbot = '🎤✨ Hatsune Miku, la Diva Virtual del Futuro ✨🎤'
 global.etiqueta = '🎵 Ｍｉｋｕ Ｄｅｖ 🎵'
 
