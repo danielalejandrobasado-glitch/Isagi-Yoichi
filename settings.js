@@ -35,18 +35,18 @@ global.libreria = 'Baileys'
 global.baileys = 'V 6.7.17' 
 global.vs = '2.2.5'
 global.nameqr = '🎵 Hatsune-Miku-MD 🎵'
-global.namebot = '�💙 Ｈａｔｓｕｎｅ Ｍｉｋｕ Ｂｏｔ 💙�'
+global.namebot = '💙 Ｈａｔｓｕｎｅ Ｍｉｋｕ Ｂｏｔ 💙'
 global.sessions = 'Sessions'
 global.jadi = 'JadiBots' 
 global.yukiJadibts = true
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
-global.packname = '🎤✨ ��𝐭𝐬�𝐮��-���𝐮-𝐁𝐨𝐭 ✨🎤'
+global.packname = '🎤 ⒽⒶⓉⓈⓊⓃⒺ ⓂⒾⓀⓊ 🎤'
 global.botname = 'ĦᗩŦᔕᑌᑎᗴ ᗰIKᑌ'
 global.wm = '🎵◟Hαƚsυɳҽ Mιƙυ◞🎵'
 global.author = '© (ㅎㅊDEPOOLㅊㅎ)'
-global.dev = '© ℙ𝕠𝔀𝔢𝕣𝔢𝔡 (ㅎㅊDEPOOLㅊㅎ)'
+global.dev = '© ℙ𝕆𝕎𝔼ℝ𝔼𝔻 (ㅎㅊDEPOOLㅊㅎ)'
 global.textbot = '🎤✨ Hatsune Miku, la Diva Virtual del Futuro ✨🎤'
 global.etiqueta = '🎵 Ｍｉｋｕ Ｄｅｖ 🎵'
 
