@@ -46,33 +46,28 @@ author = author || 'no encontrado'
         },
       },
     }
-    await conn.reply(m.chat, infoMessage, m, JT)    
-    if (command === 'play' || command === 'yta' || command === 'ytmp3' || command === 'playaudio') {
-      try {
-        const api = await (await fetch(`https://api.vreden.my.id/api/ytmp3?url=${url}`)).json()
-        const resulta = api.result
-        const result = resulta.download.url    
-        if (!result) throw new Error('⚠ El enlace de audio no se generó correctamente.')
-        await conn.sendMessage(m.chat, { audio: { url: result }, fileName: `${api.result.title}.mp3`, mimetype: 'audio/mpeg' }, { quoted: m })
-      } catch (e) {
-        return conn.reply(m.chat, '🎵💙 ¡Gomen nasai! No se pudo enviar el audio virtual. Esto puede deberse a que el archivo es demasiado pesado o a un error en la generación de la URL. Por favor, intenta nuevamente más tarde ✨', m, rcanal)
-      }
-    } else if (command === 'play2' || command === 'ytv' || command === 'ytmp4' || command === 'mp4') {
-      try {
-        const response = await fetch(`https://api.neoxr.eu/api/youtube?url=${url}&type=video&quality=480p&apikey=GataDios`)
-        const json = await response.json()
-        await conn.sendFile(m.chat, json.data.url, json.title + '.mp4', title, m)
-      } catch (e) {
-        return conn.reply(m.chat, '🎤💫 ¡Gomen! No se pudo enviar el video virtual. Esto puede deberse a que el archivo es demasiado pesado o a un error en la generación de la URL. Por favor, intenta nuevamente más tarde 🎵', m, rcanal)
-      }
-    } else {
-      return conn.reply(m.chat, '🎶💙 Comando musical no reconocido ✨', m, rcanal)
+    // Mostrar opciones de descarga
+    const optionsMessage = `${infoMessage}\n\n🎯 **Opciones de Descarga:**\n\n1️⃣ **MP3** - Audio únicamente 🎵\n2️⃣ **MP4** - Video completo 🎬\n3️⃣ **MP3 DOC** - Audio como documento 📄\n4️⃣ **MP4 DOC** - Video como documento 📹\n\n💙 *Responde con el número (1, 2, 3 o 4) de tu opción preferida* ✨\n⏰ *Tienes 60 segundos para elegir*`
+    
+    await conn.reply(m.chat, optionsMessage, m, JT)
+    
+    // Guardar información en base de datos para la respuesta
+    if (!global.db.data.chats[m.chat].playOptions) {
+      global.db.data.chats[m.chat].playOptions = {}
+    }
+    
+    global.db.data.chats[m.chat].playOptions[m.sender] = {
+      url: url,
+      title: title,
+      thumbnail: thumbnail,
+      timestamp: Date.now() + 60000, // Expira en 60 segundos
+      waitingResponse: true
     }
   } catch (error) {
     return m.reply(`🎤💙 ¡Gomen! Ocurrió un error en el escenario virtual: ${error} ✨`)
   }
 }
-handler.command = handler.help = ['play', 'yta', 'ytmp3', 'play2', 'ytv', 'ytmp4', 'playaudio', 'mp4']
+handler.command = handler.help = ['play', 'música', 'musica', 'song', 'cancion']
 handler.tags = ['descargas']
 handler.group = true
 
