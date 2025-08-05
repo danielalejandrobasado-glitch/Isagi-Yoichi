@@ -101,7 +101,7 @@ author = author || 'no encontrado'
       contextInfo: {
         externalAdReply: {
           title: botname,
-          body: dev,
+          body: dev = "DEPOOL",
           mediaType: 1,
           previewType: 0,
           mediaUrl: url,
@@ -134,7 +134,7 @@ author = author || 'no encontrado'
 }
 handler.command = handler.help = ['play', 'música', 'musica', 'song', 'cancion']
 handler.tags = ['descargas']
-handler.group = true
+handler.group = false
 
 export default handler
 
