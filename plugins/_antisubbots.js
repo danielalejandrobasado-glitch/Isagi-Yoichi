@@ -8,7 +8,7 @@ export async function before(m, { participants, conn }) {
         }
 
 
-        let botJid = global.conn.user.jid // JID del bot principal
+        let botJid = global.conn.user.jid 
 
        if (botJid === conn.user.jid) {
            return
@@ -17,9 +17,9 @@ export async function before(m, { participants, conn }) {
 
           if (isBotPresent) {
                 setTimeout(async () => {
-                    await conn.reply(m.chat, `《✧》En este grupo está el bot principal, el cual me saldré para no hacer spam.`, m)
+                    await conn.reply(m.chat, `💙 En este grupo está el bot principal, el cual me saldré para no hacer spam.`, m)
                     await this.groupLeave(m.chat)
-                }, 5000)// 5 segundos
+                }, 5000)
             }
         }
     }
