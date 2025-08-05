@@ -71,37 +71,37 @@ async function getVideoUrl(videoUrl) {
 const handler = async (m, { conn, text, usedPrefix, command }) => {
   try {
     if (!text.trim()) {
-      return conn.reply(m.chat, `💙 ¡Ara ara! Por favor, dime el nombre de la canción que quieres que descargue para ti. 🎵✨`, m, rcanal)
+      return conn.reply(m.chat, `🎤💙 ¡Ara ara! Por favor, dime el nombre de la canción que quieres que descargue para ti. 🎵✨`, m, rcanal)
     }
   
-    let videoIdToFind = text.match(youtubeRegexID) || null
-    let ytplay2 = await yts(videoIdToFind === null ? text : 'https://youtu.be/' + videoIdToFind[1])
+let videoIdToFind = text.match(youtubeRegexID) || null
+let ytplay2 = await yts(videoIdToFind === null ? text : 'https://youtu.be/' + videoIdToFind[1])
 
-    if (videoIdToFind) {
-      const videoId = videoIdToFind[1]  
-      ytplay2 = ytplay2.all.find(item => item.videoId === videoId) || ytplay2.videos.find(item => item.videoId === videoId)
-    } 
-    ytplay2 = ytplay2.all?.[0] || ytplay2.videos?.[0] || ytplay2  
-    if (!ytplay2 || ytplay2.length == 0) {
-      return m.reply('💙 ¡Gomen! No encontré ninguna canción con ese nombre. ¿Podrías intentar con otro título? ✨')
-    }
-    let { title, thumbnail, timestamp, views, ago, url, author } = ytplay2
-    title = title || 'no encontrado'
-    thumbnail = thumbnail || 'no encontrado'
-    timestamp = timestamp || 'no encontrado'
-    views = views || 'no encontrado'
-    ago = ago || 'no encontrado'
-    url = url || 'no encontrado'
-    author = author || 'no encontrado'
+if (videoIdToFind) {
+const videoId = videoIdToFind[1]  
+ytplay2 = ytplay2.all.find(item => item.videoId === videoId) || ytplay2.videos.find(item => item.videoId === videoId)
+} 
+ytplay2 = ytplay2.all?.[0] || ytplay2.videos?.[0] || ytplay2  
+if (!ytplay2 || ytplay2.length == 0) {
+return m.reply('🎵💙 ¡Gomen! No encontré ninguna canción con ese nombre. ¿Podrías intentar con otro título? ✨')
+}
+let { title, thumbnail, timestamp, views, ago, url, author } = ytplay2
+title = title || 'no encontrado'
+thumbnail = thumbnail || 'no encontrado'
+timestamp = timestamp || 'no encontrado'
+views = views || 'no encontrado'
+ago = ago || 'no encontrado'
+url = url || 'no encontrado'
+author = author || 'no encontrado'
     const vistas = formatViews(views)
     const canal = author.name ? author.name : 'Desconocido'
-    const infoMessage = `💙 Descargando melodía virtual *<${title || 'Desconocido'}>* 🎵\n\n🎶 Canal Musical » *${canal}*\n💫 Visualizaciones » *${vistas || 'Desconocido'}*\n⏰ Duración » *${timestamp}*\n📅 Publicado » *${ago}*\n\n¿Quieres descargarla en MP3 (audio) o MP4 (video)?\n\n🔗 ${url}`
+    const infoMessage = `🎤💙 「✨」Descargando melodía virtual *<${title || 'Desconocido'}>* 🎵\n\n🎶 Canal Musical » *${canal}*\n💫 Visualizaciones » *${vistas || 'Desconocido'}*\n⏰ Duración » *${timestamp || 'Desconocido'}*\n✨ Publicado » *${ago || 'Desconocido'}*\n🌟 Link Virtual » ${url}\n\n💙 ¡Preparando tu canción favorita! ✨`
     const thumb = (await conn.getFile(thumbnail))?.data
     const JT = {
       contextInfo: {
         externalAdReply: {
           title: botname,
-          body: "DEPOOL",
+          body: dev,
           mediaType: 1,
           previewType: 0,
           mediaUrl: url,
@@ -111,10 +111,12 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
         },
       },
     }
-        
-    const optionsMessage = `${infoMessage}\n\n🎯 **Opciones de Descarga:**\n\n1️⃣ **MP3** - Audio únicamente 🎵\n2️⃣ **MP4** - Video completo 🎬\n3️⃣ **MP3 DOC** - Audio como documento 📄\n\nResponde con el número de opción que quieras.`
+    
+    const optionsMessage = `${infoMessage}\n\n🎯 *Opciones de Descarga:*\n\n1️⃣ *MP3* - Audio únicamente 🎵\n2️⃣ *MP4* - Video completo 🎬\n3️⃣ *MP3 DOC* - Audio como documento 📄\n4️⃣ *MP4 DOC* - Video como documento 📹\n\n💙 *Responde con el número (1, 2, 3 o 4) de tu opción preferida* ✨\n⏰ *Tienes 60 segundos para elegir*`
+    
     await conn.reply(m.chat, optionsMessage, m, JT)
-
+    
+    
     if (!global.db.data.chats[m.chat].playOptions) {
       global.db.data.chats[m.chat].playOptions = {}
     }
@@ -127,7 +129,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
       waitingResponse: true
     }
   } catch (error) {
-    return m.reply(`💙 ¡Gomen! Ocurrió un error en el escenario virtual: ${error} ✨`)
+    return m.reply(`🎤💙 ¡Gomen! Ocurrió un error en el escenario virtual: ${error} ✨`)
   }
 }
 handler.command = handler.help = ['play', 'música', 'musica', 'song', 'cancion']
