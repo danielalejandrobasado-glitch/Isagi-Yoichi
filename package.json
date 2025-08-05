@@ -1,5 +1,5 @@
 {
-"name": "YukiBot-MD",
+"name": "Hatsune miku",
 "version": "2.2.5",
 "description": "WhatsApp Bot Multi Device",
 "main": "index.js",
@@ -18,16 +18,16 @@
 "eslint": "eslint .",
 "eslintfix": "eslint --fix ."
 },
-"homepage": "https://github.com/The-King-Destroy/Yuki_Suou-Bot",
+"homepage": "https://github.com/Brauliovh3",
 "author": {
-"name": "The-King-Destroy"
+"name": "(ㅎㅊDEPOOLㅊㅎ)"
 },
 "repository": {
 "type": "git",
-"url": "git+https://github.com/The-King-Destroy/Yuki_Suou-Bot.git"
+"url": "git+https://github.com/Brauliovh3/HATSUNE-MIKU.git"
 },
 "bugs": {
-"url": "https://github.com/The-King-Destroy/Yuki_Suou-Bot/issues"
+"url": "https://github.com/Brauliovh3/HATSUNE-MIKU/issues"
 },
 "license": "MIT-License",
 "dependencies": {
