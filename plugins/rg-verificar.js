@@ -12,17 +12,17 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
   let pp = await conn.profilePictureUrl(who, 'image').catch((_) => 'https://files.catbox.moe/8wic22.jpg')
   let user = global.db.data.users[m.sender]
   let name2 = conn.getName(m.sender)
-  if (user.registered === true) return m.reply(`╔═══════════════════════╗
-║  ⚠️ YA REGISTRADO ⚠️    ║
-╚══════════════════════════╝
+  if (user.registered === true) return m.reply(`╔══════════════════╗
+║⚠️ YA REGISTRADO ⚠️ ║
+╚═════════════════════╝
 
 💙 Ya estás registrado en el sistema 💙
 
 🔄 ¿Quieres registrarte de nuevo?
 📝 Usa: *${usedPrefix}unreg* para eliminar tu registro actual`)
-  if (!Reg.test(text)) return m.reply(`╔══════════════════════════╗
-║  📝 FORMATO INCORRECTO 📝    ║
-╚═══════════════════════════════╝
+  if (!Reg.test(text)) return m.reply(`╔═════════════════════╗
+║📝 FORMATO INCORRECTO 📝║
+╚═════════════════════════╝
 
 💙🖥 Uso correcto del comando 🖥💙
 
@@ -31,21 +31,21 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
 
 🔌 ¡Regístrate para acceder a todas las funciones! 🔌`)
   let [_, name, splitter, age] = text.match(Reg)
-  if (!name) return m.reply(`╔════════════════════════╗
-║  ❌ NOMBRE VACÍO ❌     ║
-╚══════════════════════════╝
+  if (!name) return m.reply(`╔══════════════════╗
+║❌ NOMBRE VACÍO ❌║
+╚═══════════════════╝
 
 💙 El nombre no puede estar vacío 💙
 📝 Por favor ingresa tu nombre`)
-  if (!age) return m.reply(`╔══════════════════════╗
-║  ❌ EDAD VACÍA ❌  ║
-╚═════════════════════╝
+  if (!age) return m.reply(`╔═══════════════════╗
+║❌ EDAD VACÍA ❌║
+╚═════════════════╝
 
 💙 La edad no puede estar vacía 💙
 🎂 Por favor ingresa tu edad`)
-  if (name.length >= 100) return m.reply(`╔═══════════════════════╗
-║ 📏 NOMBRE MUY LARGO 📏  ║
-╚══════════════════════════╝
+  if (name.length >= 100) return m.reply(`╔════════════════════╗
+║📏 NOMBRE MUY LARGO 📏 ║
+╚════════════════════════╝
 
 💙 El nombre es demasiado largo 💙
 ✂️ Usa un nombre más corto (máximo 100 caracteres)`)
