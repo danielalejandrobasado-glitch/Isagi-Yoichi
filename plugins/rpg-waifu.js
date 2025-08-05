@@ -14,37 +14,37 @@ const waifuList = [
         name: "Hatsune Chibi",
         rarity: "común",
         probability: 5,  
-        img: "./src/chibis/miku_chibi.png"
+        img: "https://files.catbox.moe/vjkemw.png"
     },
     {
         name: "Aoki Chibi",
         rarity: "común",
         probability: 5,  
-        img: "./src/chibis/aoki_chibi.png"
+        img: "https://files.catbox.moe/ds1rt5.png"
     },
     {
         name: "Defoko Chibi",
         rarity: "común",
         probability: 5,  
-        img: "./src/chibis/defoko_chibi.png"
+        img: "https://files.catbox.moe/r951p2.png"
     },
     {
         name: "Neru Chibi",
         rarity: "común",
         probability: 5,
-        img: "./src/chibis/neru_chibi.png"
+        img: "https://files.catbox.moe/ht6aci.png"
     },
     {
         name: "Rin Chibi",
         rarity: "común",
         probability: 5,
-        img: "./src/chibis/rin_chibi.png"
+        img: "https://files.catbox.moe/2y6wre.png"
     },
     {
         name: "Teto Chibi",
         rarity: "común",
         probability: 5,
-        img: "./src/chibis/teto_chibi.png"
+        img: "https://files.catbox.moe/h9m6ac.webp"
     },
     {
         name: "Gumi Chibi",
@@ -56,19 +56,19 @@ const waifuList = [
         name: "Emu Chibi",
         rarity: "común",
         probability: 5,
-        img: "./src/chibis/emu_chibi.png"
+        img: "https://files.catbox.moe/nrchrb.webp"
     },
     {
         name: "Len Chibi",
         rarity: "común",
         probability: 5,
-        img: "./src/chibis/len_chibi.png"
+        img: "https://files.catbox.moe/rxvuqq.png"
     },
     {
         name: "Luka Chibi",
         rarity: "común",
         probability: 5,
-        img: "./src/chibis/luka_chibi.png"
+        img: "https://files.catbox.moe/5cyyis.png"
     },
     
     
@@ -76,61 +76,61 @@ const waifuList = [
         name: "Hatsune Miku 2006",
         rarity: "rara",
         probability: 3,
-        img: "./src/raros/miku_raro.png"
+        img: "https://files.catbox.moe/id47xr.png"
     },
     {
         name: "Aoki Lapis 2006",
         rarity: "rara",
         probability: 3,
-        img: "./src/raros/aoki_raro.png"
+        img: "https://files.catbox.moe/5m2nw3.png"
     },
     {
         name: "Defoko Utau",
         rarity: "rara",
         probability: 3,
-        img: "./src/raros/defoko_raro.png"
+        img: "https://files.catbox.moe/0ghewm.png"
     },
     {
         name: "Akita Neru 2006",
         rarity: "rara",
         probability: 3,
-        img: "./src/raros/neru_raro.png"
+        img: "https://files.catbox.moe/zia0tk.png"
     },
     {
         name: "Gumi Megpoid 2006",
         rarity: "rara",
         probability: 3,
-        img: "./src/raros/gumi_raro.png"
+        img: "https://files.catbox.moe/ulvmhk.png"
     },
     {
         name: "Rin",
         rarity: "rara",
         probability: 3,
-        img: "./src/raros/rin_raro.png"
+        img: "https://files.catbox.moe/wk4sh0.png"
     },
     {
         name: "Teto",
         rarity: "rara",
         probability: 3,
-        img: "./src/raros/teto_raro.png"
+        img: "https://files.catbox.moe/0cax3r.png"
     },
     {
         name: "Emu Otori",
         rarity: "rara",
         probability: 3,
-        img: "./src/raros/emu_raro.png"
+        img: "https://files.catbox.moe/vphcvo.png"
     },
     {
         name: "Len",
         rarity: "rara",
         probability: 3,
-        img: "./src/raros/len_raro.png"
+        img: "https://files.catbox.moe/x4du11.png"
     },
     {
         name: "Luka Megurine 2006",
         rarity: "rara",
         probability: 3,
-        img: "./src/raros/luka_raro.png"
+        img: "https://files.catbox.moe/3wo3h9.webp"
     },
     
     
@@ -138,61 +138,61 @@ const waifuList = [
         name: "💙Miku💙",
         rarity: "épica",
         probability: 1.5,
-        img: "./src/epicos/miku_epico.png"
+        img: "https://files.catbox.moe/ishwpi.png"
     },
     {
         name: "🩵Aoki Lapis🩵",
         rarity: "épica",
         probability: 1.5,
-        img: "./src/epicos/aoki_epico.png"
+        img: "https://files.catbox.moe/gje6q7.png"
     },
     {
         name: "💜Defoko Utane💜",
         rarity: "épica",
         probability: 1.5,
-        img: "./src/epicos/defoko_epico.png"
+        img: "https://files.catbox.moe/eb1jy3.png"
     },
     {
         name: "💛Neru💛",
         rarity: "épica",
         probability: 1.5,
-        img: "./src/epicos/neru_epico.png"
+        img: "https://files.catbox.moe/gj18ti.png"
     },
     {
         name: "💛Rin💛",
         rarity: "épica",
         probability: 1.5,
-        img: "./src/epicos/rin_epico.png"
+        img: "https://files.catbox.moe/jiefh9.png"
     },
     {
         name: "💚Gumi💚",
         rarity: "épica",
         probability: 1.5,
-        img: "./src/epicos/gumi_epico.png"
+        img: "https://files.catbox.moe/hpalur.png"
     },
     {
         name: "❤Teto❤",
         rarity: "épica",
         probability: 1.5,
-        img: "./src/epicos/teto_epico.png"
+        img: "https://files.catbox.moe/k5w0ea.png"
     },
     {
         name: "💗Emu💗",
         rarity: "épica",
         probability: 1.5,
-        img: "./src/epicos/emu_epico.png"
+        img: "https://files.catbox.moe/sygb0h.png"
     },
     {
         name: "Len (gei)",
         rarity: "épica",
         probability: 1.5,
-        img: "./src/epicos/len_epico.png"
+        img: "https://files.catbox.moe/pnho83.png"
     },
     {
         name: "💗LUKA🪷",
         rarity: "épica",
         probability: 1.5,
-        img: "./src/epicos/luka_epico.png"
+        img: "https://files.catbox.moe/bp2wrg.webp"
     },
    
     
@@ -200,61 +200,61 @@ const waifuList = [
         name: "💙HATSUNE MIKU💙",
         rarity: "ultra rara",
         probability: 0.4,
-        img: "./src/ultra/miku_ultra.png"
+        img: "https://files.catbox.moe/881c3b.png"
     },
     {
         name: "🩵Aoki Lapis🩵",
         rarity: "ultra rara",
         probability: 0.4,
-        img: "./src/ultra/aoki_ultra.png"
+        img: "https://files.catbox.moe/fkxvxb.png"
     },
     {
         name: "💜Utane Defoko💜",
         rarity: "ultra rara",
         probability: 0.4,
-        img: "./src/ultra/defoko_ultra.png"
+        img: "https://files.catbox.moe/c4uvcy.png"
     },
     {
         name: "💛AKITA NERU💛",
         rarity: "ultra rara",
         probability: 0.4,
-        img: "./src/ultra/neru_ultra.png"
+        img: "https://files.catbox.moe/agw1y1.png"
     },
     {
         name: "💗EMU OTORI💗",
         rarity: "ultra rara",
         probability: 0.4,
-        img: "./src/ultra/emu_ultra.png"
+        img: "https://files.catbox.moe/ekzntn.png"
     },
     {
         name: "💚Megpoid Gumi💚",
         rarity: "ultra rara",
         probability: 0.4,
-        img: "./src/ultra/gumi_ultra.png"
+        img: "https://files.catbox.moe/opn7vz.png"
     },
     {
         name: "❤KASANE TETO❤",
         rarity: "ultra rara",
         probability: 0.4,
-        img: "./src/ultra/teto_ultra.png"
+        img: "https://files.catbox.moe/6j9jgl.webp"
     },
     {
         name: "💛KAGAMINE RIN💛",
         rarity: "ultra rara",
         probability: 0.4,
-        img: "./src/ultra/rin_ultra.png"
+        img: "https://files.catbox.moe/lh5sxn.png"
     },
     {
         name: "💥KAGAMINE LEN💢",
         rarity: "ultra rara",
         probability: 0.4,
-        img: "./src/ultra/len_ultra.png"
+        img: "https://files.catbox.moe/awuecy.png"
     },
     {
         name: "💗MEGUMIRE LUKA💮",
         rarity: "ultra rara",
         probability: 0.4,
-        img: "./src/ultra/luka_ultra.png"
+        img: "https://files.catbox.moe/jodjln.png"
     },
     
     
@@ -262,46 +262,46 @@ const waifuList = [
         name: "💙Brazilian Miku💛",
         rarity: "Legendaria",
         probability: 0.167,
-        img: "./src/legend/miku_legend.jpg" 
+        img: "https://files.catbox.moe/ifl773.jpg" 
     },
     {
         name: "🖤Inabakumori🖤",
         rarity: "Legendaria",
         probability: 0.167,
-        img: "./src/legend/ibana_legend.jpg"
+        img: "https://files.catbox.moe/1oiyvv.jpg"
     },
     {
         name: "❤KASANE TETO❤",
         rarity: "Legendaria",
         probability: 0.167,
-        img: "./src/legend/teto_legend.png"
+        img: "https://files.catbox.moe/3cb73f.jpg"
     },
     {
         name: "☢️Cyberpunk Edgeruners💫",
         rarity: "Legendaria",
         probability: 0.167,
-        img: "./src/legend/cyber_legend.png"
+        img: "https://files.catbox.moe/3bl6qe.png"
     },
     {
         name: "❤️🩷VOCALOIDS💛💙",
         rarity: "Legendaria",
         probability: 0.167,
-        img: "./src/legend/voca_legend.jpg"
+        img: "https://files.catbox.moe/g6kfb6.jpg"
     },
     {
         name: "🌌HALO⚕️",
         rarity: "Legendaria",
         probability: 0.167,
-        img: "./src/legend/halo_legend.png"
+        img: "https://files.catbox.moe/h2hvi4.png"
     }
 ];
 
 
-// Calculamos la probabilidad total una sola vez
+
 const totalProbability = waifuList.reduce((sum, waifu) => sum + waifu.probability, 0);
 console.log(`Probabilidad total calculada: ${totalProbability}%`);
 
-// Optimizamos las probabilidades acumuladas una sola vez
+
 const cumulativeProbabilities = [];
 let accumulated = 0;
 for (const waifu of waifuList) {
@@ -313,7 +313,7 @@ let handler = async (m, { conn }) => {
     const userId = m.sender;
     const currentTime = Date.now();
     
-    // Verificación de cooldown
+    
     if (global.db.waifu.cooldowns[userId]) {
         const timeDiff = currentTime - global.db.waifu.cooldowns[userId];
         if (timeDiff < 900000) {
@@ -324,11 +324,11 @@ let handler = async (m, { conn }) => {
         }
     }
 
-    // Generación del roll optimizada
+   
     const roll = Math.random() * totalProbability;
     let selectedWaifu = null;
     
-    // Búsqueda binaria optimizada
+    
     for (const { waifu, threshold } of cumulativeProbabilities) {
         if (roll <= threshold) {
             selectedWaifu = waifu;
@@ -336,12 +336,12 @@ let handler = async (m, { conn }) => {
         }
     }
     
-    // Fallback de seguridad
+   
     if (!selectedWaifu) {
         selectedWaifu = waifuList[waifuList.length - 1];
     }
 
-    // Colores y probabilidades mostradas
+    
     const rarityColors = {
         'común': '⚪',
         'rara': '🔵',
@@ -358,7 +358,7 @@ let handler = async (m, { conn }) => {
         'Legendaria': '1%'
     };
 
-    // Mensaje único optimizado
+    
     let message = `🎲 WAIFU GACHA 🎲\n\n`;
     message += `👤 Invocador: @${userId.split('@')[0]}\n`;
     message += `${rarityColors[selectedWaifu.rarity]} Rareza: ${selectedWaifu.rarity.toUpperCase()} (${rarityProbs[selectedWaifu.rarity]})\n`;
@@ -366,14 +366,14 @@ let handler = async (m, { conn }) => {
     message += `💙 ${selectedWaifu.name}\n`;
     message += `\n💫 Usa .save o .c para guardar tu waifu!`;
 
-    // Envío único de mensaje con imagen
+   
     await conn.sendMessage(m.chat, { 
         image: { url: selectedWaifu.img },
         caption: message,
         mentions: [userId]
     });
 
-    // Actualización de datos
+    
     global.db.waifu.cooldowns[userId] = currentTime;
     global.db.waifu.waifus[userId] = selectedWaifu;
 }
@@ -386,3 +386,4 @@ handler.group = true
 handler.cooldown = 900000
 
 export default handler
+
