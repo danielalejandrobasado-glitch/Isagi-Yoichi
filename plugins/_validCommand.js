@@ -19,7 +19,7 @@ if (validCommand(command, global.plugins)) {
 let chat = global.db.data.chats[m.chat]
 let user = global.db.data.users[m.sender]    
 if (chat.isBanned) {
-const avisoDesactivado = (`💙 El bot *${botname}* está desactivado en este grupo.\n\n> 💨 Un *administrador* puede activarlo con el comando:\n> » *${usedPrefix}bot on*`, m, rcanal)
+const avisoDesactivado = `💙 El bot *${botname}* está desactivado en este grupo.\n\n> 💨 Un *administrador* puede activarlo con el comando:\n> » *${usedPrefix}bot on*`
 await m.reply(avisoDesactivado)
 return
 }    
