@@ -1,12 +1,82 @@
 import fetch from "node-fetch"
 
+async function getAudioUrl(videoUrl) {
+  const apis = [
+    `https://api.vreden.my.id/api/ytmp3?url=${videoUrl}`,
+    `https://api.botcahx.biz.id/api/dowloader/yt?url=${videoUrl}&apikey=Admin`,
+    `https://api.lolhuman.xyz/api/ytaudio?apikey=GataDios&url=${videoUrl}`
+  ];
+  
+  for (let i = 0; i < apis.length; i++) {
+    try {
+      const apiResponse = await fetch(apis[i]);
+      const apiJson = await apiResponse.json();
+      
+      let audioUrl = null;
+      let title = null;
+      
+      if (i === 0) {
+        audioUrl = apiJson.result?.download?.url;
+        title = apiJson.result?.title;
+      } else if (i === 1) {
+        audioUrl = apiJson.result?.mp3;
+        title = apiJson.result?.title;
+      } else {
+        audioUrl = apiJson.result?.link || apiJson.result?.audio?.link;
+        title = apiJson.result?.title;
+      }
+      
+      if (audioUrl) return { url: audioUrl, title: title };
+    } catch (e) {
+      console.error(`API ${i+1} falló:`, e);
+    }
+  }
+  
+  return null;
+}
+
+async function getVideoUrl(videoUrl) {
+  const apis = [
+    `https://api.vreden.my.id/api/ytmp4?url=${videoUrl}`,
+    `https://api.botcahx.biz.id/api/dowloader/yt?url=${videoUrl}&apikey=Admin`,
+    `https://api.lolhuman.xyz/api/ytvideo?apikey=GataDios&url=${videoUrl}`
+  ];
+  
+  for (let i = 0; i < apis.length; i++) {
+    try {
+      const apiResponse = await fetch(apis[i]);
+      const apiJson = await apiResponse.json();
+      
+      let videoUrl = null;
+      let title = null;
+      
+      if (i === 0) {
+        videoUrl = apiJson.result?.download?.url;
+        title = apiJson.result?.title;
+      } else if (i === 1) {
+        videoUrl = apiJson.result?.mp4;
+        title = apiJson.result?.title;
+      } else {
+        videoUrl = apiJson.result?.link || apiJson.result?.video?.link;
+        title = apiJson.result?.title;
+      }
+      
+      if (videoUrl) return { url: videoUrl, title: title };
+    } catch (e) {
+      console.error(`API ${i+1} falló:`, e);
+    }
+  }
+  
+  return null;
+}
+
 const handler = async (m, { conn }) => {
   if (!global.db.data.chats[m.chat].playOptions) return
   if (!global.db.data.chats[m.chat].playOptions[m.sender]) return
   
   const userOption = global.db.data.chats[m.chat].playOptions[m.sender]
   
-  // Verificar si la opción ha expirado
+  
   if (Date.now() > userOption.timestamp) {
     delete global.db.data.chats[m.chat].playOptions[m.sender]
     return
@@ -20,7 +90,7 @@ const handler = async (m, { conn }) => {
   const option = parseInt(response)
   const { url, title } = userOption
   
-  // Marcar como procesado
+  
   userOption.waitingResponse = false
   delete global.db.data.chats[m.chat].playOptions[m.sender]
   
@@ -36,69 +106,69 @@ const handler = async (m, { conn }) => {
     
     switch (option) {
       case 1: // MP3
-        await conn.reply(m.chat, '🎵💙 Descargando audio virtual... ✨', m, rcanal)
+        await conn.reply(m.chat, '💙 Descargando audio virtual... ✨', m, rcanal)
         try {
-          const api = await (await fetch(`https://api.vreden.my.id/api/ytmp3?url=${url}`)).json()
-          const resulta = api.result
-          const result = resulta.download.url    
-          if (!result) throw new Error('⚠ El enlace de audio no se generó correctamente.')
+          const audioResult = await getAudioUrl(url)
+          if (!audioResult || !audioResult.url) throw new Error('⚠ El enlace de audio no se generó correctamente.')
+          
           await conn.sendMessage(m.chat, { 
-            audio: { url: result }, 
-            fileName: `${api.result.title}.mp3`, 
+            audio: { url: audioResult.url }, 
+            fileName: `${audioResult.title || title}.mp3`, 
             mimetype: 'audio/mpeg' 
           }, { quoted: m })
         } catch (e) {
-          return conn.reply(m.chat, '🎵💙 ¡Gomen nasai! No se pudo enviar el audio virtual. ✨', m, rcanal)
+          return conn.reply(m.chat, '💙 ¡Gomen nasai! No se pudo enviar el audio virtual. ✨', m, rcanal)
         }
         break
         
       case 2: // MP4
-        await conn.reply(m.chat, '🎤💙 Descargando video virtual... ✨', m, rcanal)
+        await conn.reply(m.chat, '💙 Descargando video virtual... ✨', m, rcanal)
         try {
-          const response = await fetch(`https://api.neoxr.eu/api/youtube?url=${url}&type=video&quality=480p&apikey=GataDios`)
-          const json = await response.json()
-          await conn.sendFile(m.chat, json.data.url, json.title + '.mp4', title, m)
+          const videoResult = await getVideoUrl(url)
+          if (!videoResult || !videoResult.url) throw new Error('⚠ El enlace de video no se generó correctamente.')
+          
+          await conn.sendFile(m.chat, videoResult.url, (videoResult.title || title) + '.mp4', title, m)
         } catch (e) {
-          return conn.reply(m.chat, '🎤💫 ¡Gomen! No se pudo enviar el video virtual. ✨', m, rcanal)
+          return conn.reply(m.chat, '💫 ¡Gomen! No se pudo enviar el video virtual. ✨', m, rcanal)
         }
         break
         
-      case 3: // MP3 DOC
-        await conn.reply(m.chat, '📄💙 Descargando audio como documento virtual... ✨', m, rcanal)
+      case 3: 
+        await conn.reply(m.chat, '💙 Descargando audio como documento virtual... ✨', m, rcanal)
         try {
-          const api = await (await fetch(`https://api.vreden.my.id/api/ytmp3?url=${url}`)).json()
-          const resulta = api.result
-          const result = resulta.download.url    
-          if (!result) throw new Error('⚠ El enlace de audio no se generó correctamente.')
+          const audioResult = await getAudioUrl(url)
+          if (!audioResult || !audioResult.url) throw new Error('⚠ El enlace de audio no se generó correctamente.')
+          
           await conn.sendMessage(m.chat, { 
-            document: { url: result }, 
-            fileName: `${api.result.title}.mp3`, 
+            document: { url: audioResult.url }, 
+            fileName: `${audioResult.title || title}.mp3`, 
             mimetype: 'audio/mpeg',
-            caption: `🎵💙 ${title} ✨`
+            caption: `💙 ${title} ✨`
           }, { quoted: m })
         } catch (e) {
-          return conn.reply(m.chat, '📄💙 ¡Gomen! No se pudo enviar el documento de audio virtual. ✨', m, rcanal)
+          return conn.reply(m.chat, '💙 ¡Gomen! No se pudo enviar el documento de audio virtual. ✨', m, rcanal)
         }
         break
         
-      case 4: // MP4 DOC
-        await conn.reply(m.chat, '📹💙 Descargando video como documento virtual... ✨', m, rcanal)
+      case 4: 
+        await conn.reply(m.chat, '💙 Descargando video como documento virtual... ✨', m, rcanal)
         try {
-          const response = await fetch(`https://api.neoxr.eu/api/youtube?url=${url}&type=video&quality=480p&apikey=GataDios`)
-          const json = await response.json()
+          const videoResult = await getVideoUrl(url)
+          if (!videoResult || !videoResult.url) throw new Error('⚠ El enlace de video no se generó correctamente.')
+          
           await conn.sendMessage(m.chat, { 
-            document: { url: json.data.url }, 
-            fileName: `${json.title}.mp4`, 
+            document: { url: videoResult.url }, 
+            fileName: `${videoResult.title || title}.mp4`, 
             mimetype: 'video/mp4',
             caption: `🎤💙 ${title} ✨`
           }, { quoted: m })
         } catch (e) {
-          return conn.reply(m.chat, '📹💙 ¡Gomen! No se pudo enviar el documento de video virtual. ✨', m, rcanal)
+          return conn.reply(m.chat, '💙 ¡Gomen! No se pudo enviar el documento de video virtual. ✨', m, rcanal)
         }
         break
     }
   } catch (error) {
-    return conn.reply(m.chat, `🎤💙 ¡Gomen! Ocurrió un error en el escenario virtual: ${error} ✨`, m, rcanal)
+    return conn.reply(m.chat, `💙 ¡Gomen! Ocurrió un error en el escenario virtual: ${error} ✨`, m, rcanal)
   }
 }
 
