@@ -5,7 +5,7 @@ const handler = async (m, {conn, participants, groupMetadata, args}) => {
   const owner = groupMetadata.owner || groupAdmins.find((p) => p.admin === 'superadmin')?.id || m.chat.split`-`[0] + '@s.whatsapp.net';
   const pesan = args.join` `;
   const oi = `» ${pesan}`;
-  const text = `『✦』Admins del grupo:  
+  const text = `💙 Admins del grupo:  
   
 ${listAdmin}
 
@@ -16,7 +16,6 @@ ${emoji} Mensaje: ${oi}
 };
 handler.help = ['admins <texto>'];
 handler.tags = ['grupo'];
-// regex detect A word without case sensitive
 handler.customPrefix = /a|@/i;
 handler.command = /^(admins|@admins|dmins)$/i;
 handler.group = true;
