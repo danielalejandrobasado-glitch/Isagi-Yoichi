@@ -118,7 +118,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
   }
 };
 
-// Función para validar si una URL es válida
+
 function isValidUrl(string) {
   try {
     new URL(string);
@@ -128,7 +128,7 @@ function isValidUrl(string) {
   }
 }
 
-// Función mejorada para procesar descargas
+
 async function processDownload(conn, m, url, title, option) {
   await conn.reply(m.chat, `💙 Procesando ${option === 1 || option === 3 ? 'audio' : 'video'}. Por favor espera...`, m);
   
@@ -138,7 +138,7 @@ async function processDownload(conn, m, url, title, option) {
     let mimeType;
 
     if (option === 1 || option === 3) {
-      // Procesando audio
+     
       downloadUrl = await getAudioUrl(url);
       fileName = `${title.replace(/[^\w\s]/gi, '')}.mp3`;
       mimeType = 'audio/mpeg';
@@ -150,14 +150,14 @@ async function processDownload(conn, m, url, title, option) {
       console.log(`Audio URL obtenida: ${downloadUrl}`);
 
       if (option === 1) {
-        // Enviar como audio
+       
         await conn.sendMessage(m.chat, { 
           audio: { url: downloadUrl }, 
           fileName: fileName, 
           mimetype: mimeType 
         }, { quoted: m });
       } else {
-        // Enviar como documento
+        
         await conn.sendMessage(m.chat, { 
           document: { url: downloadUrl },
           mimetype: mimeType,
@@ -165,7 +165,7 @@ async function processDownload(conn, m, url, title, option) {
         }, { quoted: m });
       }
     } else {
-      // Procesando video
+      
       downloadUrl = await getVideoUrl(url);
       fileName = `${title.replace(/[^\w\s]/gi, '')}.mp4`;
       mimeType = 'video/mp4';
@@ -177,7 +177,7 @@ async function processDownload(conn, m, url, title, option) {
       console.log(`Video URL obtenida: ${downloadUrl}`);
 
       if (option === 2) {
-        // Enviar como video
+        
         await conn.sendMessage(m.chat, { 
           video: { url: downloadUrl }, 
           fileName: fileName, 
@@ -185,7 +185,7 @@ async function processDownload(conn, m, url, title, option) {
           caption: title
         }, { quoted: m });
       } else {
-        // Enviar como documento
+       
         await conn.sendMessage(m.chat, { 
           document: { url: downloadUrl },
           mimetype: mimeType,
@@ -195,7 +195,7 @@ async function processDownload(conn, m, url, title, option) {
       }
     }
     
-    // Deducir cebollines
+    
     const user = global.db.data.users[m.sender];
     if (!user.cebollinesDeducted) {
       user.chocolates -= 2;
@@ -211,7 +211,7 @@ async function processDownload(conn, m, url, title, option) {
   }
 }
 
-// Función mejorada para obtener URL de audio
+
 async function getAudioUrl(videoUrl) {
   const apis = [
     {
@@ -274,7 +274,7 @@ async function getAudioUrl(videoUrl) {
   return null;
 }
 
-// Función mejorada para obtener URL de video
+
 async function getVideoUrl(videoUrl) {
   const apis = [
     {
