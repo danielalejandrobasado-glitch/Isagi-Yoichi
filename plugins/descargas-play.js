@@ -275,7 +275,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
     const vistas = formatViews(views)
     const canal = author.name ? author.name : 'Desconocido'
-    const infoMessage = `🎤💙 「✨」Descargando melodía virtual *<${title || 'Desconocido'}>* 🎵\n\n🎶 Canal Musical » *${canal}*\n💫 Visualizaciones » *${vistas || 'Desconocido'}*\n⏰ Duración » *${timestamp || 'Desconocido'}*\n✨ Publicado » *${ago || 'Desconocido'}*\n🌟 Link Virtual » ${url}\n\n💙 ¡Preparando tu canción favorita con sistema mejorado! ✨`
+    const infoMessage = `💙 Descargando melodía virtual *<${title || 'Desconocido'}>* 🎵\n\n🎶 Canal Musical » *${canal}*\n💫 Visualizaciones » *${vistas || 'Desconocido'}*\n⏰ Duración » *${timestamp || 'Desconocido'}*\n✨ Publicado » *${ago || 'Desconocido'}*\n🌟 Link Virtual » ${url}\n\n💙 ¡Preparando tu canción favorita con sistema mejorado! ✨`
     
     const thumb = (await conn.getFile(thumbnail))?.data
     const JT = {
@@ -310,7 +310,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
     }
   } catch (error) {
     console.error('Error en handler principal:', error)
-    return m.reply(`🎤💙 ¡Gomen! Ocurrió un error en el escenario virtual: ${error.message} ✨`)
+    return m.reply(`💙 ¡Gomen! Ocurrió un error en el escenario virtual: ${error.message} ✨`)
   }
 }
 
