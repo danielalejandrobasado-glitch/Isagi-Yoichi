@@ -11,26 +11,21 @@ const pipeline = promisify(stream.pipeline);
 const handler = async (m, { conn, text, usedPrefix, command }) => {
   let user = global.db.data.users[m.sender];
 
-  
-
   try {
     if (!text.trim()) {
       return conn.reply(m.chat, `💙 Ingresa el nombre de la música a descargar.\n\nEjemplo: ${usedPrefix}${command} Coldplay Viva la Vida`, m, fake);
     }
 
-    
     const search = await yts(text);
     if (!search.all || search.all.length === 0) {
       return m.reply('No se encontraron resultados para tu búsqueda.');
     }
 
-    
     const videoInfo = search.all[0];
     if (!videoInfo) {
       return m.reply('No se pudo obtener información del video.');
     }
 
-   
     const { 
       title = 'Desconocido', 
       thumbnail = '', 
@@ -41,7 +36,6 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
       author = { name: 'Desconocido' } 
     } = videoInfo;
 
-    
     if (!url) {
       return m.reply('No se pudo obtener la URL del video.');
     }
@@ -49,7 +43,6 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
     const vistas = formatViews(views);
     const canal = author.name || 'Desconocido';
     
-   
     const infoMessage = `
 *𖹭.╭╭ִ╼࣪━ִﮩ٨ـﮩ💙𝗠𝗶𝗸𝘂𝗺𝗶𝗻🌱ﮩ٨ـﮩ━ִ╾࣪╮╮.𖹭*
 > 💙 *Título:* ${title}
@@ -87,14 +80,11 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
         },
       };
 
-      
       const sentMsg = await conn.reply(m.chat, infoMessage, m, JT);
-      
       
       if (!global.db.data.users[m.sender]) {
         global.db.data.users[m.sender] = {};
       }
-      
       
       global.db.data.users[m.sender].lastYTSearch = {
         url,
@@ -106,13 +96,11 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
       console.log(`Stored search for user ${m.sender}: ${title} (ID: ${m.key.id})`);
       
     } catch (thumbError) {
-      
       const sentMsg = await conn.reply(m.chat, infoMessage, m);
       
       if (!global.db.data.users[m.sender]) {
         global.db.data.users[m.sender] = {};
       }
-      
       
       global.db.data.users[m.sender].lastYTSearch = {
         url,
@@ -130,144 +118,226 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
   }
 };
 
+// Función para validar si una URL es válida
+function isValidUrl(string) {
+  try {
+    new URL(string);
+    return string.startsWith('http://') || string.startsWith('https://');
+  } catch (_) {
+    return false;
+  }
+}
 
+// Función mejorada para procesar descargas
 async function processDownload(conn, m, url, title, option) {
-  
   await conn.reply(m.chat, `💙 Procesando ${option === 1 || option === 3 ? 'audio' : 'video'}. Por favor espera...`, m);
   
   try {
-    
+    let downloadUrl;
+    let fileName;
+    let mimeType;
+
     if (option === 1 || option === 3) {
-    
-      const audioUrl = await getAudioUrl(url);
-      if (!audioUrl) {
-        throw new Error("No se pudo obtener el enlace de audio.");
-      }
+      // Procesando audio
+      downloadUrl = await getAudioUrl(url);
+      fileName = `${title.replace(/[^\w\s]/gi, '')}.mp3`;
+      mimeType = 'audio/mpeg';
       
+      if (!downloadUrl) {
+        throw new Error("No se pudo obtener el enlace de audio desde ninguna API.");
+      }
+
+      console.log(`Audio URL obtenida: ${downloadUrl}`);
+
       if (option === 1) {
-       
+        // Enviar como audio
         await conn.sendMessage(m.chat, { 
-          audio: { url: audioUrl }, 
-          fileName: `${title}.mp3`, 
-          mimetype: 'audio/mpeg' 
+          audio: { url: downloadUrl }, 
+          fileName: fileName, 
+          mimetype: mimeType 
         }, { quoted: m });
       } else {
-       
+        // Enviar como documento
         await conn.sendMessage(m.chat, { 
-          document: { url: audioUrl },
-          mimetype: 'audio/mpeg',
-          fileName: `${title}.mp3`
+          document: { url: downloadUrl },
+          mimetype: mimeType,
+          fileName: fileName
         }, { quoted: m });
       }
     } else {
+      // Procesando video
+      downloadUrl = await getVideoUrl(url);
+      fileName = `${title.replace(/[^\w\s]/gi, '')}.mp4`;
+      mimeType = 'video/mp4';
       
-      const videoUrl = await getVideoUrl(url);
-      if (!videoUrl) {
-        throw new Error("No se pudo obtener el enlace de video.");
+      if (!downloadUrl) {
+        throw new Error("No se pudo obtener el enlace de video desde ninguna API.");
       }
-      
+
+      console.log(`Video URL obtenida: ${downloadUrl}`);
+
       if (option === 2) {
-      
+        // Enviar como video
         await conn.sendMessage(m.chat, { 
-          video: { url: videoUrl }, 
-          fileName: `${title}.mp4`, 
-          mimetype: 'video/mp4', 
-          caption: `${title}`
+          video: { url: downloadUrl }, 
+          fileName: fileName, 
+          mimetype: mimeType, 
+          caption: title
         }, { quoted: m });
       } else {
-     
+        // Enviar como documento
         await conn.sendMessage(m.chat, { 
-          document: { url: videoUrl },
-          mimetype: 'video/mp4',
-          fileName: `${title}.mp4`,
-          caption: `${title}`
+          document: { url: downloadUrl },
+          mimetype: mimeType,
+          fileName: fileName,
+          caption: title
         }, { quoted: m });
       }
     }
     
-    
+    // Deducir cebollines
     const user = global.db.data.users[m.sender];
     if (!user.cebollinesDeducted) {
       user.chocolates -= 2;
       user.cebollinesDeducted = true;
-      conn.reply(m.chat, `💙 Has utilizado 2 *Cebollines 🌱*`, m , rcanal);
+      conn.reply(m.chat, `💙 Has utilizado 2 *Cebollines 🌱*`, m);
     }
     
     return true;
   } catch (error) {
     console.error("Error al procesar descarga:", error);
-    conn.reply(m.chat, `💙 Error: ${error.message}`, m, rcanal);
+    conn.reply(m.chat, `💙 Error: ${error.message}`, m);
     return false;
   }
 }
 
-
+// Función mejorada para obtener URL de audio
 async function getAudioUrl(videoUrl) {
   const apis = [
-    `https://api.vreden.my.id/api/ytmp3?url=${videoUrl}`,
-    `https://api.botcahx.biz.id/api/dowloader/yt?url=${videoUrl}&apikey=Admin`,
-    `https://api.lolhuman.xyz/api/ytaudio?apikey=GataDios&url=${videoUrl}`
+    {
+      url: `https://api.agatz.xyz/api/ytmp3?url=${encodeURIComponent(videoUrl)}`,
+      parser: (data) => data?.data?.download
+    },
+    {
+      url: `https://api.vreden.my.id/api/ytmp3?url=${encodeURIComponent(videoUrl)}`,
+      parser: (data) => data?.result?.download?.url
+    },
+    {
+      url: `https://api.botcahx.biz.id/api/dowloader/yt?url=${encodeURIComponent(videoUrl)}&apikey=Admin`,
+      parser: (data) => data?.result?.mp3
+    },
+    {
+      url: `https://api.lolhuman.xyz/api/ytaudio?apikey=GataDios&url=${encodeURIComponent(videoUrl)}`,
+      parser: (data) => data?.result?.link || data?.result?.audio?.link
+    },
+    {
+      url: `https://api.ryzendesu.vip/api/downloader/ytmp3?url=${encodeURIComponent(videoUrl)}`,
+      parser: (data) => data?.url
+    }
   ];
   
   for (let i = 0; i < apis.length; i++) {
     try {
-      const apiResponse = await fetch(apis[i]);
-      const apiJson = await apiResponse.json();
+      console.log(`Probando API de audio ${i + 1}: ${apis[i].url}`);
       
-   
-      let audioUrl = null;
-      if (i === 0) {
-        audioUrl = apiJson.result?.download?.url;
-      } else if (i === 1) {
-        audioUrl = apiJson.result?.mp3;
-      } else {
-        audioUrl = apiJson.result?.link || apiJson.result?.audio?.link;
+      const response = await fetch(apis[i].url, {
+        method: 'GET',
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        },
+        timeout: 15000
+      });
+      
+      if (!response.ok) {
+        console.log(`API ${i + 1} responded with status: ${response.status}`);
+        continue;
       }
       
-      if (audioUrl) return audioUrl;
-    } catch (e) {
-      console.error(`API ${i+1} falló:`, e);
+      const apiJson = await response.json();
+      console.log(`API ${i + 1} response:`, JSON.stringify(apiJson, null, 2));
+      
+      const audioUrl = apis[i].parser(apiJson);
+      
+      if (audioUrl && isValidUrl(audioUrl)) {
+        console.log(`✓ API ${i + 1} devolvió URL válida: ${audioUrl}`);
+        return audioUrl;
+      } else {
+        console.log(`✗ API ${i + 1} no devolvió URL válida:`, audioUrl);
+      }
+      
+    } catch (error) {
+      console.error(`✗ API ${i + 1} falló:`, error.message);
     }
   }
   
+  console.log("Todas las APIs de audio fallaron");
   return null;
 }
 
-
+// Función mejorada para obtener URL de video
 async function getVideoUrl(videoUrl) {
   const apis = [
-    `https://api.vreden.my.id/api/ytmp4?url=${videoUrl}`,
-    `https://api.botcahx.biz.id/api/dowloader/yt?url=${videoUrl}&apikey=Admin`,
-    `https://api.lolhuman.xyz/api/ytvideo?apikey=GataDios&url=${videoUrl}`
+    {
+      url: `https://api.agatz.xyz/api/ytmp4?url=${encodeURIComponent(videoUrl)}`,
+      parser: (data) => data?.data?.download
+    },
+    {
+      url: `https://api.vreden.my.id/api/ytmp4?url=${encodeURIComponent(videoUrl)}`,
+      parser: (data) => data?.result?.download?.url
+    },
+    {
+      url: `https://api.botcahx.biz.id/api/dowloader/yt?url=${encodeURIComponent(videoUrl)}&apikey=Admin`,
+      parser: (data) => data?.result?.mp4
+    },
+    {
+      url: `https://api.lolhuman.xyz/api/ytvideo?apikey=GataDios&url=${encodeURIComponent(videoUrl)}`,
+      parser: (data) => data?.result?.link
+    },
+    {
+      url: `https://api.ryzendesu.vip/api/downloader/ytmp4?url=${encodeURIComponent(videoUrl)}`,
+      parser: (data) => data?.url
+    }
   ];
   
   for (let i = 0; i < apis.length; i++) {
     try {
-      const apiResponse = await fetch(apis[i]);
-      const apiJson = await apiResponse.json();
+      console.log(`Probando API de video ${i + 1}: ${apis[i].url}`);
       
-     
-      let url = null;
-      if (i === 0) {
-        url = apiJson.result?.download?.url;
-      } else if (i === 1) {
-        url = apiJson.result?.mp4;
-      } else {
-        url = apiJson.result?.link;
+      const response = await fetch(apis[i].url, {
+        method: 'GET',
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        },
+        timeout: 15000
+      });
+      
+      if (!response.ok) {
+        console.log(`API ${i + 1} responded with status: ${response.status}`);
+        continue;
       }
       
-      if (url) return url;
-    } catch (e) {
-      console.error(`API ${i+1} falló:`, e);
+      const apiJson = await response.json();
+      console.log(`API ${i + 1} response:`, JSON.stringify(apiJson, null, 2));
+      
+      const videoUrlResult = apis[i].parser(apiJson);
+      
+      if (videoUrlResult && isValidUrl(videoUrlResult)) {
+        console.log(`✓ API ${i + 1} devolvió URL válida: ${videoUrlResult}`);
+        return videoUrlResult;
+      } else {
+        console.log(`✗ API ${i + 1} no devolvió URL válida:`, videoUrlResult);
+      }
+      
+    } catch (error) {
+      console.error(`✗ API ${i + 1} falló:`, error.message);
     }
   }
   
+  console.log("Todas las APIs de video fallaron");
   return null;
 }
 
-
 handler.before = async (m, { conn }) => {
- 
   if (!/^[1-4]$/.test(m.text)) return false;
   
   const user = global.db.data.users[m.sender];
@@ -276,7 +346,6 @@ handler.before = async (m, { conn }) => {
   console.log(`Received option: ${m.text} from user ${m.sender}`);
   console.log(`User has active search: ${user.lastYTSearch.title}`);
   
- 
   const currentTime = Date.now();
   const searchTime = user.lastYTSearch.timestamp || 0;
   
@@ -285,15 +354,12 @@ handler.before = async (m, { conn }) => {
     return false; 
   }
   
- 
   const option = parseInt(m.text);
   if (isNaN(option) || option < 1 || option > 4) return false;
   
   console.log(`Processing option ${option} for ${user.lastYTSearch.title}`);
-  
 
   user.cebollinesDeducted = false;
-  
 
   await processDownload(
     conn, 
@@ -302,13 +368,11 @@ handler.before = async (m, { conn }) => {
     user.lastYTSearch.title, 
     option
   );
-  
 
   user.lastYTSearch = null;
   
   return true;
 };
-
 
 function formatViews(views) {
   if (views === undefined) {
@@ -328,7 +392,6 @@ function formatViews(views) {
     return String(views);
   }
 }
-
 
 handler.command = handler.help = ['play'];
 handler.tags = ['downloader'];
