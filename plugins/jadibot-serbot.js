@@ -39,13 +39,13 @@ let handler = async (m, { conn, args, usedPrefix, command, isOwner }) => {
         return m.reply(`💎 El comando *${command}* está temporalmente deshabilitado por Miku.`, m, rcanal)
     }
     
-
+    
     let time = global.db.data.users[m.sender].Subs + 120000
     if (new Date - global.db.data.users[m.sender].Subs < 120000) {
         return conn.reply(m.chat, `🎤 Debes esperar ${msToTime(time - new Date())} para volver a vincular un *Sub-Bot* con Miku.`, m, rcanal)
     }
     
-  
+    
     const subBots = [...new Set([...global.conns.filter((conn) => conn.user && conn.ws.socket && conn.ws.socket.readyState !== ws.CLOSED).map((conn) => conn)])]
     const subBotsCount = subBots.length
     if (subBotsCount >= 20) {
@@ -57,12 +57,12 @@ let handler = async (m, { conn, args, usedPrefix, command, isOwner }) => {
     let id = `${who.split`@`[0]}`
     let pathMikuJadiBot = path.join(`./${jadi}/`, id)
     
-  
+    
     if (!fs.existsSync(pathMikuJadiBot)){
         fs.mkdirSync(pathMikuJadiBot, { recursive: true })
     }
     
-    
+   
     mikuJBOptions.pathMikuJadiBot = pathMikuJadiBot
     mikuJBOptions.m = m
     mikuJBOptions.conn = conn
@@ -83,11 +83,12 @@ export default handler
 export async function mikuJadiBot(options) {
     let { pathMikuJadiBot, m, conn, args, usedPrefix, command } = options
     
- 
+  
     if (command === 'code') {
         command = 'qr'; 
         args.unshift('code')
     }
+    
     
     const mcode = args[0] && /(--code|code)/.test(args[0].trim()) ? true : args[1] && /(--code|code)/.test(args[1].trim()) ? true : false
     let txtCode, codeBot, txtQR
@@ -98,13 +99,13 @@ export async function mikuJadiBot(options) {
         if (args[0] == "") args[0] = undefined
     }
     
-    
+   
     const pathCreds = path.join(pathMikuJadiBot, "creds.json")
     if (!fs.existsSync(pathMikuJadiBot)){
         fs.mkdirSync(pathMikuJadiBot, { recursive: true })
     }
     
-    
+
     try {
         args[0] && args[0] != undefined ? fs.writeFileSync(pathCreds, JSON.stringify(JSON.parse(Buffer.from(args[0], "base64").toString("utf-8")), null, '\t')) : ""
     } catch {
@@ -142,7 +143,7 @@ export async function mikuJadiBot(options) {
             const { connection, lastDisconnect, isNewLogin, qr } = update
             if (isNewLogin) sock.isInit = false
             
-           
+            
             if (qr && !mcode) {
                 if (m?.chat) {
                     txtQR = await conn.sendMessage(m.chat, { 
@@ -162,17 +163,27 @@ export async function mikuJadiBot(options) {
             if (qr && mcode) {
                 let secret = await sock.requestPairingCode((m.sender.split`@`[0]))
                 secret = secret.match(/.{1,4}/g)?.join("-")
+                
+                
                 txtCode = await conn.sendMessage(m.chat, {text : rtx2}, { quoted: m })
-                codeBot = await m.reply(` ${secret}`)
+                
+                
+                await delay(1000)
+                
+                
+                codeBot = await conn.sendMessage(m.chat, {
+                    text: `🎵 *Código de Miku:*\n\n\`\`\`${secret}\`\`\`\n\n💎 Copia este código para conectarte`
+                }, { quoted: m })
+                
                 console.log(chalk.cyan(`🎵 Código de emparejamiento Miku: ${secret}`))
             }
             
             
             if (txtCode && txtCode.key) {
-                setTimeout(() => { conn.sendMessage(m.sender, { delete: txtCode.key })}, 30000)
+                setTimeout(() => { conn.sendMessage(m.sender, { delete: txtCode.key })}, 45000)
             }
             if (codeBot && codeBot.key) {
-                setTimeout(() => { conn.sendMessage(m.sender, { delete: codeBot.key })}, 30000)
+                setTimeout(() => { conn.sendMessage(m.sender, { delete: codeBot.key })}, 60000) // 1 minuto para el código
             }
 
             
@@ -199,7 +210,7 @@ export async function mikuJadiBot(options) {
                     await creloadHandler(true).catch(console.error)
                 }
                 
-               
+                
                 if (reason === 408) {
                     console.log(chalk.bold.cyan(`\n🎵═══════════════════════════════════════🎵\n│ Conexión con Miku perdida (+${path.basename(pathMikuJadiBot)})\n│ ♪ Razón: ${reason} - Reconectando... ♪\n🎵═══════════════════════════════════════🎵`))
                     await creloadHandler(true).catch(console.error)
@@ -219,7 +230,7 @@ export async function mikuJadiBot(options) {
                     }
                 }
                 
-                
+               
                 if (reason == 405 || reason == 401) {
                     console.log(chalk.bold.red(`\n🎼═══════════════════════════════════════🎼\n│ Sesión de Miku cerrada (+${path.basename(pathMikuJadiBot)})\n│ ♪ Credenciales inválidas o desconexión manual ♪\n🎼═══════════════════════════════════════🎼`))
                     try {
@@ -234,7 +245,7 @@ export async function mikuJadiBot(options) {
                     fs.rmSync(pathMikuJadiBot, { recursive: true, force: true })
                 }
                 
-              
+                
                 if (reason === 500) {
                     console.log(chalk.bold.red(`\n🎶═══════════════════════════════════════🎶\n│ Conexión perdida con Miku (+${path.basename(pathMikuJadiBot)})\n│ ♪ Limpiando datos del concierto... ♪\n🎶═══════════════════════════════════════🎶`))
                     if (options.fromCommand) {
@@ -294,7 +305,7 @@ export async function mikuJadiBot(options) {
             }
         }, 60000)
 
-       
+        
         let handler = await import('../handler.js')
         let creloadHandler = async function (restatConn) {
             try {
