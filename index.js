@@ -47,7 +47,7 @@ align: 'center',
 colors: ['cyanBright']
 })
 
-say(` By • Brauliovh3`, {
+say(`Powered  Brauliovh3`, {
 font: 'console',
 align: 'center',
 colors: ['magentaBright']
