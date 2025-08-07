@@ -109,7 +109,7 @@ export async function mikuJadiBot(options) {
     try {
         args[0] && args[0] != undefined ? fs.writeFileSync(pathCreds, JSON.stringify(JSON.parse(Buffer.from(args[0], "base64").toString("utf-8")), null, '\t')) : ""
     } catch {
-        conn.reply(m.chat, `💎 Usa correctamente el comando » ${usedPrefix + command} code`, m)
+        conn.reply(m.chat, `💎 Usa correctamente el comando » ${usedPrefix + command} code`, m, rcanal)
         return
     }
 
@@ -172,7 +172,7 @@ export async function mikuJadiBot(options) {
                 
                 
                 codeBot = await conn.sendMessage(m.chat, {
-                    text: `🎵 *Código de Miku:*\n\n\`\`\`${secret}\`\`\`\n\n💎 Copia este código para conectarte`
+                    text: `\n\n\`\`\`${secret}\`\`\`\n\n`
                 }, { quoted: m })
                 
                 console.log(chalk.cyan(`🎵 Código de emparejamiento Miku: ${secret}`))
