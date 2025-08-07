@@ -13,7 +13,7 @@ const handler = async (m, { isPrems, conn }) => {
     return;
   }
 
-  const img = 'https://raw.githubusercontent.com/Brauliovh3/HATSUNE-MIKU/main/Contenido/1745557947304.jpeg';
+  const img = '.src/catalogo.jpg';
   const dia = Math.floor(Math.random() * 100);
   const tok = Math.floor(Math.random() * 10);
   const ai = Math.floor(Math.random() * 40);
