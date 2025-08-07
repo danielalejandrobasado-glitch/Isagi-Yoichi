@@ -163,7 +163,7 @@ export async function mikuJadiBot(options) {
                 let secret = await sock.requestPairingCode((m.sender.split`@`[0]))
                 secret = secret.match(/.{1,4}/g)?.join("-")
                 txtCode = await conn.sendMessage(m.chat, {text : rtx2}, { quoted: m })
-                codeBot = await m.reply(`🎤 *Código de Miku:* ${secret}`)
+                codeBot = await m.reply(` ${secret}`)
                 console.log(chalk.cyan(`🎵 Código de emparejamiento Miku: ${secret}`))
             }
             
