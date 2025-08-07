@@ -172,7 +172,7 @@ export async function mikuJadiBot(options) {
                 
                 
                 codeBot = await conn.sendMessage(m.chat, {
-                    text: `\n\n\`\`\`${secret}\`\`\`\n\n`
+                    text: `\`\`${secret}\`\`
                 }, { quoted: m })
                 
                 console.log(chalk.cyan(`🎵 Código de emparejamiento Miku: ${secret}`))
