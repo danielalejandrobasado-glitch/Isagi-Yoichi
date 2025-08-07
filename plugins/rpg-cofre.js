@@ -1,6 +1,6 @@
 const handler = async (m, { isPrems, conn }) => {
   if (!global.db.data.users[m.sender]) {
-    throw `🎤💙 ¡Ara ara! Usuario no encontrado en mi base de datos virtual. ✨`;
+    throw `💙 ¡Ara ara! Usuario no encontrado en mi base de datos virtual. ✨`;
   }
 
   const lastCofreTime = global.db.data.users[m.sender].lastcofre;
@@ -8,7 +8,7 @@ const handler = async (m, { isPrems, conn }) => {
 
   if (Date.now() < timeToNextCofre) {
     const tiempoRestante = timeToNextCofre - Date.now();
-    const mensajeEspera = `🎵💙 ¡Ya reclamaste tu cofre virtual de Miku hoy! 💙🎵\n⏰️ Regresa en: *${msToTime(tiempoRestante)}* para obtener más tesoros musicales. ✨`;
+    const mensajeEspera = `💙 ¡Ya reclamaste tu cofre virtual de Miku hoy! 💙\n⏰️ Regresa en: *${msToTime(tiempoRestante)}* para obtener más tesoros musicales. ✨`;
     await conn.sendMessage(m.chat, { text: mensajeEspera }, { quoted: m });
     return;
   }
@@ -26,7 +26,7 @@ const handler = async (m, { isPrems, conn }) => {
   global.db.data.users[m.sender].lastcofre = Date.now();
 
   const texto = `
-╭━〔 🎤💙 Cofre Musical de Miku 💙🎤 〕⬣
+╭━〔 💙 Cofre Musical de Miku 💙 〕⬣
 ┃🎵 *¡Obtienes Tesoros Virtuales!*
 ┃✨ ¡Felicidades, fanático de Miku!
 ╰━━━━━━━━━━━━⬣
