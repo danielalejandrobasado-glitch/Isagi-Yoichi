@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const handler = async (m, { command, conn, usedPrefix }) => {
   
-  if (!db.data.chats[m.chat].nsfw && m.isGroup) return m.reply('💙 *¡Estos comandos están desactivados!*');
+  if (!db.data.chats[m.chat].nsfw && m.isGroup) return m.reply('💙 *¡Estos comandos están desactivados!*', m, rcanal);
 
   const comandos = ['nsfwloli', 'nsfwfoot', 'nsfwass', 'nsfwbdsm', 'nsfwcum', 'nsfwero', 'nsfwfemdom', 'nsfwfoot', 'nsfwglass', 'nsfworgy', 'yuri', 'yaoi', 'panties', 'tetas', 'booty', 'ecchi', 'furro', 'hentai', 'trapito', 'imagenlesbians', 'pene', 'porno', 'randomxxx', 'pechos'];
 
