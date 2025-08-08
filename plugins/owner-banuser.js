@@ -9,7 +9,7 @@ var handler = async (m, { conn, text, usedPrefix, command }) => {
         number = isNaN(text) ? text.split`@`[1] : text
         user = conn.user.jid.split`@`[0] + '@s.whatsapp.net'
         bot = conn.user.jid.split`@`[0]
-        bant = `💙 Por favor, etiqueta o escrive el número del usuario al que quieres banear del Bot.`
+        bant = `💙 Por favor, etiqueta o escribe el número del usuario al que quieres banear del Bot.`
         const nn = conn.getName(m.sender)
         if (!text && !m.quoted) return conn.reply(m.chat, bant, m, { mentions: [user] })
         
