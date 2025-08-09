@@ -9,7 +9,7 @@ const handler = async (m, { conn, text, participants, args, usedPrefix, command 
 
         // Verificar que se haya proporcionado un número
         if (!text || !args[0]) {
-            return m.reply(`💙 *Uso correcto:*\n${usedPrefix + command} <número>\n\n*Ejemplos:*\n• ${usedPrefix + command} 1234567890\n• ${usedPrefix + command} +1234567890\n• ${usedPrefix + command} 521234567890`)
+            return m.reply(`💙 *Uso correcto:*\n${usedPrefix + command} <numero>\n\n*Ejemplos:*\n• ${usedPrefix + command} 1234567890\n• ${usedPrefix + command} +1234567890\n• ${usedPrefix + command} 521234567890`)
         }
 
         // Limpiar el número (remover espacios, guiones, paréntesis, etc.)
@@ -21,14 +21,14 @@ const handler = async (m, { conn, text, participants, args, usedPrefix, command 
             phoneNumber = '52' + phoneNumber
         }
 
-        // Crear el LID
+        // Crear el JID
         const targetJid = phoneNumber + '@s.whatsapp.net'
 
         // Buscar el usuario en los participantes del grupo
         const participant = participants.find(p => areJidsSameUser(p.id, targetJid))
 
         if (!participant) {
-            return m.reply(`💙 *El número ${phoneNumber} no se encuentra en este grupo*\n\n*LID buscado:* ${phoneNumber}`)
+            return m.reply(`💙 *El numero ${phoneNumber} no se encuentra en este grupo*\n\n*LID buscado:* ${phoneNumber}`)
         }
 
         // Obtener información adicional del participante
@@ -55,12 +55,12 @@ const handler = async (m, { conn, text, participants, args, usedPrefix, command 
         // Extraer solo el número (LID) del JID completo
         const numberOnly = targetJid.split('@')[0]
 
-        const response = `🔍 *INFORMACIÓN DEL USUARIO*
+        const response = `🔍 *INFORMACION DEL USUARIO*
 
-📱 *Número:* +${phoneNumber}
+📱 *Numero:* +${phoneNumber}
 🆔 *JID completo:* \`${targetJid}\`
-� *LID:* \`${numberOnly}\`
-�👤 *Nombre:* ${userName}
+🔢 *LID:* \`${numberOnly}\`
+👤 *Nombre:* ${userName}
 🏷️ *Estado:* ${adminStatus}
 📅 *En grupo desde:* ${participant.joined ? new Date(participant.joined * 1000).toLocaleDateString() : 'Fecha desconocida'}
 
@@ -79,7 +79,7 @@ const handler = async (m, { conn, text, participants, args, usedPrefix, command 
     } catch (error) {
         console.error('Error en getlid:', error)
         await m.react('❌')
-        return m.reply(`💙 *Error al obtener información:*\n${error.message}`)
+        return m.reply(`💙 *Error al obtener informacion:*\n${error.message}`)
     }
 }
 
