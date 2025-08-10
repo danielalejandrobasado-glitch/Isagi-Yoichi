@@ -23,24 +23,24 @@ let handler = async (m, { conn, args }) => {
     let coins = user.coin || 0;
     let bankCoins = user.bank || 0;
 
-    let perfil = await conn.profilePictureUrl(userId, 'image').catch(_ => 'https://raw.githubusercontent.com/Brauliovh3/HATSUNE-MIKU/main/Contenido/1745522645448.jpeg');
+    let perfil = await conn.profilePictureUrl(userId, 'image').catch(_ => 'https://litter.catbox.moe/0ofg8jatvdrj2vry.jpg');
 
     let profileText = `
-「✿」 *Perfil* ◢@${userId.split('@')[0]}◤
+💙 *Perfil* ◢@${userId.split('@')[0]}◤
 ${description}
 
-✦ Edad » ${user.age || 'Desconocida'}
-♛ *Cumpleaños* » ${cumpleanos}
-⚥ *Género* » ${genero}
-♡ *Casado con* » ${pareja}
+🐱‍🏍 Edad » ${user.age || 'Desconocida'}
+🎉 *Cumpleaños* » ${cumpleanos}
+🚻 *Género* » ${genero}
+💍 *Casado con* » ${pareja}
 
-☆ *Experiencia* » ${exp.toLocaleString()}
-❖ *Nivel* » ${nivel}
-✎ Rango » ${role}
+💫 *Experiencia* » ${exp.toLocaleString()}
+📈 *Nivel* » ${nivel}
+🔌 Rango » ${role}
 
-⛁ *Coins Cartera* » ${coins.toLocaleString()} ${moneda}
-⛃ *Coins Banco* » ${bankCoins.toLocaleString()} ${moneda}
-❁ *Premium* » ${user.premium ? '✅' : '❌'}
+💎 *Coins Cartera* » ${coins.toLocaleString()} ${moneda}
+🎫 *Coins Banco* » ${bankCoins.toLocaleString()} ${moneda}
+🔰 *Premium* » ${user.premium ? '✅' : '❌'}
   `.trim();
 
     await conn.sendMessage(m.chat, { 
