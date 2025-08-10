@@ -14,6 +14,11 @@ import lodash from 'lodash'
 import { mikuJadiBot } from './plugins/jadibot-serbot.js'
 import chalk from 'chalk'
 import syntaxerror from 'syntax-error'
+
+
+
+let musicProcess = null
+let musicStarted = false
 import {tmpdir} from 'os'
 import {format} from 'util'
 import boxen from 'boxen'
@@ -41,13 +46,55 @@ let { say } = cfonts
 
 console.log(chalk.bold.redBright(`\n💙 Iniciando Hatsune Miku 💙\n`))
 
+
+const MUSICA_URL = 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav' 
+const MUSICA_DURACION = 20 
+
+
+function playStartupMusic() {
+  if (musicStarted) return
+  
+  try {
+    console.log(chalk.bold.cyan(`🎵 Reproduciendo música...`))
+    
+    if (process.platform === 'win32') {
+     
+      const psCommand = `Add-Type -AssemblyName presentationCore; $p = New-Object system.windows.media.mediaplayer; $p.open([uri]'${MUSICA_URL}'); $p.Play(); Start-Sleep ${MUSICA_DURACION}; $p.Stop()`
+      musicProcess = spawn('powershell', ['-Command', psCommand], { stdio: 'pipe', windowsHide: true })
+    } else {
+    
+      musicProcess = spawn('bash', ['-c', `timeout ${MUSICA_DURACION}s ffplay -nodisp -autoexit -v quiet "${MUSICA_URL}" 2>/dev/null || curl -s "${MUSICA_URL}" | head -c 500000`], { stdio: 'pipe' })
+    }
+    
+    musicStarted = true
+    console.log(chalk.green('🎶 Música iniciada'))
+    
+  } catch (error) {
+    console.log(chalk.yellow('⚠️ Música no disponible'))
+  }
+}
+
+
+function stopStartupMusic() {
+  if (musicProcess && !musicProcess.killed) {
+    try {
+      musicProcess.kill()
+      console.log(chalk.gray('🎵 Música detenida'))
+    } catch {}
+  }
+  musicStarted = false
+}
+
+
+playStartupMusic()
+
 say('Hatsune\nMiku', {
 font: 'block',
 align: 'center',
 colors: ['cyanBright']
 })
 
-say(`Powered  Brauliovh3`, {
+say(` By • Brauliovh3`, {
 font: 'console',
 align: 'center',
 colors: ['magentaBright']
@@ -207,6 +254,8 @@ console.log(chalk.bold.yellow(`\n❐ ESCANEA EL CÓDIGO QR DE MIKU - EXPIRA EN 4
 }
 if (connection == 'open') {
 console.log(chalk.bold.green('\n💙 Hatsune Miku Conectada con éxito 💙'))
+// Detener música de inicio cuando se conecta
+stopStartupMusic()
 }
 let reason = new Boom(lastDisconnect?.error)?.output?.statusCode
 if (connection === 'close') {
@@ -234,6 +283,19 @@ console.log(chalk.bold.redBright(`\n⚠︎！ RAZON DE DESCONEXIÓN DESCONOCIDA:
 }}
 }
 process.on('uncaughtException', console.error)
+
+
+process.on('SIGINT', () => {
+  console.log(chalk.bold.yellow('\n🔌 Cerrando Hatsune Miku Bot...'))
+  stopStartupMusic()
+  process.exit(0)
+})
+
+process.on('SIGTERM', () => {
+  console.log(chalk.bold.yellow('\n🔌 Cerrando Hatsune Miku Bot...'))
+  stopStartupMusic()
+  process.exit(0)
+})
 
 let isInit = true;
 let handler = await import('./handler.js')
