@@ -1,5 +1,5 @@
 
-const MUSICA_URL = 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav'
+const MUSICA_URL = 'https://litter.catbox.moe/ae5f27n13of6sbtb.mp3'
 
 console.log('🎵 SISTEMA DE MÚSICA SIMPLIFICADO')
 console.log('📁 Solo necesitas cambiar una línea:')
@@ -12,3 +12,4 @@ console.log('3. Cambia la URL por tu música')
 console.log('4. Guarda y reinicia el bot')
 console.log('')
 console.log('🎯 Configuración completada!')
+
