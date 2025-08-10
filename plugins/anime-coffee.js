@@ -1,6 +1,6 @@
 /* 
 🎤💙 Codígo creado por Brauliovh3
-✧ https://github.com/Brauliovh3/HATSUNE-MIKU.git 
+https://github.com/Brauliovh3/HATSUNE-MIKU.git 
 */
 
 import fs from 'fs'
@@ -16,23 +16,17 @@ let handler = async (m, { conn, usedPrefix }) => {
         : `\`${name2}\` está tomando café en el mundo virtual ٩(●ᴗ●)۶ ☕✨`
     
     if (m.isGroup) {
-        let pp = 'https://raw.githubusercontent.com/Brauliovh3/HATSUNE-MIKU/main/Contenido/1742852595681.mp4'
-        let pp2 = 'https://raw.githubusercontent.com/Brauliovh3/HATSUNE-MIKU/main/Contenido/1742852590440.mp4'
-        let pp3 = 'https://raw.githubusercontent.com/Brauliovh3/HATSUNE-MIKU/main/Contenido/1742852622256.mp4'
-        let pp4 = 'https://raw.githubusercontent.com/Brauliovh3/HATSUNE-MIKU/main/Contenido/1742852615392.mp4'
-        let pp5 = 'https://raw.githubusercontent.com/Brauliovh3/HATSUNE-MIKU/main/Contenido/1742852609687.mp4'
-        let pp6 = 'https://raw.githubusercontent.com/Brauliovh3/HATSUNE-MIKU/main/Contenido/1742852604742.mp4'
-        let pp7 = 'https://raw.githubusercontent.com/Brauliovh3/HATSUNE-MIKU/main/Contenido/1742852600708.mp4'
-        let pp8 = 'https://raw.githubusercontent.com/Brauliovh3/HATSUNE-MIKU/main/Contenido/1742852648100.mp4'
-        let pp9 = 'https://raw.githubusercontent.com/Brauliovh3/HATSUNE-MIKU/main/Contenido/1742852643540.mp4'
-        let pp10 = 'https://raw.githubusercontent.com/Brauliovh3/HATSUNE-MIKU/main/Contenido/1742852637625.mp4'
-        let pp11 = 'https://raw.githubusercontent.com/Brauliovh3/HATSUNE-MIKU/main/Contenido/1742852632237.mp4'
-        let pp12 = 'https://raw.githubusercontent.com/Brauliovh3/HATSUNE-MIKU/main/Contenido/1742852626590.mp4'
-        let pp13 = 'https://raw.githubusercontent.com/Brauliovh3/HATSUNE-MIKU/main/Contenido/1745601869632.mp4'
-        let pp14 = 'https://raw.githubusercontent.com/Brauliovh3/HATSUNE-MIKU/main/Contenido/1745601874216.mp4'
-        let pp15 = 'https://raw.githubusercontent.com/Brauliovh3/HATSUNE-MIKU/main/Contenido/1745601878415.mp4'
+        let pp = 'https://files.catbox.moe/xdr9dh.mp4'
+        let pp2 = 'https://files.catbox.moe/3bi7xt.mp4'
+        let pp3 = 'https://files.catbox.moe/0u730a.mp4'
+        let pp4 = 'https://files.catbox.moe/4vp1i7.mp4'
+        let pp5 = 'https://files.catbox.moe/sqm5yl.mp4'
+        let pp6 = 'https://files.catbox.moe/gxwq8a.mp4'
+        let pp7 = 'https://files.catbox.moe/w1m9y9.mp4'
+        let pp8 = 'https://files.catbox.moe/z1ory3.mp4'
+       
         
-        const videos = [pp, pp2, pp3, pp4, pp5, pp6, pp7, pp8, pp9, pp10, pp11, pp12, pp13, pp14, pp15]
+        const videos = [pp, pp2, pp3, pp4, pp5, pp6, pp7, pp8]
         const video = videos[Math.floor(Math.random() * videos.length)]
         
         conn.sendMessage(m.chat, { video: { url: video }, gifPlayback: true, caption: str, ptt: true, mentions: [who] }, { quoted: m })
