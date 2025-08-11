@@ -35,10 +35,11 @@ function isHATSUNE_MIKU() {
 let marriages = loadMarriages();
 
 let handler = async (m, { conn, command, usedPrefix, args }) => {
-    if (!isHATSUNE_MIKU()) {
-        await m.reply('💙 Comando no disponible por el momento. Espera a Miku~');
-        return;
-    }
+    // Comentamos la verificación para que el comando funcione
+    // if (!isHATSUNE_MIKU()) {
+    //     await m.reply('💙 Comando no disponible por el momento. Espera a Miku~');
+    //     return;
+    // }
 
     const isMarry = /^(marry)$/i.test(command);
     const isDivorce = /^(divorce)$/i.test(command);
