@@ -18,13 +18,13 @@ let handler = async (m, { conn, usedPrefix }) => {
     
     if (m.isGroup) {
         let pp = 'https://files.catbox.moe/9fmjzk.mp4'
-        let pp2 = 'https://tenor.com/es-419/view/anime-gif-25126004'
-        let pp3 = 'https://tenor.com/es-419/view/anime-angry-anime-acomu414-shupogaki-tachibana-nozomi-gif-5692302699521259097'
+        let pp2 = 'https://litter.catbox.moe/2zkou4u399196qwm.mp4'
+        let pp3 = 'https://litter.catbox.moe/88kat648a7baqkj2.mp4'
         let pp4 = 'https://files.catbox.moe/kg3fti.mp4'
         let pp5 = 'https://files.catbox.moe/vpb0rg.mp4'
         let pp6 = 'https://files.catbox.moe/7eltxa.mp4'
-        let pp7 = 'https://tenor.com/es-419/view/cute-anime-angry-gif-23459377'
-        let pp8 = 'https://tenor.com/es-419/view/akemi-homura-anime-girl-glasses-happy-gif-18350357010296982258'
+        let pp7 = 'https://litter.catbox.moe/gcoa1d2ztc3y3ap9.mp4'
+        let pp8 = 'https://litter.catbox.moe/vcj8gb5c1ptcwjyl.mp4'
         
         const videos = [pp, pp2, pp3, pp4, pp5, pp6, pp7, pp8]
         const video = videos[Math.floor(Math.random() * videos.length)]
@@ -39,5 +39,7 @@ handler.command = ['angry', 'enojado','molesto', 'enojada', 'molesta']
 handler.group = true
 
 export default handler
+
+
 
 
