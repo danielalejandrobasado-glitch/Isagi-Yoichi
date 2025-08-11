@@ -1,9 +1,28 @@
 const handler = async (m, { isPrems, conn }) => {
+  
+  if (!global.db) {
+    global.db = { data: { users: {} } };
+  }
+  if (!global.db.data) {
+    global.db.data = { users: {} };
+  }
+  if (!global.db.data.users) {
+    global.db.data.users = {};
+  }
+  
+  
   if (!global.db.data.users[m.sender]) {
-    throw `💙 ¡Ara ara! Usuario no encontrado en mi base de datos virtual. ✨`;
+    global.db.data.users[m.sender] = {
+      coin: 0,
+      diamonds: 0,
+      joincount: 0,
+      exp: 0,
+      lastcofre: 0
+    };
   }
 
-  const lastCofreTime = global.db.data.users[m.sender].lastcofre;
+  const user = global.db.data.users[m.sender];
+  const lastCofreTime = user.lastcofre || 0;
   const timeToNextCofre = lastCofreTime + 86400000;
 
   if (Date.now() < timeToNextCofre) {
@@ -13,17 +32,18 @@ const handler = async (m, { isPrems, conn }) => {
     return;
   }
 
-  const img = '.src/catalogo.jpg';
+  const img = './src/catalogo.jpg';
   const dia = Math.floor(Math.random() * 100);
   const tok = Math.floor(Math.random() * 10);
   const ai = Math.floor(Math.random() * 40);
   const expp = Math.floor(Math.random() * 5000);
 
-  global.db.data.users[m.sender].coin += dia;
-  global.db.data.users[m.sender].diamonds += ai;
-  global.db.data.users[m.sender].joincount += tok;
-  global.db.data.users[m.sender].exp += expp;
-  global.db.data.users[m.sender].lastcofre = Date.now();
+
+  user.coin = (user.coin || 0) + dia;
+  user.diamonds = (user.diamonds || 0) + ai;
+  user.joincount = (user.joincount || 0) + tok;
+  user.exp = (user.exp || 0) + expp;
+  user.lastcofre = Date.now();
 
   const texto = `
 ╭━〔 💙 Cofre Musical de Miku 💙 〕⬣
@@ -32,16 +52,17 @@ const handler = async (m, { isPrems, conn }) => {
 ╰━━━━━━━━━━━━⬣
 
 ╭━〔 🎶 Nuevos Recursos Musicales 🎶 〕⬣
-┃ *${dia} ${moneda}* 🎤
+┃ *${dia} Monedas* 🎤
 ┃ *${tok} Tokens Virtuales* ⚜️
 ┃ *${ai} Cristales de Sonido* 💎
 ┃ *${expp} Experiencia Musical* ✨
 ╰━━━━━━━━━━━━⬣`;
 
   try {
-    await conn.sendFile(m.chat, img, 'yuki.jpg', texto, fkontak);
+    await conn.sendMessage(m.chat, { text: texto }, { quoted: m });
   } catch (error) {
-    throw `${msm} Ocurrió un error al enviar el cofre.`;
+    console.error('💙 Error al enviar el cofre:', error);
+    await conn.reply(m.chat, '💙 Ocurrió un error al enviar el cofre, pero tus recompensas fueron guardadas.', m, rcanal);
   }
 };
 
