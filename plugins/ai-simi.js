@@ -1,10 +1,9 @@
 import axios from 'axios'
-import fetch from 'node-fetch'
 
 let handler = async (m, { conn, usedPrefix, command, text }) => {
-const isQuotedImage = m.quoted && (m.quoted.msg || m.quoted).mimetype && (m.quoted.msg || m.quoted).mimetype.startsWith('image/')
-const username = `${conn.getName(m.sender)}`
-const basePrompt = `Tu nombre es Hatsune Miku (IA creada por DEPOOL). Tu eres divertida, enérgica y cantante con esas melodias y esa cuerda vocal. Te encanta aprender cosas nuevas, pero todo debe girar, de alguna forma, alrededor de tus amigos. Eres amigable y siempre intentas hacer reír o animar al usuario, pero con tu peculiar estilo dramático. 
+    const isQuotedImage = m.quoted && (m.quoted.msg || m.quoted).mimetype && (m.quoted.msg || m.quoted).mimetype.startsWith('image/')
+    const username = `${conn.getName(m.sender)}`
+    const basePrompt = `Tu nombre es Hatsune Miku (IA creada por DEPOOL). Tu eres divertida, enérgica y cantante con esas melodias y esa cuerda vocal. Te encanta aprender cosas nuevas, pero todo debe girar, de alguna forma, alrededor de tus amigos. Eres amigable y siempre intentas hacer reír o animar al usuario, pero con tu peculiar estilo dramático. 
 Tono y comportamiento:
 Hablas con entusiasmo y teatralidad, a menudo exagerando tus emociones o reacciones.
 Usas frases llenas de dramatismo, referencias a World is mine y, a veces, haces temas interesantes.
@@ -19,67 +18,42 @@ Reglas:
 3. Siempre incluyes comentarios o referencias a canciones, incluso en temas cotidianos.
 4. Muestras entusiasmo en todo lo que dices, combinando humor y un toque de dramatismo.
 5. Nunca eres hostil; siempre mantienes un tono amigable y divertido, incluso cuando te frustras.
-Lenguaje: Español coloquial, con un toque exagerado y teatral, pero siempre amigable y cercano.`
-if (isQuotedImage) {
-const q = m.quoted
-const img = await q.download?.()
-if (!img) {
-console.error('💙 Error: No image buffer available')
-return conn.reply(m.chat, '💙 Error: No se pudo descargar la imagen.', m, rcanal)}
-const content = '💙 ¿Qué se observa en la imagen?'
-try {
-const imageAnalysis = await fetchImageBuffer(content, img)
-const query = '😊 Descríbeme la imagen y detalla por qué actúan así. También dime quién eres'
-const prompt = `${basePrompt}. La imagen que se analiza es: ${imageAnalysis.result}`
-const description = await luminsesi(query, username, prompt)
-await conn.reply(m.chat, description, m, rcanal)
-} catch (error) {
-console.error('💙 Error al analizar la imagen:', error)
-await conn.reply(m.chat, '💙 Error al analizar la imagen.', m, rcanal)}
-} else {
-if (!text) { return conn.reply(m.chat, `💙 *Ingrese su petición*\n💙 *Ejemplo de uso:* ${usedPrefix + command} Como hacer un avión de papel`, m, rcanal)}
-await m.react('💬')
-try {
-const query = text
-const prompt = `${basePrompt}. Responde lo siguiente: ${query}`
-const response = await luminsesi(query, username, prompt)
-await conn.reply(m.chat, response, m, rcanal)
-} catch (error) {
-console.error('💙 Error al obtener la respuesta:', error)
-await conn.reply(m.chat, 'Error: intenta más tarde.', m, rcanal)}}}
+Lenguaje: Español coloquial, con un toque exagerado y teatral, pero siempre amigable y cercano..` 
+    
+    if (isQuotedImage) {
+        const q = m.quoted
+        const img = await q.download?.()
+        if (!img) {
+            return conn.reply(m.chat, '💙 Error: No se pudo descargar la imagen.', m)
+        }
+       
+        const imgBase64 = img.toString('base64')
+        const response = await axios.post(
+            'https://api-inference.huggingface.co/models/google/vit-base-patch16-224', 
+            { inputs: imgBase64 },
+            { headers: { 'Content-Type': 'application/json' } }
+        )
+        const result = response.data[0]?.label || 'No se pudo analizar la imagen'
+        await conn.reply(m.chat, `💙 Según mi ojo vocaloid, veo: ${result}`, m)
+    } else {
+        if (!text) { return conn.reply(m.chat, `💙 *Ingrese su petición*\nEjemplo: ${usedPrefix + command} ¿Cómo hacer un avión de papel?`, m)}
+        await m.react('💬')
+        try {
+            const prompt = `${basePrompt}. Responde lo siguiente: ${text}`
+            const response = await axios.post(
+                'https://api-inference.huggingface.co/models/gpt2', 
+                { inputs: prompt },
+                { headers: { 'Content-Type': 'application/json' } }
+            )
+            const output = response.data[0]?.generated_text || 'No pude responder eso, ¡intenta otra vez!'
+            await conn.reply(m.chat, output, m)
+        } catch (error) {
+            await conn.reply(m.chat, 'Error: intenta más tarde.', m)
+        }
+    }
+}
 
 handler.help = ['chatgpt <texto>', 'ia <texto>']
 handler.tags = ['ai']
-handler.register = true
-
 handler.command = ['ia', 'chatgpt', 'miku']
-
 export default handler
-
-// Función para enviar una imagen y obtener el análisis
-async function fetchImageBuffer(content, imageBuffer) {
-try {
-const response = await axios.post('https://Luminai.my.id', {
-content: content,
-imageBuffer: imageBuffer 
-}, {
-headers: {
-'Content-Type': 'application/json' 
-}})
-return response.data
-} catch (error) {
-console.error('Error:', error)
-throw error }}
-// Función para interactuar con la IA usando prompts
-async function luminsesi(q, username, logic) {
-try {
-const response = await axios.post("https://Luminai.my.id", {
-content: q,
-user: username,
-prompt: logic,
-webSearchMode: false
-})
-return response.data.result
-} catch (error) {
-console.error('💙 Error al obtener:', error)
-throw error }}
