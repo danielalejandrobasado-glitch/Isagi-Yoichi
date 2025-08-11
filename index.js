@@ -188,8 +188,8 @@ auth: {
 creds: state.creds,
 keys: makeCacheableSignalKeyStore(state.keys, Pino({ level: "fatal" }).child({ level: "fatal" })),
 },
-markOnlineOnConnect: false, // 💙 Cambiado a false para evitar detección de spam
-generateHighQualityLinkPreview: false, // 💙 Desactivado para reducir tráfico
+markOnlineOnConnect: true, 
+generateHighQualityLinkPreview: true, 
 getMessage: async (clave) => {
 let jid = jidNormalizedUser(clave.remoteJid)
 let msg = await store.loadMessage(jid, clave.id)
@@ -197,7 +197,7 @@ return msg?.message || ""
 },
 msgRetryCounterCache,
 msgRetryCounterMap,
-defaultQueryTimeoutMs: 60000, // 💙 Añadido timeout de 60 segundos
+defaultQueryTimeoutMs: undefined,
 version,
 }
 
