@@ -13,24 +13,6 @@ clearTimeout(this)
 resolve()
 }, ms))
 
-// 💙 Función para añadir delay aleatorio entre respuestas
-const randomDelay = () => Math.floor(Math.random() * 2000) + 1000 // Entre 1-3 segundos
-
-// 💙 Control de frecuencia de mensajes por usuario
-const userMessageCount = new Map()
-
-// 💙 Función para controlar spam de usuarios
-const isSpamming = (userId) => {
-const now = Date.now()
-const userHistory = userMessageCount.get(userId) || []
-const recentMessages = userHistory.filter(time => now - time < 60000) // Últimos 60 segundos
-
-if (recentMessages.length >= 10) return true // Máximo 10 mensajes por minuto
-userHistory.push(now)
-userMessageCount.set(userId, userHistory.slice(-10)) // Mantener solo los últimos 10
-return false
-}
-
 export async function handler(chatUpdate) {
 this.msgqueque = this.msgqueque || []
 this.uptime = this.uptime || Date.now()
@@ -230,7 +212,7 @@ if (!('self' in settings)) settings.self = false
 if (!('restrict' in settings)) settings.restrict = true
 if (!('jadibotmd' in settings)) settings.jadibotmd = true
 if (!('antiPrivate' in settings)) settings.antiPrivate = false
-if (!('autoread' in settings)) settings.autoread = false // 💙 Mantener desactivado para evitar detección
+if (!('autoread' in settings)) settings.autoread = false
 } else global.db.data.settings[this.user.jid] = {
 self: false,
 restrict: true,
@@ -471,18 +453,6 @@ __dirname: ___dirname,
 __filename
 }
 try {
-// 💙 Control anti-spam por usuario
-if (!isOwner && !isPrems && isSpamming(m.sender)) {
-await delay(randomDelay())
-await m.reply('💙 Por favor, espera un momento antes de usar otro comando. ¡Evitemos el spam!')
-continue
-}
-
-// 💙 Añadir delay aleatorio antes de ejecutar comando
-if (!isOwner && !isPrems) {
-await delay(randomDelay())
-}
-
 await plugin.call(this, m, extra)
 if (!isPrems)
 m.coin = m.coin || plugin.coin || false
