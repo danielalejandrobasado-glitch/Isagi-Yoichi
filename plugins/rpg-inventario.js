@@ -5,10 +5,10 @@ let handler = async (m, { conn, usedPrefix }) => {
     let who = m.mentionedJid[0] ? m.mentionedJid[0] : m.sender;
 
     if (!(who in global.db.data.users)) {
-        return conn.reply(m.chat, `🎤💙 El usuario no se encuentra en mi base de datos del mundo virtual. ✨🎵`, m);
+        return conn.reply(m.chat, `💙 El usuario no se encuentra en mi base de datos del mundo virtual. ✨🎵`, m, rcanal);
     }
     
-    let img = 'https://raw.githubusercontent.com/Brauliovh3/HATSUNE-MIKU/main/Contenido/1745557972839.jpeg';
+    let img = 'https://i.pinimg.com/736x/09/83/75/098375b9ab1436065d988738f5dbe2c5.jpg';
     let user = global.db.data.users[who];
     let name = conn.getName(who);
 
