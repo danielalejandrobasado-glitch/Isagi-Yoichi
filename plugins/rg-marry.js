@@ -41,8 +41,16 @@ let handler = async (m, { conn, command, usedPrefix, args }) => {
     //     return;
     // }
 
-    const isMarry = /^(marry)$/i.test(command);
-    const isDivorce = /^(divorce)$/i.test(command);
+    // Verificar que global.db y global.db.users existen
+    if (!global.db) {
+        global.db = {};
+    }
+    if (!global.db.users) {
+        global.db.users = {};
+    }
+
+    const isMarry = /^(marry|casarse|boda)$/i.test(command);
+    const isDivorce = /^(divorce|divorciarse)$/i.test(command);
 
     async function handleError(e) {
         await m.reply('💙 Ocurrió un error, Miku lo solucionará pronto.');
@@ -51,20 +59,21 @@ let handler = async (m, { conn, command, usedPrefix, args }) => {
 
     switch (true) {
         case isMarry: {
-            
-            if (!global.db.users[m.sender]) {
-                global.db.users[m.sender] = {
-                    age: 18, 
-                    partner: ''
-                };
-            }
-            
-            let senderData = global.db.users[m.sender];
-            if (senderData.age < 18) {
-                await m.reply('💙 Debes ser mayor de 18 años para casarte. ¡Miku cuida de ti!');
-                return;
-            }
-            let sender = m.sender;
+            try {
+                
+                if (!global.db.users[m.sender]) {
+                    global.db.users[m.sender] = {
+                        age: 18, 
+                        partner: ''
+                    };
+                }
+                
+                let senderData = global.db.users[m.sender];
+                if (senderData && senderData.age < 18) {
+                    await m.reply('💙 Debes ser mayor de 18 años para casarte. ¡Miku cuida de ti!');
+                    return;
+                }
+                let sender = m.sender;
 
            
             if (marriages[sender]) {
@@ -144,43 +153,52 @@ let handler = async (m, { conn, command, usedPrefix, args }) => {
                );
            }
            break;
+           } catch (error) {
+               console.error('💙 Error en comando marry:', error);
+               await m.reply('💙 Ocurrió un error, Miku lo solucionará pronto.');
+           }
        }
 
        case isDivorce: {
-           let sender = m.sender;
-           
-           
-           if (!global.db.users[sender]) {
-               global.db.users[sender] = { age: 18, partner: '' };
-           }
-           
-           if (!marriages[sender]) {
-               await conn.reply(m.chat, '💙 No estás casado/a con nadie. ¡Miku está aquí para animarte!', m);
-               return;
-           }
-           let partner = marriages[sender];
-           
-           
-           if (!global.db.users[partner]) {
-               global.db.users[partner] = { age: 18, partner: '' };
-           }
-           
-           delete marriages[sender];
-           delete marriages[partner];
-           saveMarriages(marriages);
+           try {
+               let sender = m.sender;
+               
+               
+               if (!global.db.users[sender]) {
+                   global.db.users[sender] = { age: 18, partner: '' };
+               }
+               
+               if (!marriages[sender]) {
+                   await conn.reply(m.chat, '💙 No estás casado/a con nadie. ¡Miku está aquí para animarte!', m);
+                   return;
+               }
+               let partner = marriages[sender];
+               
+               
+               if (!global.db.users[partner]) {
+                   global.db.users[partner] = { age: 18, partner: '' };
+               }
+               
+               delete marriages[sender];
+               delete marriages[partner];
+               saveMarriages(marriages);
 
-           let senderName = conn.getName(sender);
-           let partnerName = conn.getName(partner);
+               let senderName = conn.getName(sender);
+               let partnerName = conn.getName(partner);
 
-           global.db.users[sender].partner = '';
-           global.db.users[partner].partner = '';
+               global.db.users[sender].partner = '';
+               global.db.users[partner].partner = '';
 
-           await conn.reply(
-               m.chat,
-               `💙 @${sender.split('@')[0]} y @${partner.split('@')[0]} han terminado su matrimonio.\n¡Ánimo! Miku siempre te apoyará 💙`,
-               m,
-               { mentions: [sender, partner] }
-           );
+               await conn.reply(
+                   m.chat,
+                   `💙 @${sender.split('@')[0]} y @${partner.split('@')[0]} han terminado su matrimonio.\n¡Ánimo! Miku siempre te apoyará 💙`,
+                   m,
+                   { mentions: [sender, partner] }
+               );
+           } catch (error) {
+               console.error('💙 Error en comando divorce:', error);
+               await m.reply('💙 Ocurrió un error, Miku lo solucionará pronto.');
+           }
            break;
        }
    }
