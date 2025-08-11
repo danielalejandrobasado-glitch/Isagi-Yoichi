@@ -51,6 +51,14 @@ let handler = async (m, { conn, command, usedPrefix, args }) => {
 
     switch (true) {
         case isMarry: {
+            
+            if (!global.db.users[m.sender]) {
+                global.db.users[m.sender] = {
+                    age: 18, 
+                    partner: ''
+                };
+            }
+            
             let senderData = global.db.users[m.sender];
             if (senderData.age < 18) {
                 await m.reply('💙 Debes ser mayor de 18 años para casarte. ¡Miku cuida de ti!');
@@ -104,6 +112,14 @@ let handler = async (m, { conn, command, usedPrefix, args }) => {
                let senderName = conn.getName(sender);
                let toName = conn.getName(to);
 
+               
+               if (!global.db.users[sender]) {
+                   global.db.users[sender] = { age: 18, partner: '' };
+               }
+               if (!global.db.users[to]) {
+                   global.db.users[to] = { age: 18, partner: '' };
+               }
+
                marriages[sender] = to;
                marriages[to] = sender;
                saveMarriages(marriages);
@@ -132,11 +148,23 @@ let handler = async (m, { conn, command, usedPrefix, args }) => {
 
        case isDivorce: {
            let sender = m.sender;
+           
+           
+           if (!global.db.users[sender]) {
+               global.db.users[sender] = { age: 18, partner: '' };
+           }
+           
            if (!marriages[sender]) {
                await conn.reply(m.chat, '💙 No estás casado/a con nadie. ¡Miku está aquí para animarte!', m);
                return;
            }
            let partner = marriages[sender];
+           
+           
+           if (!global.db.users[partner]) {
+               global.db.users[partner] = { age: 18, partner: '' };
+           }
+           
            delete marriages[sender];
            delete marriages[partner];
            saveMarriages(marriages);
