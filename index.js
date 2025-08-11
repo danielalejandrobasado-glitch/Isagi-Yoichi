@@ -47,7 +47,7 @@ let { say } = cfonts
 console.log(chalk.bold.redBright(`\n💙 Iniciando Hatsune Miku 💙\n`))
 
 
-const MUSICA_URL = 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav' 
+const MUSICA_URL = 'https://litter.catbox.moe/ae5f27n13of6sbtb.mp3' 
 const MUSICA_DURACION = 20 
 
 
