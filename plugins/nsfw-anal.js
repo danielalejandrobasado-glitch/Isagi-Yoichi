@@ -1,11 +1,9 @@
-//Codígo creado por Destroy wa.me/584120346669
-
 import fs from 'fs';
 import path from 'path';
 
 let handler = async (m, { conn, usedPrefix }) => {
 if (!db.data.chats[m.chat].nsfw && m.isGroup) {
-    return m.reply(`🎤💙 El contenido *+18* está desactivado en este escenario virtual.\n> Un administrador puede activarlo con el comando » *#nsfw on* 🎵✨`);
+    return m.reply(`💙 El contenido *+18* está desactivado en este escenario virtual.\n> Un administrador puede activarlo con el comando » *#nsfw on* 🎵`);
     }
 
     let who;
@@ -22,11 +20,11 @@ if (!db.data.chats[m.chat].nsfw && m.isGroup) {
 
     let str;
     if (m.mentionedJid.length > 0) {
-        str = `🎵💙 \`${name2}\` *tuvo una intensa sesión virtual con* \`${name || who}\` *en el mundo digital* 💫🎤`; 
+        str = `💙 \`${name2}\` *Se la metio muy fuerte a * \`${name || who}\` *en el mundo digital* 🎤`; 
     } else if (m.quoted) {
-        str = `🎶✨ \`${name2}\` *exploró nuevos ritmos virtuales con* \`${name || who}\` *en el ciberespacio* ✨🎶`;
+        str = `✨ \`${name2}\` *la partio muy fuerte a* \`${name || who}\` *en el ciberespacio* 🎶`;
     } else {
-        str = `💙🎵 \`${name2}\` *está experimentando con ritmos intensos en el mundo virtual* 🎤💫`.trim();
+        str = `💙 \`${name2}\` *está experimentando con ritmos intensos en el mundo virtual* 💫`.trim();
     }
     
     if (m.isGroup) {
