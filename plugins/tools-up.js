@@ -6,7 +6,7 @@ import { fileTypeFromBuffer } from "file-type";
 let handler = async (m, { conn }) => {
   let q = m.quoted ? m.quoted : m;
   let mime = (q.msg || q).mimetype || '';
-  if (!mime) return conn.reply(m.chat, `❀ Por favor, responde a un archivo válido (imagen, video, etc.).`, m);
+  if (!mime) return conn.reply(m.chat, `💙 Por favor, responde a un archivo válido (imagen, video, etc.).`, m, rcanal);
   
   await m.react(rwait);
   
@@ -15,7 +15,7 @@ let handler = async (m, { conn }) => {
     let isTele = /image\/(png|jpe?g|gif)|video\/mp4/.test(mime);
     let { link, name } = await megaUpload(media);
     
-    let txt = `*乂 M E G A - U P L O A D E R 乂*\n\n`;
+    let txt = `*💌 M E G A - U P L O A D E R 💌*\n\n`;
     txt += `*» Enlace* : ${link || 'No disponible'}\n`;
     txt += `*» Nombre* : ${name}\n`;
     txt += `*» Tamaño* : ${formatBytes(media.length)}\n`;
