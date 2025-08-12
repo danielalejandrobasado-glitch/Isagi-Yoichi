@@ -8,7 +8,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
 
   if (cooldowns[m.sender] && Date.now() - cooldowns[m.sender] < tiempoEspera * 1000) {
     let tiempoRestante = segundosAHMS(Math.ceil((cooldowns[m.sender] + tiempoEspera * 1000 - Date.now()) / 1000));
-    return conn.reply(m.chat, `⏱️ Ya exploraste la mazmorra virtual recientemente. Espera ⏳ *${tiempoRestante}* antes de aventurarte de nuevo en el concierto virtual. 🎤💙`, m);
+    return conn.reply(m.chat, `⏱️ Ya exploraste la mazmorra virtual recientemente. Espera ⏳ *${tiempoRestante}* antes de aventurarte de nuevo en el concierto virtual. 🎤💙`, m, rcanal);
   }
 
   cooldowns[m.sender] = Date.now();
@@ -44,7 +44,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
     users[senderId].exp += evento.exp;
   }
 
-  let img = 'https://raw.githubusercontent.com/Brauliovh3/HATSUNE-MIKU/main/Contenido/1745558209798.jpeg';
+  let img = 'https://static.wikia.nocookie.net/sao/images/b/bc/Mazmorra.png/revision/latest?cb=20121223021928&path-prefix=es';
   let info = `╭━〔 Mazmoras Antiguas 〕\n` +
              `┃Misión: *${evento.nombre}*\n` +
              `┃Evento: ${evento.mensaje}\n` +
@@ -52,7 +52,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
              `┃Tu salud ${evento.health < 0 ? 'bajó en: ' + Math.abs(evento.health) : 'se mantuvo igual.'}\n` +
              `╰━━━━━━━━━━━━⬣`;
 
-  await conn.sendFile(m.chat, img, 'mazmorras.jpg', info, fkontak);
+  await conn.sendFile(m.chat, img, 'miku.jpg', info, fkontak);
 
   global.db.write();
 };
