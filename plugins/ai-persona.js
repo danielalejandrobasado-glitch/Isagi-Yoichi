@@ -1,12 +1,12 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import readline from 'readline';
 const MEMORIA_FILE = 'memoria.json';
 
 // Importar getAIResponse del otro archivo
-let getAIResponse;
+let getAIResponse = null;
 try {
-  const iaPath = path.resolve(__dirname, 'ia.js');
-  const iaModule = require(iaPath);
+  const iaModule = await import(path.resolve(path.dirname(import.meta.url.replace('file://', '')), 'ia.js'));
   getAIResponse = iaModule.getAIResponse;
 } catch (e) {
   getAIResponse = null;
@@ -67,7 +67,6 @@ async function responder(usuario, mensaje) {
 // Simulación de entrada por consola
 definirUsuario();
 function definirUsuario() {
-  const readline = require('readline');
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   rl.question('Escribe tu nombre de usuario: ', usuario => {
     escucharMensajes(usuario, rl);
