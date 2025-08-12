@@ -33,12 +33,12 @@ let handler = async (m, { conn, usedPrefix }) => {
                `┋ 📅 *Fecha:* ${new Date().toLocaleString('id-ID')}\n` +
                `╰━━━━━━━━━━━━⬣`;
 
-    await conn.sendFile(m.chat, img, 'yuki.jpg', text, fkontak);
+    await conn.sendFile(m.chat, img, 'miku.jpg', text, fkontak);
 }
 
 handler.help = ['inventario', 'inv'];
 handler.tags = ['rpg'];
-handler.command = ['inventario', 'inv']; 
+handler.command = ['inventario', 'inv', 'mochila']; 
 handler.group = true;
 handler.register = true;
 
