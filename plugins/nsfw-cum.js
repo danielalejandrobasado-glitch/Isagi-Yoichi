@@ -1,89 +1,46 @@
-import fs from 'fs';
-import path from 'path';
-
 let handler = async (m, { conn, usedPrefix }) => {
-   
-    if (!db?.data?.chats?.[m.chat]?.nsfw && m.isGroup) {
-        return m.reply(`💙 El contenido *NSFW* está desactivado en este grupo.\n> Un administrador puede activarlo con el comando » *#nsfw on*`, m, rcanal);
+    
+    if (m.isGroup && !db?.data?.chats?.[m.chat]?.nsfw) {
+        return m.reply(`💙 El contenido *NSFW* está desactivado en este grupo.\n> Un administrador puede activarlo con el comando » *#nsfw on*`);
     }
     
-    let who;
-    if (m.mentionedJid && m.mentionedJid.length > 0) {
-        who = m.mentionedJid[0];
-    } else if (m.quoted && m.quoted.sender) {
-        who = m.quoted.sender;
-    } else {
-        who = m.sender;
-    }
-    
-    
-    if (!who) {
-        who = m.sender;
-    }
-    
-    let name = conn.getName(who) || who;
-    let name2 = conn.getName(m.sender) || m.sender;
-    let str;
+    let name2 = conn.getName(m.sender) || 'Usuario';
+    let name = 'Usuario';
     
     if (m.mentionedJid && m.mentionedJid.length > 0) {
-        str = `\`${name2}\` *se vino dentro de* \`${name}\`.`;
+        name = conn.getName(m.mentionedJid[0]) || 'Usuario mencionado';
+        var str = `\`${name2}\` *se vino dentro de* \`${name}\`.`;
     } else if (m.quoted && m.quoted.sender) {
-        str = `\`${name2}\` *se vino dentro de* \`${name}\`.`;
+        name = conn.getName(m.quoted.sender) || 'Usuario citado';
+        var str = `\`${name2}\` *se vino dentro de* \`${name}\`.`;
     } else {
-        str = `\`${name2}\` *se vino dentro de...  Omitiremos eso*`.trim();
+        var str = `\`${name2}\` *se vino dentro de... Omitiremos eso*`;
     }
     
     if (m.isGroup) {
-        let pp = 'https://telegra.ph/file/9243544e7ab350ce747d7.mp4'; 
-        let pp2 = 'https://telegra.ph/file/fadc180ae9c212e2bd3e1.mp4'; 
-        let pp3 = 'https://telegra.ph/file/79a5a0042dd8c44754942.mp4';
-        let pp4 = 'https://telegra.ph/file/035e84b8767a9f1ac070b.mp4';
-        let pp5 = 'https://telegra.ph/file/0103144b636efcbdc069b.mp4';
-        let pp6 = 'https://telegra.ph/file/4d97457142dff96a3f382.mp4';
-        let pp7 = 'https://telegra.ph/file/b1b4c9f48eaae4a79ae0e.mp4';
-        let pp8 = 'https://telegra.ph/file/5094ac53709aa11683a54.mp4';
-        let pp9 = 'https://telegra.ph/file/5094ac53709aa11683a54.mp4';
-        let pp10 = 'https://telegra.ph/file/dc279553e1ccfec6783f3.mp4';
-        let pp11 = 'https://telegra.ph/file/acdb5c2703ee8390aaf33.mp4';
+        const videos = [
+            'https://telegra.ph/file/9243544e7ab350ce747d7.mp4',
+            'https://telegra.ph/file/fadc180ae9c212e2bd3e1.mp4',
+            'https://telegra.ph/file/79a5a0042dd8c44754942.mp4',
+            'https://telegra.ph/file/035e84b8767a9f1ac070b.mp4',
+            'https://telegra.ph/file/0103144b636efcbdc069b.mp4',
+            'https://telegra.ph/file/4d97457142dff96a3f382.mp4',
+            'https://telegra.ph/file/b1b4c9f48eaae4a79ae0e.mp4',
+            'https://telegra.ph/file/5094ac53709aa11683a54.mp4',
+            'https://telegra.ph/file/dc279553e1ccfec6783f3.mp4',
+            'https://telegra.ph/file/acdb5c2703ee8390aaf33.mp4'
+        ];
         
-        const videos = [pp, pp2, pp3, pp4, pp5, pp6, pp7, pp8, pp9, pp10, pp11];
         const video = videos[Math.floor(Math.random() * videos.length)];
         
-        
-        let mentions = [];
-        if (who && typeof who === 'string' && who.includes('@')) {
-            mentions = [who];
-        }
-        
-        try {
-            await conn.sendMessage(m.chat, { 
-                video: { url: video }, 
-                gifPlayback: true, 
-                caption: str, 
-                ptt: true, 
-                mentions 
-            }, { quoted: m });
-        } catch (error) {
-            console.error('Error enviando mensaje:', error);
-            
-            try {
-                await conn.sendMessage(m.chat, { 
-                    video: { url: video }, 
-                    gifPlayback: true, 
-                    caption: str, 
-                    ptt: true 
-                }, { quoted: m });
-            } catch (fallbackError) {
-                console.error('Error en fallback:', fallbackError);
-                m.reply('❌ Error al enviar el video. Intenta nuevamente.');
-            }
-        }
+       
+        await m.reply({ video: { url: video }, caption: str, gifPlayback: true });
     }
-}
+};
 
 handler.help = ['cum/leche @tag'];
 handler.tags = ['nsfw'];
-handler.command = ['cum','leche','venirse'];
+handler.command = ['cum', 'leche', 'venirse'];
 handler.group = true;
 
 export default handler;
