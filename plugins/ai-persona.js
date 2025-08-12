@@ -50,6 +50,7 @@ async function responder(usuario, mensaje) {
 
 import fs from 'fs';
 import axios from 'axios';
+
 const MEMORIA_FILE = 'memoria.json';
 const paisesTaurinos = [
   'España', 'México', 'Colombia', 'Perú', 'Venezuela', 'Ecuador', 'Francia', 'Portugal'
@@ -64,6 +65,46 @@ if (fs.existsSync(MEMORIA_FILE)) {
 
 function guardarMemoria() {
   fs.writeFileSync(MEMORIA_FILE, JSON.stringify(memoria, null, 2));
+}
+
+const mikuResponses = {
+  greetings: [
+    "¡Hola! Soy Hatsune Miku~ ✨ ¡La Vocaloid más linda del mundo! 💙",
+    "¡Konnichiwa! ¡Soy Miku y estoy lista para cantar contigo! 🎵",
+    "¡Hola, hola! ¿Vienes a escuchar mi hermosa voz? ¡World is Mine! 🎭"
+  ],
+  questions: [
+    "¡Hmm! Esa es una pregunta muy profunda... ¡como las notas graves que puedo cantar! 🎵",
+    "¡Interesante pregunta! Me recuerda a la letra de una canción que estoy componiendo~ 💙",
+    "¡Oh! Eso me hace pensar... ¡mientras tarareaba una melodía! 🎭"
+  ],
+  compliments: [
+    "¡Aww! ¡Eres muy dulce! Casi tan dulce como la melodía de 'World is Mine'~ 💙",
+    "¡Kyaa! Me haces sonrojar... ¡Mi cabello turquesa brilla aún más! ✨",
+    "¡Eres adorable! ¡Me recuerdas a mis fans más queridos! 🎵"
+  ],
+  default: [
+    "¡Eso suena muy interesante! Aunque no tanto como una buena canción~ 🎵",
+    "¡Waaah! Me encanta hablar contigo, ¡pero me gustaría más si cantáramos! 💙",
+    "¡Qué dramático! Casi tanto como cuando canto 'World is Mine' 🎭✨",
+    "¡Hmm! Eso me da ideas para una nueva canción... ¡con cebollines! 🥬🎵"
+  ]
+};
+
+function getLocalMikuResponse(query, username) {
+  const lowerQuery = query.toLowerCase();
+  let responses;
+  if (lowerQuery.includes('hola') || lowerQuery.includes('hi') || lowerQuery.includes('saludo')) {
+    responses = mikuResponses.greetings;
+  } else if (lowerQuery.includes('?') || lowerQuery.includes('que') || lowerQuery.includes('como') || lowerQuery.includes('por que')) {
+    responses = mikuResponses.questions;
+  } else if (lowerQuery.includes('linda') || lowerQuery.includes('bonita') || lowerQuery.includes('hermosa')) {
+    responses = mikuResponses.compliments;
+  } else {
+    responses = mikuResponses.default;
+  }
+  const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+  return `${randomResponse}\n\n¡Por cierto ${username}, ¿sabías que tengo el cabello turquesa más bonito? ¡Es casi tan brillante como mi voz cuando canto sobre cebollines! ✨🎵🥬`;
 }
 
 async function getAIResponse(query, username, prompt) {
@@ -187,46 +228,6 @@ async function getAIResponse(query, username, prompt) {
   return getLocalMikuResponse(query, username);
 }
 
-const mikuResponses = {
-  greetings: [
-    "¡Hola! Soy Hatsune Miku~ ✨ ¡La Vocaloid más linda del mundo! 💙",
-    "¡Konnichiwa! ¡Soy Miku y estoy lista para cantar contigo! 🎵",
-    "¡Hola, hola! ¿Vienes a escuchar mi hermosa voz? ¡World is Mine! 🎭"
-  ],
-  questions: [
-    "¡Hmm! Esa es una pregunta muy profunda... ¡como las notas graves que puedo cantar! 🎵",
-    "¡Interesante pregunta! Me recuerda a la letra de una canción que estoy componiendo~ 💙",
-    "¡Oh! Eso me hace pensar... ¡mientras tarareaba una melodía! 🎭"
-  ],
-  compliments: [
-    "¡Aww! ¡Eres muy dulce! Casi tan dulce como la melodía de 'World is Mine'~ 💙",
-    "¡Kyaa! Me haces sonrojar... ¡Mi cabello turquesa brilla aún más! ✨",
-    "¡Eres adorable! ¡Me recuerdas a mis fans más queridos! 🎵"
-  ],
-  default: [
-    "¡Eso suena muy interesante! Aunque no tanto como una buena canción~ 🎵",
-    "¡Waaah! Me encanta hablar contigo, ¡pero me gustaría más si cantáramos! 💙",
-    "¡Qué dramático! Casi tanto como cuando canto 'World is Mine' 🎭✨",
-    "¡Hmm! Eso me da ideas para una nueva canción... ¡con cebollines! 🥬🎵"
-  ]
-};
-
-function getLocalMikuResponse(query, username) {
-  const lowerQuery = query.toLowerCase();
-  let responses;
-  if (lowerQuery.includes('hola') || lowerQuery.includes('hi') || lowerQuery.includes('saludo')) {
-    responses = mikuResponses.greetings;
-  } else if (lowerQuery.includes('?') || lowerQuery.includes('que') || lowerQuery.includes('como') || lowerQuery.includes('por que')) {
-    responses = mikuResponses.questions;
-  } else if (lowerQuery.includes('linda') || lowerQuery.includes('bonita') || lowerQuery.includes('hermosa')) {
-    responses = mikuResponses.compliments;
-  } else {
-    responses = mikuResponses.default;
-  }
-  const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-  return `${randomResponse}\n\n¡Por cierto ${username}, ¿sabías que tengo el cabello turquesa más bonito? ¡Es casi tan brillante como mi voz cuando canto sobre cebollines! ✨🎵🥬`;
-}
-
 async function responder(usuario, mensaje) {
   if (!memoria[usuario]) memoria[usuario] = [];
   memoria[usuario].push({ mensaje, fecha: new Date().toISOString() });
@@ -259,4 +260,3 @@ handler.tags = ['ai'];
 handler.register = true;
 
 export default handler;
-
