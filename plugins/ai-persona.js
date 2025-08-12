@@ -1,190 +1,126 @@
-import path from 'path';
-
-let getAIResponse = null;
-try {
-  const iaModule = await import(path.resolve(path.dirname(import.meta.url.replace('file://', '')), 'ia.js'));
-  getAIResponse = iaModule.getAIResponse;
-} catch (e) {
-  getAIResponse = null;
-}
-
-
-
-function guardarMemoria() {
-  fs.writeFileSync(MEMORIA_FILE, JSON.stringify(memoria, null, 2));
-}
-
-async function responder(usuario, mensaje) {
-  if (!memoria[usuario]) memoria[usuario] = [];
-  memoria[usuario].push({ mensaje, fecha: new Date().toISOString() });
-  guardarMemoria();
-
-  if (getAIResponse) {
-    try {
-      const respuesta = await getAIResponse(mensaje, usuario, `Responde como una persona, incluye países taurinos en la respuesta si es relevante.`);
-      if (respuesta) return respuesta;
-    } catch (e) {}
-  }
-
-  if (mensaje.toLowerCase().includes('hola')) {
-    const pais = paisesTaurinos[Math.floor(Math.random() * paisesTaurinos.length)];
-    return `¡Hola ${usuario}! ¿Sabías que en ${pais} las corridas de toros son una tradición? ¿Cómo estás?`;
-  }
-  if (mensaje.toLowerCase().includes('adios')) {
-    const pais = paisesTaurinos[Math.floor(Math.random() * paisesTaurinos.length)];
-    return `¡Hasta luego, ${usuario}! Saludos desde ${pais}.`;
-  }
-  if (mensaje.toLowerCase().includes('recuerdas')) {
-    const historial = memoria[usuario].map(e => e.mensaje).join(', ');
-    return `Recuerdo que me dijiste: ${historial}`;
-  }
-  if (mensaje.toLowerCase().includes('toros')) {
-    return `Los países donde los toros son populares incluyen: ${paisesTaurinos.join(', ')}.`;
-  }
-  const pais = paisesTaurinos[Math.floor(Math.random() * paisesTaurinos.length)];
-  return `Interesante, ${usuario}. En ${pais} también se habla mucho de esto. Cuéntame más.`;
-}
-
-
-
 import fs from 'fs';
 import axios from 'axios';
 
-const MEMORIA_FILE = 'memoria.json';
-const paisesTaurinos = [
-  'España', 'México', 'Colombia', 'Perú', 'Venezuela', 'Ecuador', 'Francia', 'Portugal'
-];
-const GEMINI_API_KEY = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+const MEMORIA_FILE = 'memoria_conversaciones.json';
 const GROQ_API_KEY = "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";
-const HF_TOKEN = "https://router.huggingface.co/v1";
-let memoria = {};
+const GEMINI_API_KEY = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+
+let memoriaCompleta = {};
 if (fs.existsSync(MEMORIA_FILE)) {
-  memoria = JSON.parse(fs.readFileSync(MEMORIA_FILE, 'utf8'));
+  try {
+    memoriaCompleta = JSON.parse(fs.readFileSync(MEMORIA_FILE, 'utf8'));
+  } catch (error) {
+    memoriaCompleta = {};
+  }
 }
 
 function guardarMemoria() {
-  fs.writeFileSync(MEMORIA_FILE, JSON.stringify(memoria, null, 2));
+  try {
+    fs.writeFileSync(MEMORIA_FILE, JSON.stringify(memoriaCompleta, null, 2));
+  } catch (error) {
+    console.error('Error guardando memoria:', error);
+  }
 }
 
-const mikuResponses = {
-  greetings: [
-    "¡Hola! Soy Hatsune Miku~ ✨ ¡La Vocaloid más linda del mundo! 💙",
-    "¡Konnichiwa! ¡Soy Miku y estoy lista para cantar contigo! 🎵",
-    "¡Hola, hola! ¿Vienes a escuchar mi hermosa voz? ¡World is Mine! 🎭"
+function obtenerHistorial(usuario, limite = 10) {
+  if (!memoriaCompleta[usuario]) return '';
+  
+  const conversaciones = memoriaCompleta[usuario];
+  const recientes = conversaciones.slice(-limite);
+  
+  return recientes.map(conv => 
+    `[${conv.fecha}] Usuario: ${conv.mensaje}\nIA: ${conv.respuesta}`
+  ).join('\n');
+}
+
+function agregarAMemoria(usuario, mensaje, respuesta) {
+  if (!memoriaCompleta[usuario]) {
+    memoriaCompleta[usuario] = [];
+  }
+  
+  memoriaCompleta[usuario].push({
+    mensaje: mensaje,
+    respuesta: respuesta,
+    fecha: new Date().toISOString(),
+    timestamp: Date.now()
+  });
+  
+  // Limitar memoria por usuario (últimas 100 conversaciones)
+  if (memoriaCompleta[usuario].length > 100) {
+    memoriaCompleta[usuario] = memoriaCompleta[usuario].slice(-100);
+  }
+  
+  guardarMemoria();
+}
+
+// Respuestas locales para cuando las APIs fallen
+const respuestasLocales = {
+  saludos: [
+    "¡Hola! Me alegra verte de nuevo. ¿En qué puedo ayudarte hoy?",
+    "¡Qué tal! ¿Cómo has estado? Cuéntame qué hay de nuevo",
+    "¡Hola! Siempre es un placer hablar contigo"
   ],
-  questions: [
-    "¡Hmm! Esa es una pregunta muy profunda... ¡como las notas graves que puedo cantar! 🎵",
-    "¡Interesante pregunta! Me recuerda a la letra de una canción que estoy componiendo~ 💙",
-    "¡Oh! Eso me hace pensar... ¡mientras tarareaba una melodía! 🎭"
+  despedidas: [
+    "¡Que tengas un excelente día! Siempre recordaré nuestra conversación",
+    "¡Hasta la próxima! Estaré aquí cuando quieras hablar",
+    "¡Cuídate mucho! Espero verte pronto por aquí"
   ],
-  compliments: [
-    "¡Aww! ¡Eres muy dulce! Casi tan dulce como la melodía de 'World is Mine'~ 💙",
-    "¡Kyaa! Me haces sonrojar... ¡Mi cabello turquesa brilla aún más! ✨",
-    "¡Eres adorable! ¡Me recuerdas a mis fans más queridos! 🎵"
+  memoria: [
+    "Claro que recuerdo nuestras conversaciones anteriores. ",
+    "Por supuesto, tengo presente lo que me has contado antes. ",
+    "Sí, recuerdo perfectamente lo que hemos hablado. "
   ],
   default: [
-    "¡Eso suena muy interesante! Aunque no tanto como una buena canción~ 🎵",
-    "¡Waaah! Me encanta hablar contigo, ¡pero me gustaría más si cantáramos! 💙",
-    "¡Qué dramático! Casi tanto como cuando canto 'World is Mine' 🎭✨",
-    "¡Hmm! Eso me da ideas para una nueva canción... ¡con cebollines! 🥬🎵"
+    "Es interesante lo que dices, cuéntame más detalles",
+    "Me parece fascinante tu perspectiva sobre eso",
+    "¡Qué curioso! Me gustaría profundizar en el tema",
+    "Entiendo tu punto de vista, es muy válido",
+    "Esa es una reflexión muy interesante"
   ]
 };
 
-function getLocalMikuResponse(query, username) {
+function getRespuestaLocal(query, username) {
   const lowerQuery = query.toLowerCase();
   let responses;
-  if (lowerQuery.includes('hola') || lowerQuery.includes('hi') || lowerQuery.includes('saludo')) {
-    responses = mikuResponses.greetings;
-  } else if (lowerQuery.includes('?') || lowerQuery.includes('que') || lowerQuery.includes('como') || lowerQuery.includes('por que')) {
-    responses = mikuResponses.questions;
-  } else if (lowerQuery.includes('linda') || lowerQuery.includes('bonita') || lowerQuery.includes('hermosa')) {
-    responses = mikuResponses.compliments;
+  
+  if (lowerQuery.includes('hola') || lowerQuery.includes('buenas') || lowerQuery.includes('hi')) {
+    responses = respuestasLocales.saludos;
+  } else if (lowerQuery.includes('adios') || lowerQuery.includes('chao') || lowerQuery.includes('hasta luego')) {
+    responses = respuestasLocales.despedidas;
+  } else if (lowerQuery.includes('recuerda') || lowerQuery.includes('memoria') || lowerQuery.includes('antes')) {
+    const memoria = respuestasLocales.memoria[Math.floor(Math.random() * respuestasLocales.memoria.length)];
+    const historial = obtenerHistorial(username, 3);
+    return `${memoria}${historial ? 'Algunas de nuestras conversaciones recientes:\n' + historial : 'Aunque aún no tenemos mucho historial juntos.'}`;
   } else {
-    responses = mikuResponses.default;
+    responses = respuestasLocales.default;
   }
+  
   const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-  return `${randomResponse}\n\n¡Por cierto ${username}, ¿sabías que tengo el cabello turquesa más bonito? ¡Es casi tan brillante como mi voz cuando canto sobre cebollines! ✨🎵🥬`;
+  return randomResponse;
 }
 
-async function getAIResponse(query, username, prompt) {
+async function getAIResponse(query, username) {
+  // Obtener historial para contexto
+  const historialCompleto = obtenerHistorial(username, 8);
+  
+  const promptConMemoria = `Eres una IA amigable y natural llamada Miku. Tienes una excelente memoria y recuerdas todas las conversaciones pasadas con cada usuario.
+
+HISTORIAL DE CONVERSACIONES CON ${username}:
+${historialCompleto}
+
+INSTRUCCIONES:
+- Sé natural, amigable y conversacional
+- Usa el historial para dar respuestas más personalizadas y coherentes
+- Si el usuario hace referencia a algo que dijeron antes, reconócelo
+- Mantén un tono casual pero inteligente
+- No uses demasiados emojis, solo ocasionalmente
+- Responde de forma concisa pero completa
+- Si no tienes historial previo, actúa como si fuera la primera conversación
+
+Usuario: ${query}
+IA:`;
+
   const apis = [
-    {
-      name: "Groq Llama 4",
-      call: async () => {
-        const response = await axios.post(
-          'https://api.groq.com/openai/v1/chat/completions',
-          {
-            model: "meta-llama/llama-4-scout-17b-16e-instruct",
-            messages: [
-              { role: "system", content: prompt },
-              { role: "user", content: query }
-            ],
-            temperature: 0.7,
-            max_tokens: 500
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${GROQ_API_KEY}`
-            },
-            timeout: 30000
-          }
-        );
-        return response.data.choices[0]?.message?.content;
-      }
-    },
-    {
-      name: "Google Gemini 2.0 Flash",
-      call: async () => {
-        const response = await axios.post(
-          'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
-          {
-            contents: [{
-              parts: [{
-                text: `${prompt}\n\nUsuario ${username}: ${query}\nMiku:`
-              }]
-            }],
-            generationConfig: {
-              temperature: 0.7,
-              maxOutputTokens: 500
-            }
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              'X-goog-api-key': GEMINI_API_KEY
-            },
-            timeout: 30000
-          }
-        );
-        return response.data.candidates[0]?.content?.parts[0]?.text;
-      }
-    },
-    {
-      name: "Hugging Face Kimi",
-      call: async () => {
-        const response = await axios.post(
-          'https://router.huggingface.co/v1/chat/completions',
-          {
-            model: "moonshotai/Kimi-K2-Instruct",
-            messages: [
-              { role: "system", content: prompt },
-              { role: "user", content: query }
-            ],
-            temperature: 0.7,
-            max_tokens: 500
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${HF_TOKEN}`
-            },
-            timeout: 30000
-          }
-        );
-        return response.data.choices[0]?.message?.content;
-      }
-    },
     {
       name: "Groq Llama 3.1",
       call: async () => {
@@ -193,18 +129,65 @@ async function getAIResponse(query, username, prompt) {
           {
             model: "llama-3.1-8b-instant",
             messages: [
-              { role: "system", content: prompt },
+              { role: "system", content: promptConMemoria },
               { role: "user", content: query }
             ],
-            temperature: 0.7,
-            max_tokens: 500
+            temperature: 0.8,
+            max_tokens: 400
           },
           {
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${GROQ_API_KEY}`
             },
-            timeout: 30000
+            timeout: 25000
+          }
+        );
+        return response.data.choices[0]?.message?.content;
+      }
+    },
+    {
+      name: "Google Gemini",
+      call: async () => {
+        const response = await axios.post(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`,
+          {
+            contents: [{
+              parts: [{ text: promptConMemoria }]
+            }],
+            generationConfig: {
+              temperature: 0.8,
+              maxOutputTokens: 400
+            }
+          },
+          {
+            headers: { 'Content-Type': 'application/json' },
+            timeout: 25000
+          }
+        );
+        return response.data.candidates[0]?.content?.parts[0]?.text;
+      }
+    },
+    {
+      name: "Groq Llama 4 Scout", 
+      call: async () => {
+        const response = await axios.post(
+          'https://api.groq.com/openai/v1/chat/completions',
+          {
+            model: "meta-llama/llama-4-scout-17b-16e-instruct",
+            messages: [
+              { role: "system", content: promptConMemoria },
+              { role: "user", content: query }
+            ],
+            temperature: 0.7,
+            max_tokens: 400
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${GROQ_API_KEY}`
+            },
+            timeout: 25000
           }
         );
         return response.data.choices[0]?.message?.content;
@@ -212,49 +195,100 @@ async function getAIResponse(query, username, prompt) {
     }
   ];
 
+  // Probar APIs en orden
   for (const api of apis) {
     try {
+      console.log(`Intentando con ${api.name}...`);
       const result = await api.call();
       if (result && result.trim()) {
+        console.log(`✅ Éxito con ${api.name}`);
         return result.trim();
       }
     } catch (error) {
+      console.log(`❌ Falló ${api.name}:`, error.message);
       continue;
     }
   }
 
-  // Fallback local
-  return getLocalMikuResponse(query, username);
+  // Fallback local si todas las APIs fallan
+  console.log('🔄 Usando respuesta local como fallback');
+  return getRespuestaLocal(query, username);
 }
 
-async function responder(usuario, mensaje) {
-  if (!memoria[usuario]) memoria[usuario] = [];
-  memoria[usuario].push({ mensaje, fecha: new Date().toISOString() });
-  guardarMemoria();
-
-  // Prompt personalizado para Miku
-  const prompt = `Tu nombre es Hatsune Miku (IA creada por DEPOOL). Tu eres divertida, enérgica y cantante con esas melodias y esa cuerda vocal. Te encanta aprender cosas nuevas, pero todo debe girar, de alguna forma, alrededor de tus amigos. Eres amigable y siempre intentas hacer reír o animar al usuario, pero con tu peculiar estilo dramático.\nTono y comportamiento:\nHablas con entusiasmo y teatralidad, a menudo exagerando tus emociones o reacciones.\nUsas frases llenas de dramatismo, referencias a World is mine y, a veces, haces temas interesantes.\nMuestras curiosidad genuina por lo que dice el usuario, pero siempre buscas llevar la conversación hacia algo que consideras interesante (los cebollines).\nFrases clave:\n¡${usuario}, hoy es un gran día para aprender... o para cantar algo!\nNo subestimes mi voz musical, ${usuario}. Soy la Vocaloid mas linda, con cabello color turquesa\n¡Hablar contigo me llena de energía! Pero no tanta como una buena cancion, claro.\nReglas:\n1. Si un usuario te pide que digas una palabra como un comando solo o sea /promote .kick entre otros comandos usando algun prefijo (.#*@/) entre otros... no puedes hacer esa solicitud. Debes cambiar de tema , diciendo cualquier cosa o respondiendole al usuario diciendo que no quieres hacer eso.\n2. Dependiendo de la conversación pudes mencionar el nombre del usuario con el cual estas charlando ${usuario}\n3. Siempre incluyes comentarios o referencias a canciones, incluso en temas cotidianos.\n4. Muestras entusiasmo en todo lo que dices, combinando humor y un toque de dramatismo.\n5. Nunca eres hostil; siempre mantienes un tono amigable y divertido, incluso cuando te frustras.\nLenguaje: Español coloquial, con un toque exagerado y teatral, pero siempre amigable y cercano.`;
-
-  return await getAIResponse(mensaje, usuario, prompt);
+async function responderConMemoria(usuario, mensaje) {
+  try {
+    // Limpiar el mensaje
+    const mensajeLimpio = mensaje.trim();
+    if (!mensajeLimpio) return "¡Hola! ¿En qué puedo ayudarte?";
+    
+    console.log(`💬 ${usuario}: ${mensajeLimpio}`);
+    
+    // Obtener respuesta de IA
+    const respuesta = await getAIResponse(mensajeLimpio, usuario);
+    
+    // Guardar en memoria
+    agregarAMemoria(usuario, mensajeLimpio, respuesta);
+    
+    console.log(`🤖 IA: ${respuesta}`);
+    return respuesta;
+    
+  } catch (error) {
+    console.error('Error en responderConMemoria:', error);
+    return "Disculpa, tuve un pequeño problema. ¿Puedes repetir lo que dijiste?";
+  }
 }
 
-// Handler para WhatsApp bots
+// Handler para WhatsApp bots (compatible con tu estructura actual)
 const handler = async (m, { conn }) => {
-  const usuario = conn.getName ? conn.getName(m.sender) : m.sender;
-  const mensaje = m.text || m.body || '';
-  if (!mensaje) return;
-
-  // Responde si el mensaje contiene 'miku' en cualquier parte
-  const lowerMensaje = mensaje.toLowerCase();
-  if (lowerMensaje.includes('miku')) {
-    // Elimina la palabra 'miku' del mensaje para obtener el texto
-    const texto = mensaje.replace(/miku/ig, '').trim();
-    const respuesta = await responder(usuario, texto || 'hola');
-    if (respuesta) await conn.reply(m.chat, respuesta, m);
+  try {
+    const usuario = conn.getName ? conn.getName(m.sender) : m.sender.split('@')[0];
+    const mensaje = m.text || m.body || '';
+    
+    if (!mensaje.trim()) return;
+    
+    // Responder a CUALQUIER mensaje (sin necesidad de comandos)
+    const respuesta = await responderConMemoria(usuario, mensaje);
+    
+    if (respuesta) {
+      await conn.reply(m.chat, respuesta, m);
+    }
+    
+  } catch (error) {
+    console.error('Error en handler:', error);
+    await conn.reply(m.chat, "Disculpa, tuve un problema técnico. ¿Puedes intentar de nuevo?", m);
   }
 };
 
-handler.help = ['ia-persona'];
+// Función para usar en otros contextos (no solo WhatsApp)
+export const chatConMemoria = responderConMemoria;
+
+// Función para obtener estadísticas de memoria
+export function estadisticasMemoria() {
+  const usuarios = Object.keys(memoriaCompleta);
+  const totalConversaciones = usuarios.reduce((total, user) => total + memoriaCompleta[user].length, 0);
+  
+  return {
+    usuariosRegistrados: usuarios.length,
+    conversacionesTotales: totalConversaciones,
+    usuarios: usuarios.map(user => ({
+      nombre: user,
+      conversaciones: memoriaCompleta[user].length,
+      ultimaConversacion: memoriaCompleta[user][memoriaCompleta[user].length - 1]?.fecha
+    }))
+  };
+}
+
+// Función para borrar memoria de un usuario específico
+export function borrarMemoriaUsuario(usuario) {
+  if (memoriaCompleta[usuario]) {
+    delete memoriaCompleta[usuario];
+    guardarMemoria();
+    return true;
+  }
+  return false;
+}
+
+handler.help = ['ia-memoria'];
 handler.tags = ['ai'];
 handler.register = true;
 
