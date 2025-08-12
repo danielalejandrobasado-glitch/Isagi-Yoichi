@@ -1,8 +1,3 @@
-/*
-• @David-Chian
-- https://github.com/David-Chian
-*/
-
 import { googleImage } from '@bochilteam/scraper';
 import baileys from '@whiskeysockets/baileys';
 
@@ -41,10 +36,10 @@ async function sendAlbumMessage(jid, medias, options = {}) {
 }
 
 const handler = async (m, { conn, text, usedPrefix, command }) => {
-    if (!text) return conn.reply(m.chat, `🎤💙 ¡Ara ara! Por favor, dime qué tipo de imagen quieres que busque para ti. ✨`, m);
+    if (!text) return conn.reply(m.chat, `💙 ¡Ara ara! Por favor, dime qué tipo de imagen quieres que busque para ti. ✨`, m, rcanal);
 
     await m.react('🕒');
-    conn.reply(m.chat, '🎵💙 *Buscando imágenes virtuales para ti...* ✨', m, {
+    conn.reply(m.chat, '💙 *Buscando imágenes virtuales para ti...* ✨', m, {
 contextInfo: { externalAdReply :{ mediaUrl: null, mediaType: 1, showAdAttribution: true,
 title: packname,
 body: dev,
@@ -60,15 +55,15 @@ sourceUrl: redes }}})
             if (image) images.push({ type: "image", data: { url: image } });
         }
 
-        if (images.length < 2) return conn.reply(m.chat, '🎵💙 ¡Gomen! No encontré suficientes imágenes para crear un álbum virtual. ✨', m);
+        if (images.length < 2) return conn.reply(m.chat, '💙 ¡Gomen! No encontré suficientes imágenes para crear un álbum virtual. ✨', m, rcanal);
 
-        const caption = `🎤💙 *Resultados de búsqueda virtual para:* ${text} 💙🎤`;
+        const caption = `💙 *Resultados de búsqueda virtual para:* ${text} 💙`;
         await sendAlbumMessage(m.chat, images, { caption, quoted: m });
 
         await m.react('✅');
     } catch (error) {
         await m.react('❌');
-        conn.reply(m.chat, '🎵💙 ¡Ara ara! Hubo un error al buscar las imágenes en el mundo virtual. ✨', m);
+        conn.reply(m.chat, '💙 ¡Ara ara! Hubo un error al buscar las imágenes en el mundo virtual. ✨', m, rcanal);
     }
 };
 
