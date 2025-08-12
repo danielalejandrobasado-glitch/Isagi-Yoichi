@@ -10,7 +10,7 @@ let results = await yts(text)
 let tes = results.all
 let teks = results.all.map(v => {
 switch (v.type) {
-case 'video': return `「✦」Resultados de la búsqueda para *<${text}>*
+case 'video': return `💙 Resultados de la búsqueda para *<${text}>*
 
 > ☁️ Título » *${v.title}*
 > 🍬 Canal » *${v.author.name}*
