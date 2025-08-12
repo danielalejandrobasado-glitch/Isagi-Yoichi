@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const MEMORIA_FILE = 'memoria_conversaciones.json';
 const GROQ_API_KEY = "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";
-const GEMINI_API_KEY = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+const GEMINI_API_KEY = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"; // Reemplaza con tu clave real
 
 let memoriaCompleta = {};
 if (fs.existsSync(MEMORIA_FILE)) {
@@ -150,7 +150,7 @@ IA:`;
       name: "Google Gemini",
       call: async () => {
         const response = await axios.post(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`,
+          'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
           {
             contents: [{
               parts: [{ text: promptConMemoria }]
@@ -161,7 +161,10 @@ IA:`;
             }
           },
           {
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+              'Content-Type': 'application/json',
+              'x-goog-api-key': GEMINI_API_KEY
+            },
             timeout: 25000
           }
         );
@@ -246,11 +249,17 @@ const handler = async (m, { conn }) => {
     
     if (!mensaje.trim()) return;
     
-    // Responder a CUALQUIER mensaje (sin necesidad de comandos)
-    const respuesta = await responderConMemoria(usuario, mensaje);
-    
-    if (respuesta) {
-      await conn.reply(m.chat, respuesta, m);
+    // Detectar si el mensaje contiene "miku" para activar la IA
+    const lowerMensaje = mensaje.toLowerCase();
+    if (lowerMensaje.includes('miku')) {
+      // Remover "miku" del mensaje para obtener solo el contenido
+      const mensajeLimpio = mensaje.replace(/miku/gi, '').trim() || 'hola';
+      
+      const respuesta = await responderConMemoria(usuario, mensajeLimpio);
+      
+      if (respuesta) {
+        await conn.reply(m.chat, respuesta, m);
+      }
     }
     
   } catch (error) {
