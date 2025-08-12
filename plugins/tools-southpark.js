@@ -1,13 +1,8 @@
-/* País Info By WillZek 
-- https://github.com/WillZek 
-- https://whatsapp.com/channel/0029Vb1AFK6HbFV9kaB3b13W
-*/
-
 import fetch from 'node-fetch';
 
 let handler = async(m, { conn, text, usedPrefix, command }) => {
 
-if (!text) return m.reply(m.chat, `${emoji} Por favor, ingresa el nombre de algún pais.`, m);
+if (!text) return m.reply(m.chat, `${emoji} Por favor, ingresa el nombre de algún pais.`, m, rcanal);
 
 try {
 let api = `https://delirius-apiofc.vercel.app/tools/flaginfo?query=${text}`;
