@@ -4,7 +4,7 @@ let handler = async (m, { conn }) => {
     let user = global.db.data.users[m.sender] || {};
     user.weekly = user.weekly || 0;
 
-    const cooldown = 604800000; // 1 semana
+    const cooldown = 604800000; 
 
     if (new Date - user.weekly < cooldown) {
         return m.reply(`${emoji3} ¡Ya reclamaste tu regalo semanal! Vuelve en:\n *${msToTime((user.weekly + cooldown) - new Date())}*`);
