@@ -61,10 +61,11 @@ const handler = async (m, { conn }) => {
   const mensaje = m.text || m.body || '';
   if (!mensaje) return;
 
-  // Solo responde si el mensaje inicia con "Miku " (sin prefijo)
-  if (/^miku\s+/i.test(mensaje)) {
-    const texto = mensaje.replace(/^miku\s+/i, '');
-    const respuesta = await responder(usuario, texto);
+  // Responde si el mensaje inicia con "miku" (mayúsculas/minúsculas, espacios extra) o es solo "miku"
+  const match = mensaje.match(/^miku\s*(.*)/i);
+  if (match) {
+    const texto = match[1].trim();
+    const respuesta = await responder(usuario, texto || 'hola');
     if (respuesta) await conn.reply(m.chat, respuesta, m);
   }
 };
@@ -75,5 +76,3 @@ handler.command = ['ia-persona'];
 handler.register = true;
 
 export default handler;
-
-
