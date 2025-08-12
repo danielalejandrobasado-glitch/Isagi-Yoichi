@@ -1,9 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import readline from 'readline';
 const MEMORIA_FILE = 'memoria.json';
 
-// Importar getAIResponse del otro archivo
 let getAIResponse = null;
 try {
   const iaModule = await import(path.resolve(path.dirname(import.meta.url.replace('file://', '')), 'ia.js'));
@@ -12,12 +10,10 @@ try {
   getAIResponse = null;
 }
 
-// Países taurinos
 const paisesTaurinos = [
   'España', 'México', 'Colombia', 'Perú', 'Venezuela', 'Ecuador', 'Francia', 'Portugal'
 ];
 
-// Cargar memoria o inicializar
 let memoria = {};
 if (fs.existsSync(MEMORIA_FILE)) {
   memoria = JSON.parse(fs.readFileSync(MEMORIA_FILE, 'utf8'));
@@ -28,22 +24,17 @@ function guardarMemoria() {
 }
 
 async function responder(usuario, mensaje) {
-  // Guardar mensaje en memoria
   if (!memoria[usuario]) memoria[usuario] = [];
   memoria[usuario].push({ mensaje, fecha: new Date().toISOString() });
   guardarMemoria();
 
-  // Si existe getAIResponse, usar la API avanzada
   if (getAIResponse) {
     try {
       const respuesta = await getAIResponse(mensaje, usuario, `Responde como una persona, incluye países taurinos en la respuesta si es relevante.`);
       if (respuesta) return respuesta;
-    } catch (e) {
-      // Si falla, sigue con respuesta local
-    }
+    } catch (e) {}
   }
 
-  // Respuesta personalizada usando países taurinos
   if (mensaje.toLowerCase().includes('hola')) {
     const pais = paisesTaurinos[Math.floor(Math.random() * paisesTaurinos.length)];
     return `¡Hola ${usuario}! ¿Sabías que en ${pais} las corridas de toros son una tradición? ¿Cómo estás?`;
@@ -59,27 +50,23 @@ async function responder(usuario, mensaje) {
   if (mensaje.toLowerCase().includes('toros')) {
     return `Los países donde los toros son populares incluyen: ${paisesTaurinos.join(', ')}.`;
   }
-  // Respuesta genérica
   const pais = paisesTaurinos[Math.floor(Math.random() * paisesTaurinos.length)];
   return `Interesante, ${usuario}. En ${pais} también se habla mucho de esto. Cuéntame más.`;
 }
 
-// Simulación de entrada por consola
-definirUsuario();
-function definirUsuario() {
-  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-  rl.question('Escribe tu nombre de usuario: ', usuario => {
-    escucharMensajes(usuario, rl);
-  });
-}
+// Handler para WhatsApp bots
+const handler = async (m, { conn }) => {
+  const usuario = conn.getName ? conn.getName(m.sender) : m.sender;
+  const mensaje = m.text || m.body || '';
+  if (!mensaje) return;
+  const respuesta = await responder(usuario, mensaje);
+  if (respuesta) await conn.reply(m.chat, respuesta, m);
+};
 
-function escucharMensajes(usuario, rl) {
-  rl.setPrompt(`${usuario}> `);
-  rl.prompt();
-  rl.on('line', async input => {
-    // Responde automáticamente a cualquier mensaje
-    const respuesta = await responder(usuario, input);
-    console.log('miku:', respuesta);
-    rl.prompt();
-  });
-}
+handler.help = ['ia-persona'];
+handler.tags = ['ai'];
+handler.command = ['ia-persona'];
+handler.register = true;
+
+export default handler;
+
