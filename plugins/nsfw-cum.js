@@ -1,11 +1,9 @@
-//Codígo creado por Destroy wa.me/584120346669
-
 import fs from 'fs';
 import path from 'path';
 
 let handler = async (m, { conn, usedPrefix }) => {
 if (!db.data.chats[m.chat].nsfw && m.isGroup) {
-    return m.reply(`《✦》El contenido *NSFW* está desactivado en este grupo.\n> Un administrador puede activarlo con el comando » *#nsfw on*`);
+    return m.reply(`💙 El contenido *NSFW* está desactivado en este grupo.\n> Un administrador puede activarlo con el comando » *#nsfw on*`, m, rcanal);
     }
 
     let who;
@@ -52,7 +50,7 @@ if (!db.data.chats[m.chat].nsfw && m.isGroup) {
 
 handler.help = ['cum/leche @tag'];
 handler.tags = ['nsfw'];
-handler.command = ['cum','leche'];
+handler.command = ['cum','leche','venirse'];
 handler.group = true;
 
 export default handler;
