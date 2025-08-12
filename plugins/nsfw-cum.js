@@ -2,27 +2,33 @@ import fs from 'fs';
 import path from 'path';
 
 let handler = async (m, { conn, usedPrefix }) => {
-if (!db.data.chats[m.chat].nsfw && m.isGroup) {
-    return m.reply(`💙 El contenido *NSFW* está desactivado en este grupo.\n> Un administrador puede activarlo con el comando » *#nsfw on*`, m, rcanal);
+   
+    if (!db?.data?.chats?.[m.chat]?.nsfw && m.isGroup) {
+        return m.reply(`💙 El contenido *NSFW* está desactivado en este grupo.\n> Un administrador puede activarlo con el comando » *#nsfw on*`, m, rcanal);
     }
-
+    
     let who;
-    if (m.mentionedJid.length > 0) {
+    if (m.mentionedJid && m.mentionedJid.length > 0) {
         who = m.mentionedJid[0];
-    } else if (m.quoted) {
+    } else if (m.quoted && m.quoted.sender) {
         who = m.quoted.sender;
     } else {
         who = m.sender;
     }
-
-    let name = conn.getName(who);
-    let name2 = conn.getName(m.sender);
-
+    
+    
+    if (!who) {
+        who = m.sender;
+    }
+    
+    let name = conn.getName(who) || who;
+    let name2 = conn.getName(m.sender) || m.sender;
     let str;
-    if (m.mentionedJid.length > 0) {
-        str = `\`${name2}\` *se vino dentro de* \`${name || who}\`.`;
-    } else if (m.quoted) {
-        str = `\`${name2}\` *se vino dentro de* \`${name || who}\`.`;
+    
+    if (m.mentionedJid && m.mentionedJid.length > 0) {
+        str = `\`${name2}\` *se vino dentro de* \`${name}\`.`;
+    } else if (m.quoted && m.quoted.sender) {
+        str = `\`${name2}\` *se vino dentro de* \`${name}\`.`;
     } else {
         str = `\`${name2}\` *se vino dentro de...  Omitiremos eso*`.trim();
     }
@@ -42,9 +48,36 @@ if (!db.data.chats[m.chat].nsfw && m.isGroup) {
         
         const videos = [pp, pp2, pp3, pp4, pp5, pp6, pp7, pp8, pp9, pp10, pp11];
         const video = videos[Math.floor(Math.random() * videos.length)];
-
-        let mentions = [who];
-        conn.sendMessage(m.chat, { video: { url: video }, gifPlayback: true, caption: str, ptt: true, mentions }, { quoted: m });
+        
+        
+        let mentions = [];
+        if (who && typeof who === 'string' && who.includes('@')) {
+            mentions = [who];
+        }
+        
+        try {
+            await conn.sendMessage(m.chat, { 
+                video: { url: video }, 
+                gifPlayback: true, 
+                caption: str, 
+                ptt: true, 
+                mentions 
+            }, { quoted: m });
+        } catch (error) {
+            console.error('Error enviando mensaje:', error);
+            
+            try {
+                await conn.sendMessage(m.chat, { 
+                    video: { url: video }, 
+                    gifPlayback: true, 
+                    caption: str, 
+                    ptt: true 
+                }, { quoted: m });
+            } catch (fallbackError) {
+                console.error('Error en fallback:', fallbackError);
+                m.reply('❌ Error al enviar el video. Intenta nuevamente.');
+            }
+        }
     }
 }
 
