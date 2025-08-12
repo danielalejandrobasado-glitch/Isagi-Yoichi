@@ -239,24 +239,26 @@ const handler = async (m, { conn }) => {
       return;
     }
     
-    // DETECCIÓN MEJORADA: buscar "miku" al inicio o con espacios
-    const lowerMensaje = mensajeCompleto.toLowerCase();
-    const tieneMiku = lowerMensaje.includes('miku');
+    // DETECCIÓN EXACTA: buscar "miku" como activador
+    const palabras = mensajeCompleto.split(/\s+/); // Dividir en palabras
+    const tieneMiku = palabras.some(palabra => palabra.toLowerCase() === 'miku');
     
-    console.log(`🔍 ¿Contiene "miku"? ${tieneMiku}`);
+    console.log(`🔍 ¿Contiene palabra "miku"? ${tieneMiku}`);
+    console.log(`📋 Palabras detectadas:`, palabras);
     
     if (tieneMiku) {
       console.log('✅ ¡Detectado "miku"! Procesando...');
       
-      // Extraer el mensaje sin "miku"
+      // EXTRAER CONTENIDO: remover solo la palabra "miku" exacta
       let mensajeLimpio = mensajeCompleto
-        .replace(/miku/gi, '')  // Remover "miku" (insensible a mayúsculas)
+        .replace(/\bmiku\b/gi, '')  // Remover "miku" como palabra completa
         .replace(/^\s+|\s+$/g, '')  // Quitar espacios al inicio y final
-        .replace(/\s+/g, ' ');  // Normalizar espacios múltiples
+        .replace(/\s+/g, ' ');      // Normalizar espacios múltiples
       
-      // Si queda vacío después de quitar "miku", usar saludo por defecto
+      // Si después de quitar "miku" no queda nada, usar saludo
       if (!mensajeLimpio) {
         mensajeLimpio = 'hola';
+        console.log('📝 Mensaje vacío después de quitar "miku", usando: "hola"');
       }
       
       console.log(`📝 Mensaje limpio para procesar: "${mensajeLimpio}"`);
@@ -285,7 +287,7 @@ const handler = async (m, { conn }) => {
   }
 };
 
-// Función para obtener estadísticas
+
 export function estadisticasMemoria() {
   const usuarios = Object.keys(memoriaCompleta);
   const totalConversaciones = usuarios.reduce((total, user) => total + memoriaCompleta[user].length, 0);
@@ -302,7 +304,7 @@ export function estadisticasMemoria() {
   };
 }
 
-// Función para testear desde consola
+
 export async function testMiku(usuario = 'TestUser', mensaje = 'hola') {
   console.log('🧪 MODO TEST ACTIVADO');
   const respuesta = await responderConMemoria(usuario, mensaje);
@@ -315,10 +317,10 @@ export async function testMiku(usuario = 'TestUser', mensaje = 'hola') {
 export const chatConMemoria = responderConMemoria;
 export const obtenerStats = estadisticasMemoria;
 
-// Configuración del handler
+
 handler.help = ['miku'];
 handler.tags = ['ai', 'chat'];
-handler.command = /^.*$/; // Acepta cualquier mensaje
+handler.command = /^.*$/; 
 handler.register = true;
 handler.limit = false;
 
