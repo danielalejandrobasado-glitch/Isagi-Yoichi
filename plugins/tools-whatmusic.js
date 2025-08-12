@@ -9,15 +9,15 @@ const acr = new acrcloud({
 let handler = async(m, { conn, text }) => {
    let q = m.quoted ? m.quoted : m
    if (!q.mimetype || !q.mimetype.includes("audio")) {
-      return m.reply("🎤💙 Por favor, responde al audio del cual deseas buscar el título en el mundo virtual. ✨🎵")
+      return m.reply("💙 Por favor, responde al audio del cual deseas buscar el título en el mundo virtual. 🎵", m, rcanal)
    }
    m.react('🎤')
    let buffer = await q.download()
    try {
       let data = await whatmusic(buffer)
-      if (!data.length) return m.reply("🎵💙 No se encontraron datos de la canción en el concierto virtual ✨")
+      if (!data.length) return m.reply("🎵💙 No se encontraron datos de la canción en el concierto virtual ✨", m, rcanal)
 
-      let cap = "🎤💙 H A T S U N E  M I K U - M U S I C  V I R T U A L 🎵✨\n\n"
+      let cap = "💙 H A T S U N E  M I K U - M U S I C  V I R T U A L 🎵\n\n"
       for (let result of data) {
          cap += `> ✐ Título » ${result.title}\n`
          cap += `> ✦ Artista » ${result.artist}\n`
@@ -30,11 +30,11 @@ let handler = async(m, { conn, text }) => {
             contextInfo: {
                mentionedJid: conn.parseMention(cap),
                externalAdReply: {
-                  title: '✧ Whats • Music ✧',
+                  title: '💙 Whats • Music 💙',
                   mediaType: 1,
                   previewType: 0,
                   renderLargerThumbnail: true,
-                  thumbnail: await (await fetch('https://raw.githubusercontent.com/Brauliovh3/HATSUNE-MIKU/main/Contenido/1742781294508.jpeg')).buffer(),
+                  thumbnail: await (await fetch('https://www.xtrafondos.com/wallpapers/hatsune-miku-chica-anime-musica-dj-4171.jpg')).buffer(),
                   sourceUrl: ''
                }
             }
