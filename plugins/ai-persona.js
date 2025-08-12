@@ -3,7 +3,6 @@ import axios from 'axios';
 
 const MEMORIA_FILE = 'memoria_conversaciones.json';
 const GROQ_API_KEY = "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";
-const GEMINI_API_KEY = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"; // Reemplaza con tu clave real
 
 let memoriaCompleta = {};
 if (fs.existsSync(MEMORIA_FILE)) {
@@ -22,15 +21,15 @@ function guardarMemoria() {
   }
 }
 
-function obtenerHistorial(usuario, limite = 10) {
-  if (!memoriaCompleta[usuario]) return '';
+function obtenerHistorial(usuario, limite = 6) {
+  if (!memoriaCompleta[usuario] || memoriaCompleta[usuario].length === 0) return '';
   
   const conversaciones = memoriaCompleta[usuario];
   const recientes = conversaciones.slice(-limite);
   
   return recientes.map(conv => 
-    `[${conv.fecha}] Usuario: ${conv.mensaje}\nIA: ${conv.respuesta}`
-  ).join('\n');
+    `Usuario: ${conv.mensaje}\nMiku: ${conv.respuesta}`
+  ).join('\n\n');
 }
 
 function agregarAMemoria(usuario, mensaje, respuesta) {
@@ -41,41 +40,51 @@ function agregarAMemoria(usuario, mensaje, respuesta) {
   memoriaCompleta[usuario].push({
     mensaje: mensaje,
     respuesta: respuesta,
-    fecha: new Date().toISOString(),
+    fecha: new Date().toLocaleString('es-ES'),
     timestamp: Date.now()
   });
   
-  // Limitar memoria por usuario (últimas 100 conversaciones)
-  if (memoriaCompleta[usuario].length > 100) {
-    memoriaCompleta[usuario] = memoriaCompleta[usuario].slice(-100);
+  // Limitar memoria por usuario (últimas 50 conversaciones)
+  if (memoriaCompleta[usuario].length > 50) {
+    memoriaCompleta[usuario] = memoriaCompleta[usuario].slice(-50);
   }
   
   guardarMemoria();
 }
 
-// Respuestas locales para cuando las APIs fallen
+// Respuestas locales mejoradas
 const respuestasLocales = {
   saludos: [
-    "¡Hola! Me alegra verte de nuevo. ¿En qué puedo ayudarte hoy?",
-    "¡Qué tal! ¿Cómo has estado? Cuéntame qué hay de nuevo",
-    "¡Hola! Siempre es un placer hablar contigo"
+    "¡Hola! Me alegra mucho verte 😊 ¿Cómo has estado?",
+    "¡Qué tal! ¿Cómo te va? Cuéntame qué hay de nuevo",
+    "¡Hola! Siempre es un placer hablar contigo ✨",
+    "¡Hey! ¿Cómo estás hoy? Espero que muy bien"
   ],
   despedidas: [
-    "¡Que tengas un excelente día! Siempre recordaré nuestra conversación",
-    "¡Hasta la próxima! Estaré aquí cuando quieras hablar",
-    "¡Cuídate mucho! Espero verte pronto por aquí"
+    "¡Que tengas un excelente día! Cuídate mucho 💙",
+    "¡Hasta la próxima! Fue genial hablar contigo",
+    "¡Nos vemos pronto! Que todo te vaya súper bien",
+    "¡Adiós! Siempre me alegra platicar contigo"
+  ],
+  preguntas: [
+    "¡Qué pregunta tan interesante! Déjame pensar...",
+    "Mmm, eso es algo que vale la pena reflexionar",
+    "¡Buena pregunta! Me has puesto a pensar",
+    "Interesante punto, me gusta cómo piensas"
   ],
   memoria: [
-    "Claro que recuerdo nuestras conversaciones anteriores. ",
-    "Por supuesto, tengo presente lo que me has contado antes. ",
-    "Sí, recuerdo perfectamente lo que hemos hablado. "
+    "¡Por supuesto que recuerdo! ",
+    "¡Claro que sí! Tengo muy buena memoria. ",
+    "¡Sí, recuerdo perfectamente! ",
+    "¡Por supuesto! No olvido nuestras charlas. "
   ],
   default: [
-    "Es interesante lo que dices, cuéntame más detalles",
-    "Me parece fascinante tu perspectiva sobre eso",
-    "¡Qué curioso! Me gustaría profundizar en el tema",
-    "Entiendo tu punto de vista, es muy válido",
-    "Esa es una reflexión muy interesante"
+    "¡Qué interesante lo que dices! Cuéntame más 😊",
+    "Me parece fascinante tu perspectiva",
+    "¡Wow! Eso suena realmente genial",
+    "Entiendo perfectamente tu punto de vista",
+    "¡Qué curioso! Me encanta aprender cosas nuevas",
+    "Esa es una reflexión muy inteligente"
   ]
 };
 
@@ -83,114 +92,90 @@ function getRespuestaLocal(query, username) {
   const lowerQuery = query.toLowerCase();
   let responses;
   
-  if (lowerQuery.includes('hola') || lowerQuery.includes('buenas') || lowerQuery.includes('hi')) {
+  if (lowerQuery.includes('hola') || lowerQuery.includes('buenas') || lowerQuery.includes('hi') || lowerQuery.includes('hey')) {
     responses = respuestasLocales.saludos;
-  } else if (lowerQuery.includes('adios') || lowerQuery.includes('chao') || lowerQuery.includes('hasta luego')) {
+  } else if (lowerQuery.includes('adios') || lowerQuery.includes('chao') || lowerQuery.includes('hasta') || lowerQuery.includes('bye')) {
     responses = respuestasLocales.despedidas;
-  } else if (lowerQuery.includes('recuerda') || lowerQuery.includes('memoria') || lowerQuery.includes('antes')) {
+  } else if (lowerQuery.includes('?') || lowerQuery.includes('qué') || lowerQuery.includes('cómo') || lowerQuery.includes('por qué') || lowerQuery.includes('cuál')) {
+    responses = respuestasLocales.preguntas;
+  } else if (lowerQuery.includes('recuerda') || lowerQuery.includes('memoria') || lowerQuery.includes('antes') || lowerQuery.includes('dijiste')) {
     const memoria = respuestasLocales.memoria[Math.floor(Math.random() * respuestasLocales.memoria.length)];
-    const historial = obtenerHistorial(username, 3);
-    return `${memoria}${historial ? 'Algunas de nuestras conversaciones recientes:\n' + historial : 'Aunque aún no tenemos mucho historial juntos.'}`;
+    const historial = obtenerHistorial(username, 2);
+    return `${memoria}${historial ? '\n\nAlgunas de nuestras conversaciones recientes:\n' + historial : 'Aunque aún no tenemos mucho historial juntos, ¡pero ya empezamos a construir nuestra amistad!'}`;
   } else {
     responses = respuestasLocales.default;
   }
   
   const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-  return randomResponse;
+  return `${randomResponse} ${username ? username : ''}`.trim();
 }
 
 async function getAIResponse(query, username) {
-  // Obtener historial para contexto
-  const historialCompleto = obtenerHistorial(username, 8);
+  const historialCompleto = obtenerHistorial(username, 4);
   
-  const promptConMemoria = `Eres una IA amigable y natural llamada Miku. Tienes una excelente memoria y recuerdas todas las conversaciones pasadas con cada usuario.
+  const promptConMemoria = `Eres Miku, una IA amigable, natural y con muy buena memoria. Te encanta conversar y siempre recuerdas las conversaciones anteriores.
 
-HISTORIAL DE CONVERSACIONES CON ${username}:
-${historialCompleto}
-
-INSTRUCCIONES:
-- Sé natural, amigable y conversacional
-- Usa el historial para dar respuestas más personalizadas y coherentes
-- Si el usuario hace referencia a algo que dijeron antes, reconócelo
-- Mantén un tono casual pero inteligente
-- No uses demasiados emojis, solo ocasionalmente
+${historialCompleto ? `CONVERSACIONES ANTERIORES CON ${username}:\n${historialCompleto}\n\n` : ''}INSTRUCCIONES:
+- Sé muy natural, amigable y conversacional
+- USA el historial para dar respuestas personalizadas y coherentes
+- Si el usuario menciona algo que dijeron antes, reconócelo específicamente
+- Mantén un tono casual, divertido pero inteligente
+- Usa emojis ocasionalmente pero no en exceso
 - Responde de forma concisa pero completa
-- Si no tienes historial previo, actúa como si fuera la primera conversación
+- Si no hay historial previo, actúa como si fuera tu primera conversación
+- Siempre sé empática y comprensiva
 
-Usuario: ${query}
-IA:`;
+Mensaje actual de ${username}: ${query}
+
+Tu respuesta (como Miku):`;
 
   const apis = [
     {
-      name: "Groq Llama 3.1",
+      name: "Groq Llama 3.1 Instant",
       call: async () => {
         const response = await axios.post(
           'https://api.groq.com/openai/v1/chat/completions',
           {
             model: "llama-3.1-8b-instant",
             messages: [
-              { role: "system", content: promptConMemoria },
-              { role: "user", content: query }
+              { role: "system", content: "Eres Miku, una IA amigable con excelente memoria que recuerda todas las conversaciones anteriores." },
+              { role: "user", content: promptConMemoria }
             ],
-            temperature: 0.8,
-            max_tokens: 400
+            temperature: 0.9,
+            max_tokens: 300,
+            top_p: 0.9
           },
           {
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${GROQ_API_KEY}`
             },
-            timeout: 25000
+            timeout: 20000
           }
         );
         return response.data.choices[0]?.message?.content;
       }
     },
     {
-      name: "Google Gemini",
-      call: async () => {
-        const response = await axios.post(
-          'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
-          {
-            contents: [{
-              parts: [{ text: promptConMemoria }]
-            }],
-            generationConfig: {
-              temperature: 0.8,
-              maxOutputTokens: 400
-            }
-          },
-          {
-            headers: { 
-              'Content-Type': 'application/json',
-              'x-goog-api-key': GEMINI_API_KEY
-            },
-            timeout: 25000
-          }
-        );
-        return response.data.candidates[0]?.content?.parts[0]?.text;
-      }
-    },
-    {
-      name: "Groq Llama 4 Scout", 
+      name: "Groq Llama 4 Scout",
       call: async () => {
         const response = await axios.post(
           'https://api.groq.com/openai/v1/chat/completions',
           {
             model: "meta-llama/llama-4-scout-17b-16e-instruct",
             messages: [
-              { role: "system", content: promptConMemoria },
-              { role: "user", content: query }
+              { role: "system", content: "Eres Miku, una IA amigable con excelente memoria." },
+              { role: "user", content: promptConMemoria }
             ],
-            temperature: 0.7,
-            max_tokens: 400
+            temperature: 0.8,
+            max_tokens: 300
           },
           {
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${GROQ_API_KEY}`
             },
-            timeout: 25000
+            timeout: 20000
           }
         );
         return response.data.choices[0]?.message?.content;
@@ -198,80 +183,109 @@ IA:`;
     }
   ];
 
-  // Probar APIs en orden
+  // Probar APIs
   for (const api of apis) {
     try {
-      console.log(`Intentando con ${api.name}...`);
+      console.log(`🔄 Probando ${api.name}...`);
       const result = await api.call();
       if (result && result.trim()) {
-        console.log(`✅ Éxito con ${api.name}`);
+        console.log(`✅ Funcionó: ${api.name}`);
         return result.trim();
       }
     } catch (error) {
-      console.log(`❌ Falló ${api.name}:`, error.message);
+      console.log(`❌ Error en ${api.name}:`, error.response?.data?.error || error.message);
       continue;
     }
   }
 
-  // Fallback local si todas las APIs fallan
-  console.log('🔄 Usando respuesta local como fallback');
+  // Fallback local
+  console.log('🔄 Usando respuesta local');
   return getRespuestaLocal(query, username);
 }
 
 async function responderConMemoria(usuario, mensaje) {
   try {
-    // Limpiar el mensaje
     const mensajeLimpio = mensaje.trim();
-    if (!mensajeLimpio) return "¡Hola! ¿En qué puedo ayudarte?";
+    if (!mensajeLimpio) return "¡Hola! ¿En qué puedo ayudarte? 😊";
     
-    console.log(`💬 ${usuario}: ${mensajeLimpio}`);
+    console.log(`💬 ${usuario} dice: "${mensajeLimpio}"`);
     
-    // Obtener respuesta de IA
     const respuesta = await getAIResponse(mensajeLimpio, usuario);
     
     // Guardar en memoria
     agregarAMemoria(usuario, mensajeLimpio, respuesta);
     
-    console.log(`🤖 IA: ${respuesta}`);
+    console.log(`🤖 Miku responde: "${respuesta}"`);
     return respuesta;
     
   } catch (error) {
-    console.error('Error en responderConMemoria:', error);
-    return "Disculpa, tuve un pequeño problema. ¿Puedes repetir lo que dijiste?";
+    console.error('❌ Error en responderConMemoria:', error);
+    return "¡Ups! Tuve un pequeño problema técnico 😅 ¿Puedes repetir lo que dijiste?";
   }
 }
 
-// Handler para WhatsApp bots (compatible con tu estructura actual)
+// Handler CORREGIDO para WhatsApp
 const handler = async (m, { conn }) => {
   try {
+    // Obtener información del usuario y mensaje
     const usuario = conn.getName ? conn.getName(m.sender) : m.sender.split('@')[0];
-    const mensaje = m.text || m.body || '';
+    const mensajeCompleto = (m.text || m.body || '').toString();
     
-    if (!mensaje.trim()) return;
+    // Debug: mostrar mensaje recibido
+    console.log(`📨 Mensaje recibido de ${usuario}: "${mensajeCompleto}"`);
     
-    // Detectar si el mensaje contiene "miku" para activar la IA
-    const lowerMensaje = mensaje.toLowerCase();
-    if (lowerMensaje.includes('miku')) {
-      // Remover "miku" del mensaje para obtener solo el contenido
-      const mensajeLimpio = mensaje.replace(/miku/gi, '').trim() || 'hola';
+    if (!mensajeCompleto.trim()) {
+      console.log('⚠️ Mensaje vacío, ignorando...');
+      return;
+    }
+    
+    // DETECCIÓN MEJORADA: buscar "miku" al inicio o con espacios
+    const lowerMensaje = mensajeCompleto.toLowerCase();
+    const tieneMiku = lowerMensaje.includes('miku');
+    
+    console.log(`🔍 ¿Contiene "miku"? ${tieneMiku}`);
+    
+    if (tieneMiku) {
+      console.log('✅ ¡Detectado "miku"! Procesando...');
       
+      // Extraer el mensaje sin "miku"
+      let mensajeLimpio = mensajeCompleto
+        .replace(/miku/gi, '')  // Remover "miku" (insensible a mayúsculas)
+        .replace(/^\s+|\s+$/g, '')  // Quitar espacios al inicio y final
+        .replace(/\s+/g, ' ');  // Normalizar espacios múltiples
+      
+      // Si queda vacío después de quitar "miku", usar saludo por defecto
+      if (!mensajeLimpio) {
+        mensajeLimpio = 'hola';
+      }
+      
+      console.log(`📝 Mensaje limpio para procesar: "${mensajeLimpio}"`);
+      
+      // Obtener respuesta
       const respuesta = await responderConMemoria(usuario, mensajeLimpio);
       
       if (respuesta) {
+        console.log('📤 Enviando respuesta...');
         await conn.reply(m.chat, respuesta, m);
+        console.log('✅ Respuesta enviada correctamente');
+      } else {
+        console.log('⚠️ No se generó respuesta');
       }
+    } else {
+      console.log('ℹ️ Mensaje sin "miku", ignorando...');
     }
     
   } catch (error) {
-    console.error('Error en handler:', error);
-    await conn.reply(m.chat, "Disculpa, tuve un problema técnico. ¿Puedes intentar de nuevo?", m);
+    console.error('❌ ERROR CRÍTICO en handler:', error);
+    try {
+      await conn.reply(m.chat, "¡Ups! Tuve un problema técnico 😅 ¿Puedes intentar de nuevo?", m);
+    } catch (replyError) {
+      console.error('❌ Error enviando mensaje de error:', replyError);
+    }
   }
 };
 
-// Función para usar en otros contextos (no solo WhatsApp)
-export const chatConMemoria = responderConMemoria;
-
-// Función para obtener estadísticas de memoria
+// Función para obtener estadísticas
 export function estadisticasMemoria() {
   const usuarios = Object.keys(memoriaCompleta);
   const totalConversaciones = usuarios.reduce((total, user) => total + memoriaCompleta[user].length, 0);
@@ -279,26 +293,33 @@ export function estadisticasMemoria() {
   return {
     usuariosRegistrados: usuarios.length,
     conversacionesTotales: totalConversaciones,
+    ultimaActualizacion: new Date().toLocaleString('es-ES'),
     usuarios: usuarios.map(user => ({
       nombre: user,
       conversaciones: memoriaCompleta[user].length,
-      ultimaConversacion: memoriaCompleta[user][memoriaCompleta[user].length - 1]?.fecha
+      ultimaConversacion: memoriaCompleta[user][memoriaCompleta[user].length - 1]?.fecha || 'N/A'
     }))
   };
 }
 
-// Función para borrar memoria de un usuario específico
-export function borrarMemoriaUsuario(usuario) {
-  if (memoriaCompleta[usuario]) {
-    delete memoriaCompleta[usuario];
-    guardarMemoria();
-    return true;
-  }
-  return false;
+// Función para testear desde consola
+export async function testMiku(usuario = 'TestUser', mensaje = 'hola') {
+  console.log('🧪 MODO TEST ACTIVADO');
+  const respuesta = await responderConMemoria(usuario, mensaje);
+  console.log(`Test: ${usuario} -> "${mensaje}"`);
+  console.log(`Respuesta: "${respuesta}"`);
+  return respuesta;
 }
 
-handler.help = ['ia-memoria'];
-handler.tags = ['ai'];
+// Exportaciones
+export const chatConMemoria = responderConMemoria;
+export const obtenerStats = estadisticasMemoria;
+
+// Configuración del handler
+handler.help = ['miku'];
+handler.tags = ['ai', 'chat'];
+handler.command = /^.*$/; // Acepta cualquier mensaje
 handler.register = true;
+handler.limit = false;
 
 export default handler;
