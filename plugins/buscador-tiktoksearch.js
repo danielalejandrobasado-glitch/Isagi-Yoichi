@@ -9,7 +9,7 @@ const {
 
 let handler = async (message, { conn, text, usedPrefix, command }) => {
   if (!text) {
-    return conn.reply(message.chat, "❀ Por favor, ingrese un texto para realizar una búsqueda en tiktok.", message, rcanal);
+    return conn.reply(message.chat, "💙 Por favor, ingrese un texto para realizar una búsqueda en tiktok.", message, rcanal);
   }
 
   async function createVideoMessage(url) {
@@ -29,13 +29,13 @@ let handler = async (message, { conn, text, usedPrefix, command }) => {
   }
 
   try {
-    conn.reply(message.chat, '✧ *ENVIANDO SUS RESULTADOS..*', message, {
+    conn.reply(message.chat, '💙 *ENVIANDO SUS RESULTADOS..*', message, {
       contextInfo: { 
         externalAdReply: { 
           mediaUrl: null, 
           mediaType: 1, 
           showAdAttribution: true,
-          title: '♡  ͜ ۬︵࣪᷼⏜݊᷼𝘿𝙚𝙨𝙘𝙖𝙧𝙜𝙖𝙨⏜࣪᷼︵۬ ͜ ',
+          title: '🅼🅸🅺🆄',
           body: dev,
           previewType: 0, 
           thumbnail: avatar,
