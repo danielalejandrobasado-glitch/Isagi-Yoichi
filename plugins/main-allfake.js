@@ -34,7 +34,7 @@ global.namechannel2 = '💙HATSUNE MIKU CHANNEL💙'
 global.namegrupo = '💙HATSUNE MIKU CHANNEL💙'
 global.namecomu = '💙HATSUNE MIKU CHANNEL💙'
 global.listo = '*Aquí tienes ฅ^•ﻌ•^ฅ*'
-global.fotoperfil = await conn.profilePictureUrl(m.sender, 'image').catch(_ => 'https://files.catbox.moe/x0n79u.webp')
+global.fotoperfil = await conn.profilePictureUrl(m.sender, 'image').catch(_ => 'https://files.catbox.moe/3hruyj.png')
 
 global.canalIdM = ["120363315369913363@newsletter", "120363315369913363@newsletter"]
 global.canalNombreM = ["💙HATSUNE MIKU CHANNEL💙"]
