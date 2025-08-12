@@ -54,13 +54,19 @@ async function responder(usuario, mensaje) {
   return `Interesante, ${usuario}. En ${pais} también se habla mucho de esto. Cuéntame más.`;
 }
 
+
 // Handler para WhatsApp bots
 const handler = async (m, { conn }) => {
   const usuario = conn.getName ? conn.getName(m.sender) : m.sender;
   const mensaje = m.text || m.body || '';
   if (!mensaje) return;
-  const respuesta = await responder(usuario, mensaje);
-  if (respuesta) await conn.reply(m.chat, respuesta, m);
+
+  // Solo responde si el mensaje inicia con "Miku " (sin prefijo)
+  if (/^miku\s+/i.test(mensaje)) {
+    const texto = mensaje.replace(/^miku\s+/i, '');
+    const respuesta = await responder(usuario, texto);
+    if (respuesta) await conn.reply(m.chat, respuesta, m);
+  }
 };
 
 handler.help = ['ia-persona'];
@@ -69,4 +75,5 @@ handler.command = ['ia-persona'];
 handler.register = true;
 
 export default handler;
+
 
