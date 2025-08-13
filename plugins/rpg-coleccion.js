@@ -43,10 +43,10 @@ let handler = async (m, { conn }) => {
         
         collection.forEach(waifu => rarityCount[waifu.rarity.toLowerCase()]++);
         
-        let message = `╭━━━━『💙*VOCALOID COLLECTION*💙』━━━━╮\n\n`;
+        let message = `╭━━『💙 *VOCALOID COLLECTION* 💙』━━╮\n\n`;
         
        
-        message += `❯💙*RESUMEN DE COLECCIÓN*💙❮\n`;
+        message += `❯💙 *RESUMEN DE COLECCIÓN* 💙❮\n`;
         message += `\n┌──『 Rareza 』───『 Cantidad 』──┐\n`;
         message += `│ 🔴 Legendaria  │ ${rarityCount['Legendaria'].toString().padEnd(3)} │ ${createBar(rarityCount['Legendaria'], 10)} │\n`;
         message += `│ 🟡 Ultra Rara  │ ${rarityCount['ultra rara'].toString().padEnd(3)} │ ${createBar(rarityCount['ultra rara'], 10)} │\n`;
@@ -89,7 +89,7 @@ let handler = async (m, { conn }) => {
             }
         }
         
-        message += `\n╰━━━━『 FIN DE COLECCIÓN 』━━━━╯`;
+        message += `\n╰━━『 FIN DE COLECCIÓN 』━━╯`;
         
         return conn.reply(m.chat, message, m);
     } catch (e) {
@@ -107,7 +107,7 @@ function createBar(value, maxSize) {
 
 handler.help = ['collection', 'coleccion']
 handler.tags = ['rpg']
-handler.command = /^(collection|coleccion|col|personajes|inventario)$/i
+handler.command = /^(collection|coleccion|col|personajes|harem|waifus)$/i
 handler.group = true
 
 export default handler;
