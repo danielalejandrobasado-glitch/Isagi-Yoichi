@@ -8,7 +8,7 @@ let handler = async (m, { conn }) => {
 
   if (cooldowns[senderId] && Date.now() - cooldowns[senderId] < tiempoEspera * 1000) {
     let tiempoRestante = segundosAHMS(Math.ceil((cooldowns[senderId] + tiempoEspera * 1000 - Date.now()) / 1000));
-    return conn.reply(m.chat, `⏱️ Ya has cazado en el mundo virtual recientemente. Espera ⏳ *${tiempoRestante}* antes de intentar de nuevo en el concierto virtual. 🎤💙`, m);
+    return conn.reply(m.chat, `⏱️ Ya has cazado en el mundo virtual recientemente. Espera ⏳ *${tiempoRestante}* antes de intentar de nuevo en el concierto virtual. 💙`, m, rcanal);
   }
 
   cooldowns[senderId] = Date.now();
@@ -50,7 +50,7 @@ let handler = async (m, { conn }) => {
     users[senderId].health -= evento.health;
   }
 
-  let img = 'https://raw.githubusercontent.com/Brauliovh3/HATSUNE-MIKU/main/Contenido/1745557967796.jpeg';
+  let img = 'https://qu.ax/wltOu.png';
   let info = `╭━〔 Gremio de Aventureros 〕\n` +
              `┃Misión: *${evento.nombre}*\n` +
              `┃Evento: ${evento.mensaje}\n` +
