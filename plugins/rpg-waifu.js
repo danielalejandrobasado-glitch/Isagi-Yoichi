@@ -368,7 +368,7 @@ let handler = async (m, { conn }) => {
             const remainingTime = 900000 - timeDiff;
             const minutes = Math.floor(remainingTime / 60000);
             const seconds = Math.floor((remainingTime % 60000) / 1000);
-            return m.reply(`⏰ Debes esperar ${minutes}m ${seconds}s para volver a usar este comando.`, m, rcanal);
+            return m.reply(`⏰ Debes esperar ${minutes}m ${seconds}s para volver a usar este comando.`);
         }
     }
 
@@ -434,6 +434,7 @@ handler.group = true
 handler.cooldown = 900000
 
 export default handler
+
 
 
 
