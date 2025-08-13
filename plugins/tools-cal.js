@@ -4,7 +4,7 @@ let handler = async (m, { conn, text }) => {
   if (id in conn.math) {
     clearTimeout(conn.math[id][3])
     delete conn.math[id]
-    m.reply('🎵✨ Cancelando cálculo musical... ✨🎵 ')
+    m.reply('🎵 Cancelando cálculo musical... 🎵 ')
   }
   let val = text
     .replace(/[^0-9\-\/+*×÷πEe()piPI/]/g, '')
@@ -24,10 +24,10 @@ let handler = async (m, { conn, text }) => {
     console.log(val)
     let result = (new Function('return ' + val))()
     if (!result) throw result
-    m.reply(`🎤💙 *${format}* = _${result}_ 🎵✨`)
+    m.reply(`💙 *${format}* = _${result}_ 🎵`)
   } catch (e) {
-    if (e == undefined) return m.reply(`🎤💙 ¡Ingresa la ecuación musical que quieres calcular! 💙🎤\n\n✨ Símbolos compatibles: -, +, *, /, ×, ÷, π, e, (, ) ✨`)
-    return m.reply(`🎵💫 Formato incorrecto en tu partitura matemática 💫🎵\n\n🎶 Solo puedes usar números 0-9 y los símbolos: -, +, *, /, ×, ÷, π, e, (, ) 🎶`)
+    if (e == undefined) return m.reply(`💙 ¡Ingresa la ecuación musical que quieres calcular! 💙\n\n✨ Símbolos compatibles: -, +, *, /, ×, ÷, π, e, (, ) ✨`)
+    return m.reply(`🎵 Formato incorrecto en tu partitura matemática 🎵\n\n🎶 Solo puedes usar números 0-9 y los símbolos: -, +, *, /, ×, ÷, π, e, (, ) 🎶`)
   }
 }
 handler.help = ['cal *<ecuacion>*']
