@@ -8,7 +8,7 @@ let handler = async (m, { conn, text, command }) => {
 
   if (cooldowns[m.sender] && Date.now() - cooldowns[m.sender] < tiempoEspera * 1000) {
     let tiempoRestante = segundosAHMS(Math.ceil((cooldowns[m.sender] + tiempoEspera * 1000 - Date.now()) / 1000));
-    m.reply(`🎤💙 Ya exploraste el mundo virtual recientemente. Espera ⏳ *${tiempoRestante}* antes de aventurarte de nuevo en el concierto virtual. ✨🎵`);
+    m.reply(`💙 Ya exploraste el mundo virtual recientemente. Espera ⏳ *${tiempoRestante}* antes de aventurarte de nuevo en el concierto virtual. 🎵`);
     return;
   }
 
@@ -34,7 +34,7 @@ let handler = async (m, { conn, text, command }) => {
   users[senderId].exp += evento.exp;
   users[senderId].health += evento.health;
 
-  let img = 'https://raw.githubusercontent.com/Brauliovh3/HATSUNE-MIKU/main/Contenido/1745557951898.jpeg';
+  let img = 'https://qu.ax/QBPYn.png';
   let info = `╭━〔 Exploración en el Bosque〕\n` +
              `┃Misión: *${evento.nombre}*\n` +
              `┃Evento: ${evento.mensaje}\n` +
