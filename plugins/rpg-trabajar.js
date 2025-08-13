@@ -5,12 +5,12 @@ let user = global.db.data.users[m.sender]
 let tiempo = 5 * 60
 if (cooldowns[m.sender] && Date.now() - cooldowns[m.sender] < tiempo * 1000) {
 const tiempo2 = segundosAHMS(Math.ceil((cooldowns[m.sender] + tiempo * 1000 - Date.now()) / 1000))
-conn.reply(m.chat, `🎵💙 Necesitas descansar tu voz virtual... 💙🎵\n\n✨ Debes esperar *${tiempo2}* para trabajar en el próximo concierto de nuevo ✨`, m)
+conn.reply(m.chat, `💙 Necesitas descansar tu voz virtual... 💙\n\n✨ Debes esperar *${tiempo2}* para trabajar en el próximo concierto de nuevo ✨`, m, rcanal)
 return
 }
 let rsl = Math.floor(Math.random() * 500)
 cooldowns[m.sender] = Date.now()
-await conn.reply(m.chat, `🎤💙 ${pickRandom(trabajo)} *${toNum(rsl)}* ( *${rsl}* ) ${moneda} 🎵✨`, m)
+await conn.reply(m.chat, `💙 ${pickRandom(trabajo)} *${toNum(rsl)}* ( *${rsl}* ) ${moneda} 🎵`, m, rcanal)
 user.coin += rsl
 }
 
@@ -44,7 +44,7 @@ function pickRandom(list) {
 return list[Math.floor(list.length * Math.random())];
 }
 
-// Thanks to FG98
+
 const trabajo = [
    "🎤 Trabajas como compositora virtual y ganas",
    "🎵 Trabajas en un estudio de grabación holográfico, ganando",
@@ -79,4 +79,5 @@ const trabajo = [
    "🎶 Trabajas como musicóloga virtual y ganas",
    "💫 Vendiste melodías digitales y obtuviste",
    "✨ Reparas las máquinas de ritmo y recibes",
+   "💥 Trabajaste vendiendo fruna y ganaste"
 ] 
