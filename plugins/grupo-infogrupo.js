@@ -4,7 +4,7 @@ const handler = async (m, {conn, participants, groupMetadata}) => {
   const groupAdmins = participants.filter((p) => p.admin)
   const listAdmin = groupAdmins.map((v, i) => `${i + 1}. @${v.id.split('@')[0]}`).join('\n')
   const owner = groupMetadata.owner || groupAdmins.find((p) => p.admin === 'superadmin')?.id || m.chat.split`-`[0] + '@s.whatsapp.net'
-  const text = `🎤💙 *✧･ﾟ INFO DEL CONCIERTO VIRTUAL ﾟ･✧* 💙🎤
+  const text = `🎤 *･ﾟ INFO DEL CONCIERTO VIRTUAL ﾟ･* 💙
 🎵 *ID del Escenario:* ${groupMetadata.id}
 ✨ *Nombre del Concierto:* ${groupMetadata.subject}
 🌟 *Fanáticos:* ${participants.length} Participantes
