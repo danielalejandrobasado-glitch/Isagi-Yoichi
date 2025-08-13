@@ -11,11 +11,11 @@ let gold = pickRandom([20, 5, 7, 8, 88, 40, 50]);
 let coal = pickRandom([20, 5, 7, 8, 88, 40, 50, 80, 70, 60, 100, 120, 600, 700, 64]);
 let stone = pickRandom([200, 500, 700, 800, 900, 4000, 300]);
 
-let img = 'https://files.catbox.moe/ewiruf.jpg';
+let img = 'https://qu.ax/HiPSu.jpg';
 let time = user.lastmiming + 600000;
 
 if (new Date() - user.lastmiming < 600000) {
-return conn.reply(m.chat, `🎤💙 Debes esperar ${msToTime(time - new Date())} para volver a minar en el mundo virtual. ✨🎵`, m);
+return conn.reply(m.chat, `💙 Debes esperar ${msToTime(time - new Date())} para volver a minar en el mundo virtual. 🎵`, m, rcanal);
 }
 
 let hasil = Math.floor(Math.random() * 1000);
@@ -27,7 +27,7 @@ let info = `⛏️ *Te has adentrando en lo profundo de las cuevas*\n\n` +
 `🔩 *Hierro*: ${iron}\n` +
 `🏅 *Oro*: ${gold}\n` +
 `🕋 *Carbón*: ${coal}\n` +
-`🪨 *Piedra*: ${stone}`;
+`🗻 *Piedra*: ${stone}`;
 
 await conn.sendFile(m.chat, img, 'yuki.jpg', info, fkontak);
 await m.react('⛏️');
