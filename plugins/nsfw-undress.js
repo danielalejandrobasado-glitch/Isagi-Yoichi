@@ -1,14 +1,9 @@
-/* 
-
-🎤💙 https://github.com/Brauliovh3/HATSUNE-MIKU.git 
-*/
-
 import fs from 'fs'
 import path from 'path'
 
 let handler = async (m, { conn, usedPrefix }) => {
 if (!db.data.chats[m.chat].nsfw && m.isGroup) {
-    return m.reply(`《✦》El contenido *NSFW* está desactivado en este grupo.\n> Un administrador puede activarlo con el comando » *#nsfw on*`)
+    return m.reply(`💙 El contenido *NSFW* está desactivado en este grupo.\n> Un administrador puede activarlo con el comando » *#nsfw on*`)
     }
     let who = m.mentionedJid.length > 0 ? m.mentionedJid[0] : (m.quoted ? m.quoted.sender : m.sender)
     let name = conn.getName(who)
@@ -44,7 +39,7 @@ if (!db.data.chats[m.chat].nsfw && m.isGroup) {
 
 handler.help = ['undress']
 handler.tags = ['nsfw']
-handler.command = ['undress', 'encuerar']
+handler.command = ['undress', 'encuerar','quitarropa']
 handler.group = true
 
 export default handler
