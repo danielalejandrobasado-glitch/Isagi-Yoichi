@@ -5,9 +5,9 @@ const handler = async (m, {conn, usedPrefix, command}) => {
   await m.react('🕓')
   let q = m.quoted ? m.quoted : m
   let mime = (q.msg || q).mimetype || q.mediaType || ""
-  if (!mime) return conn.reply(m.chat, `❀ Por favor, envie una imagen o responda a la imagen utilizando el comando.`, m)
-  if (!/image\/(jpe?g|png)/.test(mime)) return m.reply(`✧ El formato del archivo (${mime}) no es compatible, envía o responde a una imagen.`)
-  conn.reply(m.chat, `✧ Mejorando la calidad de la imagen....`, m)  
+  if (!mime) return conn.reply(m.chat, `💙 Por favor, envie una imagen o responda a la imagen utilizando el comando.`, m, rcanal)
+  if (!/image\/(jpe?g|png)/.test(mime)) return m.reply(`💙 El formato del archivo (${mime}) no es compatible, envía o responde a una imagen.`)
+  conn.reply(m.chat, `💙 Mejorando la calidad de la imagen....`, m)  
   let img = await q.download?.()
   let pr = await remini(img, "enhance")
   await conn.sendFile(m.chat, pr, 'thumbnail.jpg', listo, m, null)
