@@ -35,6 +35,12 @@ const waifuList = [
         img: "https://files.catbox.moe/ht6aci.png"
     },
     {
+        name: "Haku Chibi",
+        rarity: "común",
+        probability: 5,
+        img: "https://qu.ax/BReiE.png"
+    },
+    {
         name: "Rin Chibi",
         rarity: "común",
         probability: 5,
@@ -89,6 +95,12 @@ const waifuList = [
         rarity: "rara",
         probability: 3,
         img: "https://files.catbox.moe/0ghewm.png"
+    },
+    {
+        name: "Yowane Haku 2006",
+        rarity: "rara",
+        probability: 3,
+        img: "https://qu.ax/QAaKc.png"
     },
     {
         name: "Akita Neru 2006",
@@ -159,6 +171,12 @@ const waifuList = [
         img: "https://qu.ax/pZTCf.png"
     },
     {
+        name: "🍺Haku🍺",
+        rarity: "épica",
+        probability: 1.5,
+        img: "https://qu.ax/MKmhB.png"
+    },
+    {
         name: "💛Rin💛",
         rarity: "épica",
         probability: 1.5,
@@ -207,6 +225,12 @@ const waifuList = [
         rarity: "ultra rara",
         probability: 0.4,
         img: "https://qu.ax/NLdTF.png"
+    },
+    {
+        name: "🍻Yowane Haku🥂",
+        rarity: "ultra rara",
+        probability: 0.4,
+        img: "https://qu.ax/RwlPs.png"
     },
     {
         name: "💜Utane Defoko💜",
@@ -386,5 +410,6 @@ handler.group = true
 handler.cooldown = 900000
 
 export default handler
+
 
 
