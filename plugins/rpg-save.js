@@ -88,7 +88,7 @@ let handler = async (m, { conn }) => {
 
         if (exists) {
             delete global.db.waifu.waifus[waifuKey];
-            return m.reply(`💙 Ya tienes a **${currentWaifu.name}** (${currentWaifu.rarity}) en tu colección.`);
+            return m.reply(`💙 Ya tienes a *${currentWaifu.name}* (${currentWaifu.rarity}) en tu colección.`);
         }
 
         
