@@ -23,6 +23,12 @@ const waifuList = [
         img: "https://files.catbox.moe/ds1rt5.png"
     },
     {
+        name: "Momo Chibi",
+        rarity: "común",
+        probability: 5,  
+        img: "https://qu.ax/snGCa.png"
+    },
+    {
         name: "Defoko Chibi",
         rarity: "común",
         probability: 5,  
@@ -91,6 +97,12 @@ const waifuList = [
         img: "https://files.catbox.moe/5m2nw3.png"
     },
     {
+        name: "Momone momo 2006",
+        rarity: "rara",
+        probability: 3,
+        img: "https://qu.ax/VuWrg.png"
+    },
+    {
         name: "Defoko Utau",
         rarity: "rara",
         probability: 3,
@@ -151,6 +163,12 @@ const waifuList = [
         rarity: "épica",
         probability: 1.5,
         img: "https://qu.ax/KxBuO.png"
+    },
+    {
+        name: "💚Momo💗",
+        rarity: "épica",
+        probability: 1.5,
+        img: "https://qu.ax/sdZBE.png"
     },
     {
         name: "🩵Aoki Lapis🩵",
@@ -219,6 +237,12 @@ const waifuList = [
         rarity: "ultra rara",
         probability: 0.4,
         img: "https://files.catbox.moe/881c3b.png"
+    },
+    {
+        name: "💚Momone Momo💗",
+        rarity: "ultra rara",
+        probability: 0.4,
+        img: "https://qu.ax/nOQpw.png"
     },
     {
         name: "🩵Aoki Lapis🩵",
@@ -344,7 +368,7 @@ let handler = async (m, { conn }) => {
             const remainingTime = 900000 - timeDiff;
             const minutes = Math.floor(remainingTime / 60000);
             const seconds = Math.floor((remainingTime % 60000) / 1000);
-            return m.reply(`⏰ Debes esperar ${minutes}m ${seconds}s para volver a usar este comando.`);
+            return m.reply(`⏰ Debes esperar ${minutes}m ${seconds}s para volver a usar este comando.`, m, rcanal);
         }
     }
 
@@ -410,6 +434,7 @@ handler.group = true
 handler.cooldown = 900000
 
 export default handler
+
 
 
 
