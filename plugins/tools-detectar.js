@@ -1,5 +1,3 @@
-// Alex-X >> https://github.com/OfcKing
-
 import fs from 'fs'
 import path from 'path'
 
@@ -12,7 +10,7 @@ var handler = async (m, { usedPrefix, command }) => {
 
         const files = fs.readdirSync(pluginsDir).filter(file => file.endsWith('.js'))
 
-        let response = `✧ *Revisión de Syntax Errors:*\n\n`
+        let response = `💙 *Revisión de Syntax Errors:*\n\n`
         let hasErrors = false
 
         for (const file of files) {
@@ -30,7 +28,7 @@ var handler = async (m, { usedPrefix, command }) => {
         }
 
         if (!hasErrors) {
-            response += '❀ ¡Todo está en orden! No se detectaron errores de sintaxis'
+            response += '💙 ¡Todo está en orden! No se detectaron errores de sintaxis'
         }
 
         await conn.reply(m.chat, response, m)
