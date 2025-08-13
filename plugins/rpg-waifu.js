@@ -14,7 +14,7 @@ const waifuList = [
         name: "Hatsune Chibi",
         rarity: "común",
         probability: 5,  
-        img: "https://files.catbox.moe/vjkemw.png"
+        img: "https://qu.ax/aWtNa.png"
     },
     {
         name: "Aoki Chibi",
@@ -50,7 +50,7 @@ const waifuList = [
         name: "Gumi Chibi",
         rarity: "común",
         probability: 5,
-        img: "./src/chibis/gumi_chibi.png"
+        img: "https://qu.ax/MsAUn.png"
     },
     {
         name: "Emu Chibi",
@@ -76,7 +76,7 @@ const waifuList = [
         name: "Hatsune Miku 2006",
         rarity: "rara",
         probability: 3,
-        img: "https://files.catbox.moe/id47xr.png"
+        img: "https://qu.ax/xpAMK.png"
     },
     {
         name: "Aoki Lapis 2006",
@@ -112,7 +112,7 @@ const waifuList = [
         name: "Teto",
         rarity: "rara",
         probability: 3,
-        img: "https://files.catbox.moe/0cax3r.png"
+        img: "https://qu.ax/iAlvK.png"
     },
     {
         name: "Emu Otori",
@@ -130,7 +130,7 @@ const waifuList = [
         name: "Luka Megurine 2006",
         rarity: "rara",
         probability: 3,
-        img: "https://files.catbox.moe/3wo3h9.webp"
+        img: "https://qu.ax/mMBGD.png"
     },
     
     
@@ -138,7 +138,7 @@ const waifuList = [
         name: "💙Miku💙",
         rarity: "épica",
         probability: 1.5,
-        img: "https://files.catbox.moe/ishwpi.png"
+        img: "https://qu.ax/KxBuO.png"
     },
     {
         name: "🩵Aoki Lapis🩵",
@@ -156,13 +156,13 @@ const waifuList = [
         name: "💛Neru💛",
         rarity: "épica",
         probability: 1.5,
-        img: "https://files.catbox.moe/gj18ti.png"
+        img: "https://qu.ax/pZTCf.png"
     },
     {
         name: "💛Rin💛",
         rarity: "épica",
         probability: 1.5,
-        img: "https://files.catbox.moe/jiefh9.png"
+        img: "https://qu.ax/muceU.png"
     },
     {
         name: "💚Gumi💚",
@@ -183,10 +183,10 @@ const waifuList = [
         img: "https://files.catbox.moe/sygb0h.png"
     },
     {
-        name: "Len (gei)",
+        name: "🍌 Len 🍌",
         rarity: "épica",
         probability: 1.5,
-        img: "https://files.catbox.moe/pnho83.png"
+        img: "https://qu.ax/nskdt.png"
     },
     {
         name: "💗LUKA🪷",
@@ -206,13 +206,13 @@ const waifuList = [
         name: "🩵Aoki Lapis🩵",
         rarity: "ultra rara",
         probability: 0.4,
-        img: "https://files.catbox.moe/fkxvxb.png"
+        img: "https://qu.ax/NLdTF.png"
     },
     {
         name: "💜Utane Defoko💜",
         rarity: "ultra rara",
         probability: 0.4,
-        img: "https://files.catbox.moe/c4uvcy.png"
+        img: "https://qu.ax/HYHSi.png"
     },
     {
         name: "💛AKITA NERU💛",
@@ -380,10 +380,11 @@ let handler = async (m, { conn }) => {
 
 handler.help = ['rw']
 handler.tags = ['rpg']
-handler.command = /^(rw|rollwaifu)$/i
+handler.command = /^(rw|rollwaifu|gacha)$/i
 handler.register = true
 handler.group = true
 handler.cooldown = 900000
 
 export default handler
+
 
