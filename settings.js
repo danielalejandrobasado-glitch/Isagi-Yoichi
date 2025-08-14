@@ -16,17 +16,17 @@ global.botNumber = ''
 
 global.owner = [
 // <-- Número @s.whatsapp.net -->
-  ['529535402567', '🎵 Rafaeljosesolano123 - Kasane Teto dev', true],
-  ['529535402567', 'RAFAEL101_1', true],
+  ['51988514570', '🎵 Brauliovh3 - Hatsune Miku Dev 🎵', true],
+  ['51988514570', '(ㅎㅊDEPOOLㅊㅎ)', true],
   
 // <-- Número @lid -->
-  ['88141704769638', 'RAFAEL101_1', true]
+  ['141807421759536', '(ㅎㅊDEPOOLㅊㅎ)', true]
 ];
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
 global.mods = []
-global.suittag = ['529535402567'] 
+global.suittag = ['51988514570'] 
 global.prems = []
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
@@ -34,38 +34,38 @@ global.prems = []
 global.libreria = 'Baileys'
 global.baileys = 'V 6.7.17' 
 global.vs = '2.2.5'
-global.nameqr = '🥖 Kasane-Teto-MD 🥖'
-global.namebot = '❤️K A S A N E - T E T O❤️'
+global.nameqr = '🎵 Hatsune-Miku-MD 🎵'
+global.namebot = '💙 Ｈａｔｓｕｎｅ Ｍｉｋｕ Ｂｏｔ 💙'
 global.sessions = 'Sessions'
 global.jadi = 'JadiBots' 
 global.yukiJadibts = true
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
-global.packname = '🥖❤️KASANE-TETO-BOT❤️🥖'
-global.botname = 'KaSaNe TeTo'
-global.wm = '🥖kasane teto🥖'
-global.author = '© RAFAEL101_1'
-global.dev = '© 🄿🄾🅆🄴🅁🄴🄳 RAFAEL101_1'
-global.textbot = '✨❤️Kasane Teto, la chimera virtual mas famosa de internet ❤️✨'
-global.etiqueta = '💫T E T O D E V💫'
+global.packname = '🎤✨ 𝙃𝘼𝙏𝙎𝙐𝙉𝙀 𝙈𝙄𝙆𝙐 𝘽𝙊𝙏 ✨🎤'
+global.botname = '🄷🄰🅃🅂🅄🄽🄴 🄼🄸🄺🅄'
+global.wm = '🎵◟Hαƚsυɳҽ Mιƙυ◞🎵'
+global.author = '© (ㅎㅊDEPOOLㅊㅎ)'
+global.dev = '© 🄿🄾🅆🄴🅁🄴🄳 (ㅎㅊDEPOOLㅊㅎ)'
+global.textbot = '🎤Hatsune Miku, la Diva Virtual del Futuro🎤'
+global.etiqueta = '🎵(ㅎㅊDEPOOLㅊㅎ)🎵'
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
-global.moneda = '🥖 Baguettes'
-global.welcom1 = '✨❤️ ¡Konnichiwa! Bienvenido al mundo virtual de Kasane Teto! ❤️✨ \n✨ Aquí podrás disfrutar de la magia musical ✨ \n🎶 Edita este mensaje con setwelcome 🎶'
-global.welcom2 = '🌟💫 ¡Sayonara! Gracias por cantar con nosotros 💫🌟 \n🥖 ¡Esperamos verte pronto en el escenario virtual! 🎵 \n🥖 Edita este mensaje con setbye 🎤'
+global.moneda = '🎵 Mikucoins'
+global.welcom1 = '💙 ¡Konnichiwa! Bienvenido al mundo virtual de Hatsune Miku! 💙 \n✨ Aquí podrás disfrutar de la magia musical ✨ \n🎶 Edita este mensaje con setwelcome 🎶'
+global.welcom2 = '💫 ¡Sayonara! Gracias por cantar con nosotros 🌟 \n🎵 ¡Esperamos verte pronto en el escenario virtual! 🎵 \n🎤 Edita este mensaje con setbye 🎤'
 global.banner = 'https://files.catbox.moe/t5iqh7.jpg'
 global.avatar = 'https://files.catbox.moe/t5iqh7.jpg'
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
-global.gp1 = 'https://chat.whatsapp.com/FJP0xzv8OS7AhTpW9rTwYU'
-global.comunidad1 = 'https://chat.whatsapp.com/HbiwMDdzQgwApzyRDFhmEA'
-global.channel = 'https://whatsapp.com/channel/0029Vb6Wxwa3mFY1RdeE9K1c'
-global.channel2 = 'https://whatsapp.com/channel/0029Vb6Wxwa3mFY1RdeE9K1c'
+global.gp1 = 'https://chat.whatsapp.com/FQ78boTUpJ7Ge3oEtn8pRE?mode=ac_t'
+global.comunidad1 = 'https://chat.whatsapp.com/FQ78boTUpJ7Ge3oEtn8pRE?mode=ac_t'
+global.channel = 'https://www.whatsapp.com/channel/0029VajYamSIHphMAl3ABi1o'
+global.channel2 = 'https://www.whatsapp.com/channel/0029VajYamSIHphMAl3ABi1o'
 global.md = 'https://github.com/Brauliovh3/HATSUNE-MIKU'
-global.correo = 'rafaelsolano211i@gmail.com'
+global.correo = 'brauliovh3@gmail.com'
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
