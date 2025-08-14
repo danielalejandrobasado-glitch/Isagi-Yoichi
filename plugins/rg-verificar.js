@@ -24,12 +24,12 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
 ║📝 FORMATO INCORRECTO 📝║
 ╚══════════════════════╝
 
-💙🖥 Uso correcto del comando 🖥💙
+💙 Uso correcto del comando 💙
 
 📋 *Formato:* ${usedPrefix + command} nombre.edad
 ✨ *Ejemplo:* ${usedPrefix + command} ${name2}.18
 
-🔌 ¡Regístrate para acceder a todas las funciones! 🔌`)
+🔌¡Regístrate para acceder a todas las funciones!🔌`)
   let [_, name, splitter, age] = text.match(Reg)
   if (!name) return m.reply(`╔══════════════════╗
 ║❌ NOMBRE VACÍO ❌║
@@ -61,7 +61,7 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
 ║  👶 MUY PEQUEÑO 👶  ║
 ╚══════════════════════╝
 
-💙 ¡Eres muy pequeño para usar el bot! 💙
+💙¡Eres muy pequeño para usar el bot!💙
 🍼 Los bebés necesitan supervisión
 😊 Usa una edad mayor a 5 años`)
   user.name = name + '✓'.trim()
@@ -73,11 +73,11 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
   global.db.data.users[m.sender].joincount += 20
   let sn = createHash('md5').update(m.sender).digest('hex').slice(0, 20)
 let regbot = `╔══════════════════════╗
-║💙 ¡REGISTRO EXITOSO! 💙║
-║   🎤 ¡Bienvenido! 🎤   ║
-╚═════════════════════════╝
+║💙¡REGISTRO EXITOSO!💙║
+║   🎤¡Bienvenido!🎤   ║
+╚═══════════════════════╝
 
-💙🖥🔌 ¡Te has registrado en el mundo de Miku! 🔌🖥💙
+💙¡Te has registrado en el mundo de Miku!💙
 
 ┏━━━━━━━━━━━━━━━━━┓
 ┃ 📋 DATOS PERSONALES┃
