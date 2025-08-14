@@ -1,8 +1,8 @@
 <div align="center">
   
-# 💙 HATSUNE MIKU CHANNEL 💙
+# ❤️ KASANE TETO CHANNEL ❤️
 
-![Hatsune Miku Banner](https://telegra.ph/file/5e7042bf17cde23989e71.jpg)
+![Kasane Teto Banner](https://files.catbox.moe/mq77fe.png)
 
 [![Bot Status](https://img.shields.io/badge/-SIMPLE--WHATSAPP--BOT-green?colorA=%21ff0000&colorB=%21017e40&style=for-the-badge)](https://github.com/Brauliovh3/HATSUNE-MIKU)
 [![Author](https://img.shields.io/badge/Author-(ㅎㅊDEPOOLㅊㅎ)-turquoise.svg?style=for-the-badge&logo=github)](https://qu.ax/HWNA.jpg)
