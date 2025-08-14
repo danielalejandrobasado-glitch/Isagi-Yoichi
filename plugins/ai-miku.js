@@ -2,15 +2,27 @@ import axios from 'axios'
 import fetch from 'node-fetch'
 
 let handler = async (m, { conn }) => {
-  
-    const messageText = m.text?.trim()
-    if (!messageText) return false
+    // Obtener texto de cualquier forma posible
+    let fullText = ''
     
-    const lowerMessage = messageText.toLowerCase()
-    if (!lowerMessage.startsWith('miku ')) return false
+    // Intentar diferentes formas de obtener el texto
+    if (m.text) fullText += m.text
+    if (m.message?.conversation) fullText += ' ' + m.message.conversation
+    if (m.message?.extendedTextMessage?.text) fullText += ' ' + m.message.extendedTextMessage.text
     
-   
-    const userInput = messageText.slice(5).trim()
+    // Si no hay texto, salir
+    if (!fullText.trim()) return false
+    
+    // Buscar "miku" de forma más flexible
+    const textToCheck = fullText.toLowerCase().replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ')
+    console.log('Texto a verificar:', textToCheck)
+    
+    // Si contiene "miku" seguido de algo más
+    const mikuMatch = textToCheck.match(/miku\s+(.+)/)
+    if (!mikuMatch) return false
+    
+    const userInput = mikuMatch[1].trim()
+    
     if (!userInput) {
         return conn.reply(m.chat, `Hola, soy Miku. ¿En qué puedo ayudarte? Escribe "Miku" seguido de tu pregunta.`, m)
     }
@@ -35,12 +47,12 @@ Responde de manera natural y útil, como una IA normal pero con un toque amigabl
         try {
             img = await q.download?.()
             if (!img) {
-                console.error('💙 Error: No image buffer available')
-                return conn.reply(m.chat, '💙 Error: No se pudo descargar la imagen.', m)
+                console.error('Error: No image buffer available')
+                return conn.reply(m.chat, 'Error: No se pudo descargar la imagen.', m)
             }
         } catch (error) {
-            console.error('💙 Error al descargar imagen:', error)
-            return conn.reply(m.chat, '💙 Error al descargar la imagen.', m)
+            console.error('Error al descargar imagen:', error)
+            return conn.reply(m.chat, 'Error al descargar la imagen.', m)
         }
 
         try {
@@ -51,7 +63,7 @@ Responde de manera natural y útil, como una IA normal pero con un toque amigabl
             
             await conn.reply(m.chat, description || 'No pude procesar la imagen correctamente.', m)
         } catch (error) {
-            console.error('💙 Error al analizar la imagen:', error)
+            console.error('Error al analizar la imagen:', error)
             
             const fallbackResponse = `Hola ${username}, soy Miku. Tengo problemas para procesar tu imagen en este momento. ¿Podrías intentar de nuevo o describir qué hay en la imagen?`
             
@@ -71,7 +83,7 @@ Responde de manera natural y útil, como una IA normal pero con un toque amigabl
             
             await conn.reply(m.chat, response, m)
         } catch (error) {
-            console.error('💙 Error al obtener la respuesta:', error)
+            console.error('Error al obtener la respuesta:', error)
             
             const fallbackResponse = `Hola ${username}, soy Miku. Hay un problema temporal con mis servicios. Por favor intenta de nuevo en un momento.`
 
@@ -80,13 +92,13 @@ Responde de manera natural y útil, como una IA normal pero con un toque amigabl
     }
 }
 
-
+// Este handler se ejecutará en todos los mensajes para detectar "Miku"
 handler.all = true
 handler.register = true
 
 export default handler
 
-
+// [Resto del código igual - todas las funciones de API...]
 const GEMINI_API_KEY = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
 const GROQ_API_KEY = "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" 
 const HF_TOKEN = "https://router.huggingface.co/v1" 
@@ -202,7 +214,7 @@ async function getAIResponse(query, username, prompt) {
     
     for (const api of apis) {
         try {
-            console.log(`💙 Intentando con ${api.name}...`)
+            console.log(`Intentando con ${api.name}...`)
             const result = await api.call()
             if (result && result.trim()) {
                 console.log(`✅ ${api.name} funcionó`)
@@ -310,5 +322,5 @@ function getLocalMikuResponse(query, username) {
     }
     
     const randomResponse = responses[Math.floor(Math.random() * responses.length)]
-    return `${randomResponse}\n\n¡Por cierto ${username}, ¿sabías que tengo el cabello turquesa más bonito? ¡Es casi tan brillante como mi voz cuando canto sobre cebollines! ✨🎵🥬`
+    return randomResponse
 }
