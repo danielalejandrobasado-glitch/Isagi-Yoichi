@@ -1,6 +1,6 @@
 var handler = async (m, { conn, command, text }) => {
 
-if (!text) return conn.reply(m.chat, `🎤💙 Por favor, ingresa el nombre del fanático para analizar su personalidad virtual ✨🎵`, m)
+if (!text) return conn.reply(m.chat, `⚽ por favor, ingresa el nombre del egoísta para analizar su personalidad ⚽`, m)
 
 let personalidad = `🎤💙 *Análisis de Personalidad Virtual* ✨
 
