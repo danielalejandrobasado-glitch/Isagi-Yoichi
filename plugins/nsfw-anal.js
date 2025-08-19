@@ -3,7 +3,7 @@ import path from 'path';
 
 let handler = async (m, { conn, usedPrefix }) => {
 if (!db.data.chats[m.chat].nsfw && m.isGroup) {
-    return m.reply(`💙 El contenido *+18* está desactivado en este escenario virtual.\n> Un administrador puede activarlo con el comando » *#nsfw on* 🎵`);
+    return m.reply(` El contenido *+18* está desactivado en este escenario virtual.\n> Un administrador puede activarlo con el comando » *#nsfw on* 🎵`);
     }
 
     let who;
@@ -20,11 +20,11 @@ if (!db.data.chats[m.chat].nsfw && m.isGroup) {
 
     let str;
     if (m.mentionedJid.length > 0) {
-        str = `💙 \`${name2}\` *Se la metio muy fuerte a * \`${name || who}\` *en el mundo digital* 🎤`; 
+        str = ` \`${name2}\` *Se la metio muy fuerte a * \`${name || who}\` *en el dormitorio* `; 
     } else if (m.quoted) {
-        str = `✨ \`${name2}\` *la partio muy fuerte a* \`${name || who}\` *en el ciberespacio* 🎶`;
+        str = `✨ \`${name2}\` *la partio muy fuerte a* \`${name || who}\` *en el campo de entrenamiento* `;
     } else {
-        str = `💙 \`${name2}\` *está experimentando con ritmos intensos en el mundo virtual* 💫`.trim();
+        str = ` \`${name2}\` *esta haciendole una jugada prohibida en la cancha * `.trim();
     }
     
     if (m.isGroup) {
