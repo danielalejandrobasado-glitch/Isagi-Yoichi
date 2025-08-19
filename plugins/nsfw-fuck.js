@@ -3,7 +3,7 @@ import path from 'path';
 
 let handler = async (m, { conn, usedPrefix }) => {
 if (!db.data.chats[m.chat].nsfw && m.isGroup) {
-    return m.reply(`💙 El contenido *NSFW* está desactivado en este grupo.\n> Un administrador puede activarlo con el comando » *.enable nsfw*`);
+    return m.reply(`El contenido *NSFW* está desactivado en este grupo bro .\n> Un administrador puede activarlo con el comando » *.enable nsfw*`);
     }
     
     let who;
@@ -20,7 +20,7 @@ if (!db.data.chats[m.chat].nsfw && m.isGroup) {
 
     let str;
     if (m.mentionedJid.length > 0) {
-        str = `\`${name2}\` *se lo metió sabrosamente a* \`${name || who}\`.`;
+        str = `\`${name2}\` *se lo metió muy rico 🔥 a* \`${name || who}\`.`;
     } else if (m.quoted) {
         str = `\`${name2}\` *cogió fuertemente a* \`${name || who}\`.`;
     } else {
