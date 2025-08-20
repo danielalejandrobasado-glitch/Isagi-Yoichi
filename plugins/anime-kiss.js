@@ -1,7 +1,6 @@
 /* 
-🎤💙 Código creado por Brauliovh3 
-✧ https://github.com/Brauliovh3/HATSUNE-MIKU.git 
-💙 Hatsune Miku Bot - Virtual Concert Experience 🎵✨
+⚽Código creado por insanity31⚽
+⚽ isagi yoichi- jugador de fútbol ⚽ 
 */
 
 import fs from 'fs'
@@ -13,8 +12,8 @@ let handler = async (m, { conn, usedPrefix }) => {
     let name2 = conn.getName(m.sender)
 
     let str = m.mentionedJid.length > 0 || m.quoted 
-        ? `�💙 \`${name2}\` le dio un tierno beso virtual a \`${name || who}\` como en el mundo mágico de Miku ✨�🎵` 
-        : `🎤💙 \`${name2}\` se envió amor a sí mismo/a en el concierto virtual ✨😘💫`
+        ? `�⚽ \`${name2}\` le dio un beso a \`${name || who}\
+        : `⚽ \`${name2}\` ese we se beso solo/a XD 🤣`
     
     if (m.isGroup) {
         let pp = 'https://raw.githubusercontent.com/Brauliovh3/HATSUNE-MIKU/main/Contenido/1745784879173.mp4'
