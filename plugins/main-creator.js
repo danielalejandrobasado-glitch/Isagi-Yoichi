@@ -1,27 +1,62 @@
+//código hecho por angelithoxyz By Ryūsei Club 
+
+// no quites créditos todos los derechos reservados 
+
+
 import PhoneNumber from 'awesome-phonenumber'
 
-let handler = async (m, { conn, usedPrefix, text, args, command }) => {
-    m.react('⚙️')
-    let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
-    let pp = await conn.profilePictureUrl(who).catch(_ => 'https://telegra.ph/file/24fa902ead26340f3df2c.png')
-    let biografia = await conn.fetchStatus('51988514570' + '@s.whatsapp.net').catch(_ => 'Sin Biografía')
-    let biografiaBot = await conn.fetchStatus(`${conn.user.jid.split('@')[0]}` + '@s.whatsapp.net').catch(_ => 'Sin Biografía')
-    let bio = biografia.status?.toString() || 'Sin Biografía'
-    let biobot = biografiaBot.status?.toString() || 'Sin Biografía'
-    let name = await conn.getName(who)
+let handler = async (m, { conn }) => {
+  m.react('⚙️')
 
+  let who = m.mentionedJid && m.mentionedJid[0] 
+    ? m.mentionedJid[0] 
+    : m.fromMe 
+      ? conn.user.jid 
+      : m.sender
+
+  let biografiaCreador = await conn.fetchStatus('573244642273@s.whatsapp.net').catch(_ => 'Sin Biografía')
+  let biografiaColaborador = await conn.fetchStatus('51901930696@s.whatsapp.net').catch(_ => 'Sin Biografía')
+  let biografiaBot = await conn.fetchStatus(`${conn.user.jid.split('@')[0]}@s.whatsapp.net`).catch(_ => 'Sin Biografía')
+
+  let bioCreador = biografiaCreador.status?.toString() || 'Sin Biografía'
+  let bioColaborador = biografiaColaborador.status?.toString() || 'Sin Biografía'
+  let bioBot = biografiaBot.status?.toString() || 'Sin Biografía'
+
+  await sendContactArray(conn, m.chat, [
     
-    const nomorown = '51988514570' 
-    const dev = 'Desarrollador del bot' 
-    const correo = 'velasquezhuillcab@gmail.com' 
-    const packname = '💙Hatsune Miku Bot💙' 
-    const md = 'https://github.com/Brauliovh3' 
-    const global = { yt: 'https://youtube.com' } 
-
-    await sendContactArray(conn, m.chat, [
-        [`${nomorown}`, `💙 Propietario`, `(ㅎㅊDEPOOLㅊㅎ)`, dev, correo, `BVH3`, `${global.yt}`, bio],
-        [`${conn.user.jid.split('@')[0]}`, `Es Una Bot 💙`, `${packname}`, `📵 No Hacer Spam`, correo, `BVH3`, md, biobot]
-    ], m)
+    [
+      `573244642273`, 
+      `💙 Propietario / Creador`, 
+      `Made with By Ryūsei Club`, 
+      `💠 CEO Oficial`, 
+      `ryuseiclubxyz@gmail.com`, 
+      `🌌 Ryūsei Club`, 
+      `https://github.com/Angelithoxz`, 
+      bioCreador
+    ],
+    
+    [
+      `51901930696`, 
+      `🤝 Colaborador`, 
+      `Made with By Ryūsei Club`, 
+      `🔧 Support / Staff`, 
+      `angelithoxyz@gmail.com`, 
+      `🌌 Ryūsei Club`, 
+      `https://github.com/Angelithoxz`, 
+      bioColaborador
+    ],
+    
+    [
+      `${conn.user.jid.split('@')[0]}`, 
+      `🤖 Bot Oficial`, 
+      `💙 Isagi Yoichi Bot 💙`, 
+      `📵 No hacer spam`, 
+      `ryuseiclubxyz@gmail.com`, 
+      `🌌 Ryūsei Club`, 
+      `https://github.com/Angelithoxz`, 
+      bioBot
+    ]
+  ], m)
 }
 
 handler.help = ["creador","owner"]
@@ -30,13 +65,11 @@ handler.command = ['owner','creador']
 export default handler
 
 async function sendContactArray(conn, jid, data, quoted, options) {
-    if (!Array.isArray(data[0]) && typeof data[0] === 'string') data = [data]
-    let contacts = []
-    for (let [number, name, isi, isi1, isi2, isi3, isi4, isi5] of data) {
-        number = number.replace(/[^0-9]/g, '')
-        let njid = number + '@s.whatsapp.net'
-        let biz = await conn.getBusinessProfile(njid).catch(_ => null) || {}
-        let vcard = `
+  if (!Array.isArray(data[0]) && typeof data[0] === 'string') data = [data]
+  let contacts = []
+  for (let [number, name, isi, isi1, isi2, isi3, isi4, isi5] of data) {
+    number = number.replace(/[^0-9]/g, '')
+    let vcard = `
 BEGIN:VCARD
 VERSION:3.0
 N:Sy;Bot;;;
@@ -53,15 +86,15 @@ item4.URL:${isi4}
 item4.X-ABLabel:Website
 item5.X-ABLabel:${isi5}
 END:VCARD`.trim()
-        contacts.push({ vcard, displayName: name })
+    contacts.push({ vcard, displayName: name })
+  }
+  return await conn.sendMessage(jid, {
+    contacts: {
+      displayName: (contacts.length > 1 ? `Ryūsei Club Contacts` : contacts[0].displayName) || null,
+      contacts,
     }
-    return await conn.sendMessage(jid, {
-        contacts: {
-            displayName: (contacts.length > 1 ? `2013 kontak` : contacts[0].displayName) || null,
-            contacts,
-        }
-    }, {
-        quoted,
-        ...options
-    })
+  }, {
+    quoted,
+    ...options
+  })
 }
