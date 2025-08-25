@@ -44,7 +44,7 @@ const PORT = process.env.PORT || process.env.SERVER_PORT || 3000
 
 let { say } = cfonts
 
-console.log(chalk.bold.redBright(`\n💙 Iniciando Hatsune Miku 💙\n`))
+console.log(chalk.bold.redBright(`\n💙 Iniciando Isagi Yoichi 💙\n`))
 
 
 const MUSICA_URL = 'https://litter.catbox.moe/ae5f27n13of6sbtb.mp3' 
@@ -88,13 +88,13 @@ function stopStartupMusic() {
 
 playStartupMusic()
 
-say('Hatsune\nMiku', {
+say('Isagi Yoichi', {
 font: 'block',
 align: 'center',
 colors: ['cyanBright']
 })
 
-say(` By • Brauliovh3`, {
+say(` By • Duarte XV`, {
 font: 'console',
 align: 'center',
 colors: ['magentaBright']
@@ -253,7 +253,7 @@ if (opcion == '1' || methodCodeQR) {
 console.log(chalk.bold.yellow(`\n❐ ESCANEA EL CÓDIGO QR DE MIKU - EXPIRA EN 45 SEGUNDOS`))}
 }
 if (connection == 'open') {
-console.log(chalk.bold.green('\n💙 Hatsune Miku Conectada con éxito 💙'))
+console.log(chalk.bold.green('\n💙 Isagui Yoichi Conectado con éxito 💙'))
 // Detener música de inicio cuando se conecta
 stopStartupMusic()
 }
