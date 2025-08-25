@@ -27,17 +27,17 @@ return res.data
 console.log(`Error : ${e}`)
 }}
   
-global.creador = 'wa.me/51988514570'
+global.creador = 'wa.me/573244642273'
 global.ofcbot = `${conn.user.jid.split('@')[0]}`
-global.namechannel = '💙HATSUNE MIKU CHANNEL💙'
-global.namechannel2 = '💙HATSUNE MIKU CHANNEL💙'
-global.namegrupo = '💙HATSUNE MIKU CHANNEL💙'
-global.namecomu = '💙HATSUNE MIKU CHANNEL💙'
+global.namechannel = '💙Isagi Yoichi CHANNEL💙'
+global.namechannel2 = '💙Isagi Yoichi CHANNEL💙'
+global.namegrupo = '💙Isagi Yoichi CHANNEL💙'
+global.namecomu = '💙Isagi Yoichi Comunity💙'
 global.listo = '*Aquí tienes ฅ^•ﻌ•^ฅ*'
 global.fotoperfil = await conn.profilePictureUrl(m.sender, 'image').catch(_ => 'https://files.catbox.moe/3hruyj.png')
 
 global.canalIdM = ["120363315369913363@newsletter", "120363315369913363@newsletter"]
-global.canalNombreM = ["💙HATSUNE MIKU CHANNEL💙"]
+global.canalNombreM = ["💙 Isagi Yoichi 💙", " =͟͟͞𝐑𝐲𝐮𝐬𝐞𝐢 𝐜𝐥𝐮𝐛 - 𝐎𝐟𝐢𝐜𝐢𝐚𝐥 𝐂𝐡𝐚𝐧𝐧𝐞𝐥⏤͟͟͞͞★]
 global.channelRD = await getRandomChannel()
 
 global.d = new Date(new Date + 3600000)
