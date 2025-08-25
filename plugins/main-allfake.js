@@ -36,7 +36,7 @@ global.namecomu = '💙Isagi Yoichi Comunity💙'
 global.listo = '*Aquí tienes ฅ^•ﻌ•^ฅ*'
 global.fotoperfil = await conn.profilePictureUrl(m.sender, 'image').catch(_ => 'https://files.catbox.moe/3hruyj.png')
 
-global.canalIdM = ["120363315369913363@newsletter", "120363315369913363@newsletter"]
+global.canalIdM = ["120363315369913363@newsletter", "120363374826926142@newsletter"]
 global.canalNombreM = ["💙 Isagi Yoichi 💙", " =͟͟͞𝐑𝐲𝐮𝐬𝐞𝐢 𝐜𝐥𝐮𝐛 - 𝐎𝐟𝐢𝐜𝐢𝐚𝐥 𝐂𝐡𝐚𝐧𝐧𝐞𝐥⏤͟͟͞͞★]
 global.channelRD = await getRandomChannel()
 
