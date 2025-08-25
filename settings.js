@@ -34,30 +34,29 @@ global.prems = []
 global.libreria = 'Baileys'
 global.baileys = 'V 6.7.17' 
 global.vs = '2.2.5'
-global.nameqr = '🎵 Hatsune-Miku-MD 🎵'
-global.namebot = '💙 Ｈａｔｓｕｎｅ Ｍｉｋｕ Ｂｏｔ 💙'
+global.nameqr = '⚽ Isagi-Yoichi-MD ⚽'
+global.namebot = '💙 Ｉｓａｇｉ Ｙｏｉｃｈｉ Ｂｏｔ 💙'
 global.sessions = 'Sessions'
 global.jadi = 'JadiBots' 
 global.yukiJadibts = true
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
-global.packname = '🎤✨ 𝙃𝘼𝙏𝙎𝙐𝙉𝙀 𝙈𝙄𝙆𝙐 𝘽𝙊𝙏 ✨🎤'
-global.botname = '🄷🄰🅃🅂🅄🄽🄴 🄼🄸🄺🅄'
-global.wm = '🎵◟Hαƚsυɳҽ Mιƙυ◞🎵'
-global.author = '© (ㅎㅊDEPOOLㅊㅎ)'
-global.dev = '© 🄿🄾🅆🄴🅁🄴🄳 (ㅎㅊDEPOOLㅊㅎ)'
-global.textbot = '🎤Hatsune Miku, la Diva Virtual del Futuro🎤'
-global.etiqueta = '🎵(ㅎㅊDEPOOLㅊㅎ)🎵'
+global.packname = '⚽🔥 𝙄𝙎𝘼𝙂𝙄 𝙔𝙊𝙄𝘾𝙃𝙄 𝘽𝙊𝙏 🔥⚽'
+global.botname = '🄸🅂🄰🄶🄸 🅈🄾🄸🄲🄷🄸'
+global.wm = '⚽◟Iѕαɠι Yσιcнι◞⚽'
+global.author = '© (ᴮᴸᵁᴱ ᴸᴼᶜᴷ)'
+global.dev = '© 🄿🄾🅆🄴🅁🄴🄳 (ᴮᴸᵁᴱ ᴸᴼᶜᴷ)'
+global.textbot = '⚽ Isagi Yoichi, el devorador de sueños en Blue Lock ⚽'
+global.etiqueta = '🔥(ᴮᴸᵁᴱ ᴸᴼᶜᴷ)🔥'
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
-global.moneda = '🎵 Mikucoins'
-global.welcom1 = '💙 ¡Konnichiwa! Bienvenido al mundo virtual de Hatsune Miku! 💙 \n✨ Aquí podrás disfrutar de la magia musical ✨ \n🎶 Edita este mensaje con setwelcome 🎶'
-global.welcom2 = '💫 ¡Sayonara! Gracias por cantar con nosotros 🌟 \n🎵 ¡Esperamos verte pronto en el escenario virtual! 🎵 \n🎤 Edita este mensaje con setbye 🎤'
-global.banner = 'https://files.catbox.moe/t5iqh7.jpg'
-global.avatar = 'https://files.catbox.moe/t5iqh7.jpg'
-
+global.moneda = '⚽ Bluecoins'
+global.welcom1 = '💙 ¡Bienvenido al campo de Blue Lock! 💙 \n🔥 Aquí forjamos al mejor delantero del mundo 🔥 \n⚽ Edita este mensaje con setwelcome ⚽'
+global.welcom2 = '💫 ¡El partido terminó! Gracias por jugar con nosotros 🌟 \n⚡ ¡Nos vemos en el próximo encuentro en Blue Lock! ⚡ \n🏆 Edita este mensaje con setbye 🏆'
+global.banner = 'https://files.catbox.moe/nrkfzv.jpg'
+global.avatar = 'https://files.catbox.moe/nrkfzv.jpg'
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
 global.gp1 = 'https://chat.whatsapp.com/FQ78boTUpJ7Ge3oEtn8pRE?mode=ac_t'
